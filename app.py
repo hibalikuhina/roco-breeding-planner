@@ -10,8 +10,9 @@ from contextlib import contextmanager
 from tkinter import messagebox, simpledialog, ttk
 
 from engine import (ATTRS, CATALOG, DEFAULT_RULES, NATURES, NATURE_BY_PAIR, PETS,
-                    ROOT, RULE_INFO, TRAITS, inferred_size, nature_chance,
-                    record_traits, search, target_chance)
+                    ROOT, RULE_INFO, TRAITS, display_identity, final_route_key,
+                    inferred_size, nature_chance, record_traits,
+                    retained_zero_route, search, target_chance)
 
 USER_DATA = ROOT / "user_data"
 DB_PATH = USER_DATA / "personal.sqlite3"
@@ -26,8 +27,7 @@ CREATE TABLE IF NOT EXISTS specimens (
 CREATE INDEX IF NOT EXISTS ix_specimens_account ON specimens(account);
 CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS accounts (id TEXT PRIMARY KEY, name TEXT NOT NULL UNIQUE);
-INSERT OR IGNORE INTO accounts(id,name) VALUES ('账号 1','账号 1');
-INSERT OR IGNORE INTO accounts(id,name) VALUES ('账号 2','账号 2');
+INSERT OR IGNORE INTO accounts(id,name) VALUES ('账号 1','账号1');
 """
 
 
@@ -67,6 +67,61 @@ def percent(value: float | None) -> str:
     if 0 < value * 100 < 0.01:
         return "<0.01%"
     return f"{value * 100:.2f}%"
+
+
+def group_final_routes(candidates):
+    """Merge sex variants and catalog forms of the same pet."""
+    grouped = {}
+    def remember_forms(candidate, forms):
+        if candidate.mother is not None and candidate.father is not None:
+            remember_forms(candidate.mother, forms)
+            remember_forms(candidate.father, forms)
+        elif candidate.record_id is None:
+            identity = display_identity(candidate.pet_id)
+            forms.setdefault(identity, {})[candidate.pet_id] = PETS[candidate.pet_id]["name"]
+    for candidate in candidates:
+        key = final_route_key(candidate)
+        group = grouped.setdefault(key, {"variants": {}, "candidates": [],
+                                         "mothers": [], "fathers": [], "children": [], "forms": {}})
+        group["variants"].setdefault(candidate.sex, candidate)
+        group["candidates"].append(candidate)
+        remember_forms(candidate, group["forms"])
+        for label, names in ((candidate.mother.label, group["mothers"]),
+                             (candidate.father.label, group["fathers"]),
+                             (PETS[candidate.pet_id]["name"], group["children"])):
+            if label not in names:
+                names.append(label)
+    return list(grouped.values())
+
+
+def child_label(group):
+    variants = group["variants"]
+    candidate = next(iter(variants.values()))
+    sexes = "公/母" if set(variants) == {"公", "母"} else next(iter(variants))
+    return f"{display_pet_name(candidate.pet_id)}（{sexes}）"
+
+
+DISPLAY_NAMES = {}
+for _pet in CATALOG["pets"]:
+    DISPLAY_NAMES.setdefault(display_identity(_pet["id"]), _pet["name"].split("（")[0])
+
+
+def display_pet_name(pet_id):
+    return DISPLAY_NAMES[display_identity(pet_id)]
+
+
+def result_number_key(group):
+    return tuple(min(int(PETS[pet_id]["number"]) for pet_id in ids) for ids in (
+        [c.father.pet_id for c in group["candidates"]],
+        [c.mother.pet_id for c in group["candidates"]],
+        [c.pet_id for c in group["candidates"]]))
+
+
+def parent_summary(candidate):
+    if candidate.record_id is None:
+        prefix = "[未录入] " if not candidate.route else ""
+        return f"{prefix}{display_pet_name(candidate.pet_id)}（{candidate.sex}）"
+    return candidate.label
 
 
 class PetCombobox(ttk.Combobox):
@@ -337,9 +392,25 @@ class App(tk.Tk):
         ttk.Label(self.query_tab, text="性格任选一项；选一项会筛选其他选项，选两项会自动补齐第三项。空白表示不限。", foreground="#526875").pack(anchor="w")
         self.query_hint = ttk.Label(self.query_tab, text="", foreground="#9a5b16", wraplength=1060)
         self.query_hint.pack(anchor="w", pady=8)
-        self.results = tk.Text(self.query_tab, wrap="word", font=("Microsoft YaHei UI", 10), padx=14, pady=12)
-        self.results.pack(fill="both", expand=True)
-        self.results.configure(state="disabled")
+        self.query_status = ttk.Label(self.query_tab, text="", foreground="#405664", wraplength=1060)
+        self.query_status.pack(anchor="w", pady=(0, 6))
+        result_frame = ttk.Frame(self.query_tab)
+        result_frame.pack(fill="both", expand=True)
+        columns = ("generations", "father", "mother", "child", "virtuals", "note")
+        self.results = ttk.Treeview(result_frame, columns=columns, show="headings", selectmode="browse")
+        for key, label, width in (("generations", "代数", 55), ("father", "父本", 205),
+                                  ("mother", "母本", 225), ("child", "子代", 160),
+                                  ("virtuals", "未录入亲本", 90), ("note", "说明", 230)):
+            self.results.heading(key, text=label)
+            self.results.column(key, width=width, minwidth=50, stretch=key in ("father", "mother", "note"))
+        scrollbar = ttk.Scrollbar(result_frame, orient="vertical", command=self.results.yview)
+        self.results.configure(yscrollcommand=scrollbar.set)
+        self.results.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        self.results.bind("<Double-1>", self.show_result_detail)
+        self.result_groups = []
+        self.result_targets = []
+        self.result_nature = ("", "", "")
 
     def _query_variables(self):
         return (self.target_pet, self.mother_target, self.father_target, self.generations,
@@ -426,10 +497,67 @@ class App(tk.Tk):
         self.query_hint.configure(text=hint)
 
     def _set_results(self, value):
-        self.results.configure(state="normal")
-        self.results.delete("1.0", "end")
-        self.results.insert("end", value)
-        self.results.configure(state="disabled")
+        self.results.delete(*self.results.get_children())
+        self.result_groups = []
+        self.query_status.configure(text=value)
+
+    def show_result_detail(self, _event=None):
+        selection = self.results.selection()
+        if not selection:
+            return
+        group = self.result_groups[int(selection[0])]
+        variants = group["variants"]
+        candidate = next(iter(variants.values()))
+        window = tk.Toplevel(self)
+        window.title("生蛋路线详情")
+        window.geometry("900x600")
+        body = tk.Text(window, wrap="word", font=("Microsoft YaHei UI", 10), padx=16, pady=14)
+        scrollbar = ttk.Scrollbar(window, orient="vertical", command=body.yview)
+        body.configure(yscrollcommand=scrollbar.set)
+        body.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        lines = [f"最终子代：{child_label(group)}  |  繁育 {len(candidate.route)} 轮",
+                 f"未录入亲本：{len(candidate.virtual_keys)} 种", ""]
+        if len(group["mothers"]) > 1:
+            lines.append("可用母本形态：" + "、".join(group["mothers"]))
+        if len(group["fathers"]) > 1:
+            lines.append("可用父本形态：" + "、".join(group["fathers"]))
+        if len(group["children"]) > 1:
+            lines.append("子代形态：" + "、".join(group["children"]))
+        for forms in group["forms"].values():
+            if len(forms) > 1 and len(group["mothers"]) <= 1 and len(group["fathers"]) <= 1:
+                lines.append("路线中可替换的形态：" + "、".join(forms.values()))
+        lines.append("")
+        lines.append("各形态及子代性别：")
+        for variant in group["candidates"]:
+            lines.append(f"父本 {variant.father.label}  ×  母本 {variant.mother.label}  →  {variant.label}："
+                         f"目标特征条件概率 {percent(target_chance(variant, self.result_targets, self.result_nature))}"
+                         f"  |  性别路径 {percent(variant.probability)}")
+        lines.append("")
+        if retained_zero_route(candidate, self.result_targets, self.result_nature):
+            lines.append("模型估算为 0%；至少一方按录入体重与体型奖牌边缘参数判为目标奖牌，因此保留此路线。")
+            lines.append("")
+        steps = []
+        def collect(current):
+            if current.mother is None or current.father is None:
+                return
+            collect(current.mother)
+            collect(current.father)
+            steps.append(current)
+        collect(candidate)
+        for index, step in enumerate(steps, 1):
+            offspring = child_label(group) if step is candidate else step.label
+            lines.append(f"第 {index} 轮：母本 {step.mother.label}  ×  父本 {step.father.label}  →  {offspring}")
+            lines.append("    特征估算：" + "  ".join(f"{t} {percent(step.traits[t])}" for t in TRAITS))
+            if step.conditional_medal_parents:
+                lines.append("    前提：" + "；".join(step.conditional_medal_parents))
+            lines.append("")
+        if any(self.result_nature):
+            lines.append("性格目标：" + "/".join(x or "不限" for x in self.result_nature)
+                         + " → " + percent(nature_chance(candidate, *self.result_nature)))
+        lines.append("未录入亲本按体重中值、普通声音、无异色炫彩、未知性格估算；需取得并核实。")
+        body.insert("1.0", "\n".join(lines))
+        body.configure(state="disabled")
 
     def clear_query_options(self):
         if self._query_after is not None:
@@ -496,7 +624,7 @@ class App(tk.Tk):
         ttk.Button(buttons, text="恢复全部默认值", command=self.restore_rules).pack(side="left")
         notes = (
             "声音奖牌模型：同侧×同侧常保留同侧；单侧×无牌只有小概率；相反两侧默认无牌；无牌×无牌也留极小概率。\n"
-            "体重奖牌：双亲分别换算到各自图鉴成年体重区间的位置，再平均并按区间 ±2% 浮动；落在边缘 2% 算奖牌倾向。\n"
+            "体重奖牌：按录入体重在图鉴成年体重区间的位置判定，落在边缘 2% 算对应奖牌；子代按双亲均值与区间 ±2% 浮动估算。\n"
             "体型多代概率用近似分布，声音只用奖牌类别；缺失原始数据会显示待确认。各特征联合概率按独立近似。详见 SOURCES.md。"
         )
         ttk.Label(self.rules_tab, text=notes, wraplength=1030, justify="left", foreground="#405664").pack(anchor="w", pady=5)
@@ -517,12 +645,13 @@ class App(tk.Tk):
                 variable.set("")
         edge = self.display_rules()["size_edge"] * 100
         for r in records:
-            features = [t for t, chance in record_traits(r, edge).items() if chance]
+            features = [(t + "奖牌" if t in ("大块头", "小不点") else t)
+                        for t, chance in record_traits(r, edge).items() if chance]
             nature = (r.get("nature_name") or "").strip()
             if nature:
                 features.append(nature)
             size = inferred_size(r, edge)
-            if size not in ("未录体重", "普通体型倾向"):
+            if size not in ("未录体重", "普通体型", "大块头", "小不点"):
                 features.append(size)
             self.listing.insert("", "end", iid=str(r["id"]), values=(r["name"], PETS.get(r["pet_id"], {}).get("name", "?"), r["sex"], ", ".join(dict.fromkeys(features))))
         self._update_query_hint()
@@ -538,7 +667,7 @@ class App(tk.Tk):
         pet = PETS[pet_id]
         specimen = {"pet_id": pet_id, "size_raw": self.fields["size_raw"].get()}
         edge = self.display_rules()["size_edge"] * 100
-        self.pet_info.configure(text=f"图鉴 {pet['number']} · 蛋组 {', '.join(pet['egg_groups']) or '未发现'} · 成年体重：{pet.get('adult_weight_range') or '?'} · 体重奖牌：{inferred_size(specimen, edge)}（仅估计）")
+        self.pet_info.configure(text=f"图鉴 {pet['number']} · 蛋组 {', '.join(pet['egg_groups']) or '未发现'} · 成年体重：{pet.get('adult_weight_range') or '?'} · 体重奖牌：{inferred_size(specimen, edge)}（按当前边缘参数判定）")
 
     def clear_record(self):
         self.selected_id = None
@@ -563,7 +692,11 @@ class App(tk.Tk):
         self.selected_id = record_id
         self._nature_syncing = True
         for key, variable in self.fields.items():
-            variable.set(self.display_by_id.get(row["pet_id"], "") if key == "pet_display" else row[key] or "")
+            if key == "pet_display":
+                value = self.display_by_id.get(row["pet_id"], "")
+            else:
+                value = row[key] or ""
+            variable.set(value)
         self._nature_syncing = False
         self._sync_nature("name" if self.fields["nature_name"].get() else "plus", self.fields, self.record_nature_widgets)
         self.shiny.set(bool(row["shiny"]))
@@ -692,30 +825,32 @@ class App(tk.Tk):
         results = search(records, pet_id, targets, self.generations.get(), rules, nature,
                          mother_id=mother_id, father_id=father_id,
                          allow_unrecorded=self.allow_unrecorded.get())
-        target_label = (f"{PETS[pet_id]['name']}（孵化形态：{PETS[PETS[pet_id]['family_base_id']]['name']}）"
+        target_label = (f"{PETS[pet_id]['name']}（孵化形态：{PETS[PETS[pet_id]['family_base_id']]['name']}；含同编号形态）"
                         if pet_id else "不限")
-        lines = [f"目标精灵：{target_label}  |  母本：{self.mother_target.get() or '不限'}  |  父本：{self.father_target.get() or '不限'}  |  {self.account.get()}  |  最多 {self.generations.get()} 代", ""]
+        heading = f"目标精灵：{target_label}  |  {self.account.get()}  |  最多 {self.generations.get()} 代"
+        self._set_results("")
+        self.result_targets = targets
+        self.result_nature = nature
         if not records and not self.allow_unrecorded.get():
-            lines.append("当前账号尚未录入种公种母；可开启“允许未录入亲本”规划路线。")
+            self.query_status.configure(text=heading + "。当前账号尚未录入亲本；可开启“允许未录入亲本”。")
         elif not results:
-            lines.append("在所选代数和当前概率模型下，没有找到满足目标的兼容路线。可调整亲本、目标或代数。")
+            self.query_status.configure(text=heading + "。没有找到满足目标的兼容路线；可调整亲本、目标或代数。")
         else:
-            lines.append("概率基于玩家资料及可修改的假设参数；体重奖牌、声音与跨特征联合概率均为估算。体重奖牌只需成年体重；中间代需实际孵出对应性别。")
-            if self.allow_unrecorded.get():
-                lines.append("[未录入] 亲本按体重中值、普通声音、无异色炫彩建模；原始性格未知，使用前需取得并核实实际数据。")
-            lines.append("")
-            for i, candidate in enumerate(results[:50], 1):
-                joint = target_chance(candidate, targets, nature)
-                lines.append(f"{i}. {len(candidate.route)} 代  ·  需取得 {len(candidate.virtual_keys)} 种未录入亲本  ·  目标特征条件概率 {percent(joint)}  ·  中间代性别路径 {percent(candidate.probability)}")
-                lines.extend("   " + step for step in candidate.route)
-                lines.append("   各特征：" + "  ".join(f"{t} {percent(candidate.traits[t])}" for t in TRAITS))
-                lines.append("   外观拆分：" + "  ".join(f"{t} 显性 {percent(candidate.visible[t])} / 隐性 {percent(candidate.hidden[t])}" for t in ("异色", "炫彩")))
-                if any(nature):
-                    lines.append(f"   性格目标：完整={nature[0] or '不限'}  +{nature[1] or '不限'}  −{nature[2] or '不限'}  → {percent(nature_chance(candidate, *nature))}")
-                lines.append("")
-            if len(results) > 50:
-                lines.append(f"另有 {len(results)-50} 条路线未展示。")
-        self._set_results("\n".join(lines))
+            self.result_groups = sorted(group_final_routes(results), key=result_number_key)
+            self.query_status.configure(text=heading + f"。显示 {len(self.result_groups)} 条路线；同编号形态和子代性别已合并，双击查看各形态及概率。")
+            for index, group in enumerate(self.result_groups):
+                candidate = next(iter(group["variants"].values()))
+                if retained_zero_route(candidate, targets, nature):
+                    note = "单亲有目标奖牌；详见概率"
+                elif candidate.conditional_medal_parents:
+                    note = "须先孵出带牌亲本"
+                else:
+                    note = "双击查看步骤"
+                father = parent_summary(candidate.father)
+                mother = parent_summary(candidate.mother)
+                self.results.insert("", "end", iid=str(index), values=(
+                    len(candidate.route), father, mother, child_label(group),
+                    len(candidate.virtual_keys), note))
 
     def refresh_dex(self):
         if not hasattr(self, "dex_list"):

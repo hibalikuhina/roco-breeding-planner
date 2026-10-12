@@ -62,16 +62,22 @@ def sex_rate(pet_id: str, sex: str) -> float | None:
 
 def record_traits(record: dict, edge_percent: float = 2.0) -> dict[str, float | None]:
     size = inferred_size(record, edge_percent)
+    size_known = size in ("大块头", "小不点", "普通体型")
     legacy_medals = set(x.strip() for x in (record.get("medals") or "").split(",") if x.strip())
     voice = record.get("voice_label") or next((v for v in VOICE[:2] if v in legacy_medals), "")
     values = {
         "异色": bool(record.get("shiny")), "炫彩": bool(record.get("colorful")),
-        "大块头": (size == "大块头倾向") if "倾向" in size else None,
-        "小不点": (size == "小不点倾向") if "倾向" in size else None,
+        "大块头": (size == "大块头") if size_known else None,
+        "小不点": (size == "小不点") if size_known else None,
         "婉转声": (voice == "婉转声") if voice else None,
         "粗嗓门": (voice == "粗嗓门") if voice else None,
     }
     return {trait: float(value) if value is not None else None for trait, value in values.items()}
+
+
+def weight_medals(record: dict, edge_percent: float = 2.0) -> frozenset[str]:
+    size = inferred_size(record, edge_percent)
+    return frozenset((size,)) if size in ("大块头", "小不点") else frozenset()
 
 
 def _range(text: str | None) -> tuple[float, float] | None:
@@ -94,7 +100,7 @@ def size_position(record: dict) -> float | None:
 
 
 def inferred_size(record: dict, edge_percent: float = 2.0) -> str:
-    """A guide based on adult body ranges, not a verified medal determination."""
+    """Classify weight medals using the configured edge of the adult weight range."""
     pet = PETS.get(record.get("pet_id"), {})
     weight = _value(record.get("size_raw"))
     weight_range = _range(pet.get("adult_weight_range") or pet.get("weight"))
@@ -109,10 +115,10 @@ def inferred_size(record: dict, edge_percent: float = 2.0) -> str:
         return "图鉴范围无效"
     edge = edge_percent / 100
     if wp >= 1 - edge:
-        return "大块头倾向"
+        return "大块头"
     if wp <= edge:
-        return "小不点倾向"
-    return "普通体型倾向"
+        return "小不点"
+    return "普通体型"
 
 
 @dataclass
@@ -132,6 +138,31 @@ class Candidate:
     mother_record_id: int | None = None
     father_record_id: int | None = None
     virtual_keys: frozenset[str] = frozenset()
+    weight_medals: frozenset[str] = frozenset()
+    retained_size_medals: frozenset[str] = frozenset()
+    conditional_medal_parents: tuple[str, ...] = ()
+    mother: Candidate | None = None
+    father: Candidate | None = None
+
+
+def display_identity(pet_id: str) -> str:
+    """Use the family catalog number to identify one pet across its forms."""
+    base_id = PETS[pet_id]["family_base_id"]
+    return PETS[base_id]["number"]
+
+
+def route_signature(candidate: Candidate) -> tuple:
+    if candidate.mother is not None and candidate.father is not None:
+        return ("offspring", display_identity(candidate.pet_id), candidate.sex,
+                route_signature(candidate.mother), route_signature(candidate.father))
+    if candidate.record_id is not None:
+        return ("record", candidate.record_id)
+    return ("unrecorded", display_identity(candidate.pet_id), candidate.sex)
+
+
+def final_route_key(candidate: Candidate) -> tuple:
+    return (route_signature(candidate.mother), route_signature(candidate.father),
+            display_identity(candidate.pet_id))
 
 
 def _combine(a: float | None, b: float | None) -> float | None:
@@ -232,11 +263,16 @@ def breed(mother: Candidate, father: Candidate, rules: dict[str, float], sex: st
     visible, hidden = {}, {}
     for trait, key in (("异色", "shiny"), ("炫彩", "color")):
         visible[trait] = _appearance(mother.traits[trait], father.traits[trait], rules[key + "_parent"])
+    if PETS[child_pet].get("has_shiny") is False:
+        visible["异色"] = 0.0
     ordinary = ((1 - visible["异色"]) * (1 - visible["炫彩"])
                 if all(value is not None for value in visible.values()) else None)
     for trait, key in (("异色", "shiny"), ("炫彩", "color")):
         hidden[trait] = ordinary * rules[key + "_hidden"] if ordinary is not None else None
         traits[trait] = visible[trait] + hidden[trait] if hidden[trait] is not None else None
+    if PETS[child_pet].get("has_shiny") is False:
+        hidden["异色"] = 0.0
+        traits["异色"] = 0.0
     voice = _voice_child(mother.voice, father.voice, rules)
     traits["婉转声"] = voice["婉转声"] if voice else None
     traits["粗嗓门"] = voice["粗嗓门"] if voice else None
@@ -248,12 +284,24 @@ def breed(mother: Candidate, father: Candidate, rules: dict[str, float], sex: st
                                   rules["size_swing"] if first_generation else None)
     label = f"{PETS[child_pet]['name']}({sex})"
     step = f"{mother.label} × {father.label} → {label}"
-    route = mother.route + tuple(x for x in father.route if x not in mother.route) + (step,)
+    route = mother.route + father.route + (step,)
+    retained = set()
+    conditional = []
+    for trait in ("大块头", "小不点"):
+        for parent in (mother, father):
+            if trait in parent.weight_medals:
+                retained.add(trait)
+            elif parent.route and (parent.traits[trait] or 0) > 0:
+                retained.add(trait)
+                conditional.append(f"{parent.label} 须先孵出{trait}奖牌")
     return Candidate(child_pet, sex, label, traits, route,
                      _combine(_combine(mother.probability, father.probability), ratio),
                      _nature_child(mother, father, rules), voice, size, visible, hidden,
                      None, mother.record_id, father.record_id,
-                     mother.virtual_keys | father.virtual_keys)
+                     mother.virtual_keys | father.virtual_keys,
+                     retained_size_medals=frozenset(retained),
+                     conditional_medal_parents=tuple(dict.fromkeys(conditional)),
+                     mother=mother, father=father)
 
 
 def target_chance(candidate: Candidate, targets: list[str], nature: tuple[str, str, str] = ("", "", "")) -> float | None:
@@ -264,6 +312,17 @@ def target_chance(candidate: Candidate, targets: list[str], nature: tuple[str, s
             return 0.0
         result = _combine(result, candidate.traits[trait])
     return result
+
+
+def retained_zero_route(candidate: Candidate, targets: list[str],
+                        nature: tuple[str, str, str] = ("", "", "")) -> bool:
+    """Keep a zero estimate only when a direct parent has the requested size medal."""
+    if target_chance(candidate, targets, nature) != 0 or nature_chance(candidate, *nature) == 0:
+        return False
+    size_targets = set(targets) & {"大块头", "小不点"}
+    if not size_targets or not size_targets <= candidate.retained_size_medals:
+        return False
+    return all(candidate.traits[trait] != 0 for trait in targets if trait not in size_targets)
 
 
 def _virtual_parent(pet: dict, sex: str) -> Candidate:
@@ -312,7 +371,7 @@ def search(records: list[dict], target_pet: str | None, targets: list[str], gene
            mother_id: int | None = None, father_id: int | None = None,
            allow_unrecorded: bool = False) -> list[Candidate]:
     if target_pet:
-        target_pet = PETS[target_pet]["family_base_id"]
+        target_pet = display_identity(target_pet)
     owned = []
     for r in records:
         if r["pet_id"] not in PETS or r["sex"] not in ("公", "母"):
@@ -323,7 +382,8 @@ def search(records: list[dict], target_pet: str | None, targets: list[str], gene
                                record_traits(r, rules["size_edge"] * 100), (), 1.0,
                                record_natures(r), {voice_label: 1.0} if voice_label in VOICE else None,
                                (wp, 0.0) if wp is not None else None,
-                               record_id=r["id"]))
+                               record_id=r["id"],
+                               weight_medals=weight_medals(r, rules["size_edge"] * 100)))
     virtual = ([_virtual_parent(p, sex) for p in CATALOG["pets"] if groups(p["id"])
                 for sex in ("母", "公") if sex_rate(p["id"], sex) != 0]
                if allow_unrecorded else [])
@@ -337,7 +397,7 @@ def search(records: list[dict], target_pet: str | None, targets: list[str], gene
         return []
     relevant_groups = set()
     if target_pet:
-        relevant_groups.update(g for p in CATALOG["pets"] if p["family_base_id"] == target_pet
+        relevant_groups.update(g for p in CATALOG["pets"] if display_identity(p["id"]) == target_pet
                                for g in groups(p["id"]))
     if selected_mother:
         relevant_groups.update(groups(selected_mother.pet_id))
@@ -362,29 +422,52 @@ def search(records: list[dict], target_pet: str | None, targets: list[str], gene
             child = breed(m, f, rules, "公")
             if child:
                 frontier.append(child)
-    results: list[Candidate] = []
-    for generation in range(1, min(3, max(1, generations)) + 1):
-        results.extend(c for c in frontier if (target_pet is None or c.pet_id == target_pet)
-                       and (mother_id is None or c.mother_record_id == mother_id)
-                       and (father_id is None or c.father_record_id == father_id)
-                       and target_chance(c, targets, nature) != 0)
-        if generation == generations:
-            break
-        frontier = _trim_frontier(frontier, limit, targets, nature)
-        next_frontier = []
-        # A projected offspring can be paired with an owned or assumed parent.
-        for c in frontier:
-            partners = fathers if c.sex == "母" else mothers
+    def expand_with_base(candidates: list[Candidate]) -> list[Candidate]:
+        children = []
+        for candidate in candidates:
+            partners = fathers if candidate.sex == "母" else mothers
             for partner in partners:
-                m, f = (c, partner) if c.sex == "母" else (partner, c)
+                m, f = (candidate, partner) if candidate.sex == "母" else (partner, candidate)
                 for sex in ("母", "公"):
                     child = breed(m, f, rules, sex)
                     if child:
-                        next_frontier.append(child)
-        frontier = next_frontier
+                        children.append(child)
+        return children
+
+    def expand_two_offspring(candidates: list[Candidate]) -> list[Candidate]:
+        children = []
+        projected_mothers = [c for c in candidates if c.sex == "母"]
+        projected_fathers = [c for c in candidates if c.sex == "公"]
+        for mother in projected_mothers:
+            for father in projected_fathers:
+                for sex in ("母", "公"):
+                    child = breed(mother, father, rules, sex)
+                    if child:
+                        children.append(child)
+        return children
+
+    results: list[Candidate] = []
+    first_generation: list[Candidate] = []
+    for generation in range(1, min(3, max(1, generations)) + 1):
+        results.extend(c for c in frontier if (target_pet is None or display_identity(c.pet_id) == target_pet)
+                       and (mother_id is None or c.mother_record_id == mother_id)
+                       and (father_id is None or c.father_record_id == father_id)
+                       and (target_chance(c, targets, nature) != 0
+                            or retained_zero_route(c, targets, nature)))
+        if generation == generations:
+            break
+        trimmed = _trim_frontier(frontier, limit, targets, nature)
+        if generation == 1:
+            first_generation = trimmed
+            frontier = expand_with_base(trimmed)
+        else:
+            frontier = expand_with_base(trimmed)
+            if mother_id is None and father_id is None:
+                frontier += expand_two_offspring(first_generation)
     def result_rank(candidate: Candidate):
         chance = target_chance(candidate, targets, nature)
-        return (chance is None, len(candidate.route), len(candidate.virtual_keys),
+        category = 0 if chance is not None and chance > 0 else 1 if chance is None else 2
+        return (category, len(candidate.route), len(candidate.virtual_keys),
                 -(chance or 0), -(candidate.probability or 0))
     results.sort(key=result_rank)
     seen = set()
@@ -394,6 +477,13 @@ def search(records: list[dict], target_pet: str | None, targets: list[str], gene
         if key not in seen:
             seen.add(key)
             unique.append(result)
-        if len(unique) >= limit:
-            break
-    return unique
+    grouped: dict[tuple, list[Candidate]] = {}
+    for candidate in unique:
+        grouped.setdefault(final_route_key(candidate), []).append(candidate)
+    zero_keys = [key for key, variants in grouped.items()
+                 if all(target_chance(c, targets, nature) == 0 for c in variants)]
+    zero_key_set = set(zero_keys)
+    other_keys = [key for key in grouped if key not in zero_key_set]
+    reserved = min(len(zero_keys), limit, max(20, limit - len(other_keys)))
+    selected_keys = other_keys[:limit - reserved] + zero_keys[:reserved]
+    return [candidate for key in selected_keys for candidate in grouped[key]]
