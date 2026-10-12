@@ -16,7 +16,6 @@ from engine import (ATTRS, CATALOG, DEFAULT_RULES, NATURES, NATURE_BY_PAIR, PETS
 
 USER_DATA = ROOT / "user_data"
 DB_PATH = USER_DATA / "personal.sqlite3"
-LEGACY_DB_PATH = ROOT / "data" / "personal.sqlite3"
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS specimens (
  id INTEGER PRIMARY KEY, account TEXT NOT NULL, name TEXT NOT NULL, pet_id TEXT NOT NULL,
@@ -34,8 +33,6 @@ INSERT OR IGNORE INTO accounts(id,name) VALUES ('账号 1','账号1');
 @contextmanager
 def db():
     USER_DATA.mkdir(exist_ok=True)
-    if not DB_PATH.exists() and LEGACY_DB_PATH.exists():
-        LEGACY_DB_PATH.replace(DB_PATH)
     connection = sqlite3.connect(DB_PATH)
     connection.row_factory = sqlite3.Row
     try:

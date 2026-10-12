@@ -14,7 +14,7 @@
 python app.py
 ```
 
-账号、个人精灵记录和概率设置都保存在 `user_data/personal.sqlite3`。整个 `user_data` 文件夹不进入 Git。旧版 `data/personal.sqlite3` 会在首次启动时自动迁移；备份时复制新位置的数据库即可。
+账号、个人精灵记录和概率设置都保存在 `user_data/personal.sqlite3`。整个 `user_data` 文件夹不进入 Git。备份时复制 `user_data/personal.sqlite3` 即可。
 
 ## 使用
 
