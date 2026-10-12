@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import sqlite3
 import math
+import json
 import tkinter as tk
 import uuid
 from contextlib import contextmanager
@@ -12,7 +13,9 @@ from engine import (ATTRS, CATALOG, DEFAULT_RULES, NATURES, NATURE_BY_PAIR, PETS
                     ROOT, RULE_INFO, TRAITS, inferred_size, nature_chance,
                     record_traits, search, target_chance)
 
-DB_PATH = ROOT / "data" / "personal.sqlite3"
+USER_DATA = ROOT / "user_data"
+DB_PATH = USER_DATA / "personal.sqlite3"
+LEGACY_DB_PATH = ROOT / "data" / "personal.sqlite3"
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS specimens (
  id INTEGER PRIMARY KEY, account TEXT NOT NULL, name TEXT NOT NULL, pet_id TEXT NOT NULL,
@@ -30,6 +33,9 @@ INSERT OR IGNORE INTO accounts(id,name) VALUES ('账号 2','账号 2');
 
 @contextmanager
 def db():
+    USER_DATA.mkdir(exist_ok=True)
+    if not DB_PATH.exists() and LEGACY_DB_PATH.exists():
+        LEGACY_DB_PATH.replace(DB_PATH)
     connection = sqlite3.connect(DB_PATH)
     connection.row_factory = sqlite3.Row
     try:
@@ -90,9 +96,16 @@ class App(tk.Tk):
         self.display_by_id = {v: k for k, v in self.pet_display.items()}
         self.name_to_id = {p["name"]: p["id"] for p in CATALOG["pets"]}
         self.selected_id = None
+        self._query_loading = True
+        self._query_after = None
+        self._query_account_id = None
         self._style()
         self._layout()
         self.refresh()
+        self._restore_query_options()
+        self._query_loading = False
+        self._watch_query_options()
+        self.protocol("WM_DELETE_WINDOW", self._close)
 
     def _load_accounts(self):
         with db() as connection:
@@ -111,8 +124,14 @@ class App(tk.Tk):
         return matches[0] if len(matches) == 1 else None
 
     def _account_changed(self, *_):
+        if not hasattr(self, "target_pet"):
+            return
+        self._flush_query_options()
+        self._query_loading = True
         self.clear_record()
         self.refresh()
+        self._restore_query_options()
+        self._query_loading = False
 
     def add_account(self):
         name = simpledialog.askstring("添加账号", "新账号名称：", parent=self)
@@ -204,28 +223,30 @@ class App(tk.Tk):
         self.listing.pack(fill="both", expand=True, padx=(0, 12))
         self.listing.bind("<<TreeviewSelect>>", self.select_record)
         self.fields = {}
+        self.field_widgets = {}
         def field(label, key, values=None):
             ttk.Label(right, text=label).pack(anchor="w", pady=(6, 1))
             var = tk.StringVar()
             widget = PetCombobox(right, var, values) if key == "pet_display" else ttk.Combobox(right, textvariable=var, values=values, state="normal" if key == "nature_name" else "readonly") if values else ttk.Entry(right, textvariable=var)
             widget.pack(fill="x", padx=(0, 4))
             self.fields[key] = var
+            self.field_widgets[key] = widget
         field("自定义昵称（可留空，自动用精灵名）", "name")
         field("精灵名称（可直接输入全名，或选筛选结果）", "pet_display", self.pet_choices)
         field("性别", "sex", ["公", "母"])
         field("成年精灵体重（kg，如 3.142）", "size_raw")
-        field("成年精灵身高（m，可选；体型倾向需同时录入）", "height_raw")
         field("声音标签", "voice_label", ["", "普通", "婉转声", "粗嗓门"])
         field("原始性格名（可输入或选择；修改后的性格不遗传）", "nature_name", ["", *NATURES])
         field("原始性格加成 +", "nature_plus", ["", *ATTRS])
         field("原始性格减益 −", "nature_minus", ["", *ATTRS])
         self._nature_syncing = False
-        self.fields["nature_name"].trace_add("write", self._nature_from_name)
-        self.fields["nature_plus"].trace_add("write", self._nature_from_pair)
-        self.fields["nature_minus"].trace_add("write", self._nature_from_pair)
+        self.record_nature_widgets = {key: self.field_widgets[key] for key in ("nature_name", "nature_plus", "nature_minus")}
+        self.fields["nature_name"].trace_add("write", lambda *_: self._sync_nature("name", self.fields, self.record_nature_widgets))
+        self.fields["nature_plus"].trace_add("write", lambda *_: self._sync_nature("plus", self.fields, self.record_nature_widgets))
+        self.fields["nature_minus"].trace_add("write", lambda *_: self._sync_nature("minus", self.fields, self.record_nature_widgets))
         self.pet_info = ttk.Label(right, text="", wraplength=380, foreground="#405664")
         self.pet_info.pack(anchor="w", pady=(6, 2))
-        for key in ("pet_display", "size_raw", "height_raw"):
+        for key in ("pet_display", "size_raw"):
             self.fields[key].trace_add("write", lambda *_: self.update_pet_preview())
         checks = ttk.Frame(right)
         checks.pack(fill="x", pady=8)
@@ -240,62 +261,200 @@ class App(tk.Tk):
         ttk.Button(buttons, text="保存", command=self.save_record).pack(side="left", padx=3)
         ttk.Button(buttons, text="删除", command=self.delete_record).pack(side="left", padx=3)
 
-    def _nature_from_name(self, *_):
+    def _sync_nature(self, changed, variables, widgets):
         if self._nature_syncing:
             return
-        name = self.fields["nature_name"].get().strip()
-        if name not in NATURES:
-            return
         self._nature_syncing = True
-        plus, minus = NATURES[name]
-        self.fields["nature_plus"].set(plus)
-        self.fields["nature_minus"].set(minus)
-        self._nature_syncing = False
-
-    def _nature_from_pair(self, *_):
-        if self._nature_syncing:
-            return
-        pair = (self.fields["nature_plus"].get(), self.fields["nature_minus"].get())
-        self._nature_syncing = True
-        self.fields["nature_name"].set(NATURE_BY_PAIR.get(pair, ""))
-        self._nature_syncing = False
+        try:
+            name, plus, minus = (variables[key].get().strip() for key in ("nature_name", "nature_plus", "nature_minus"))
+            if changed == "name" and (name in NATURES or not name):
+                plus, minus = NATURES[name] if name else ("", "")
+                variables["nature_plus"].set(plus)
+                variables["nature_minus"].set(minus)
+            elif changed != "name":
+                name = NATURE_BY_PAIR.get((plus, minus), "")
+                variables["nature_name"].set(name)
+            one_selected = sum(bool(x) for x in (name, plus, minus)) == 1
+            widgets["nature_name"].configure(values=["", *(n for n, pair in NATURES.items()
+                if not one_selected or (not plus or pair[0] == plus) and (not minus or pair[1] == minus))])
+            widgets["nature_plus"].configure(values=["", *(a for a in ATTRS if a != minus)])
+            widgets["nature_minus"].configure(values=["", *(a for a in ATTRS if a != plus)])
+        finally:
+            self._nature_syncing = False
 
     def _query_ui(self):
         top = ttk.Frame(self.query_tab)
         top.pack(fill="x")
-        ttk.Label(top, text="目标精灵").grid(row=0, column=0, sticky="w")
+        ttk.Label(top, text="目标精灵（可选）").grid(row=0, column=0, sticky="w")
         self.target_pet = tk.StringVar()
         PetCombobox(top, self.target_pet, self.pet_choices, width=48).grid(row=0, column=1, sticky="ew", padx=8)
         ttk.Label(top, text="最多几代").grid(row=0, column=2, padx=(16, 5))
         self.generations = tk.IntVar(value=1)
         ttk.Combobox(top, textvariable=self.generations, values=[1, 2, 3], state="readonly", width=5).grid(row=0, column=3)
         ttk.Button(top, text="查询路线", command=self.run_query).grid(row=0, column=4, padx=16)
+        ttk.Button(top, text="清空选项", command=self.clear_query_options).grid(row=0, column=5)
         top.columnconfigure(1, weight=1)
+        parents = ttk.Frame(self.query_tab)
+        parents.pack(fill="x", pady=(8, 0))
+        self.mother_target = tk.StringVar()
+        self.father_target = tk.StringVar()
+        self.parent_choices = {}
+        ttk.Label(parents, text="指定母本（可选）").pack(side="left")
+        self.mother_picker = ttk.Combobox(parents, textvariable=self.mother_target, state="readonly", width=34)
+        self.mother_picker.pack(side="left", padx=(8, 20))
+        ttk.Label(parents, text="指定父本（可选）").pack(side="left")
+        self.father_picker = ttk.Combobox(parents, textvariable=self.father_target, state="readonly", width=34)
+        self.father_picker.pack(side="left", padx=8)
+        ttk.Label(self.query_tab, text="目标精灵、母本、父本至少填一项；母本和父本选择当前账号已录入的记录。", foreground="#526875").pack(anchor="w", pady=(5, 0))
+        self.allow_unrecorded = tk.BooleanVar(value=False)
+        ttk.Checkbutton(self.query_tab, text="允许未录入亲本（从图鉴补足兼容的父本或母本）",
+                        variable=self.allow_unrecorded).pack(anchor="w", pady=(7, 0))
+        ttk.Label(self.query_tab, text="未录入亲本按成年体重区间中值、普通声音、无异色炫彩计算；原始性格未知。结果会标明需要取得的亲本。",
+                  foreground="#526875").pack(anchor="w")
         ttk.Label(self.query_tab, text="目标特征（异色/炫彩包含普通蛋的隐性概率；体型是成年数据估算）").pack(anchor="w", pady=(14, 4))
         trait_frame = ttk.Frame(self.query_tab)
         trait_frame.pack(fill="x")
         self.target_vars = {t: tk.BooleanVar() for t in TRAITS}
-        self.trait_widgets = {}
         for i, trait in enumerate(TRAITS):
             widget = ttk.Checkbutton(trait_frame, text=trait, variable=self.target_vars[trait])
             widget.grid(row=0, column=i, padx=10, sticky="w")
-            self.trait_widgets[trait] = widget
         nature_row = ttk.Frame(self.query_tab)
         nature_row.pack(fill="x", pady=(10, 2))
         self.nature_target = tk.StringVar()
         self.plus_target = tk.StringVar()
         self.minus_target = tk.StringVar()
-        for label, var, choices, width in (("完整性格", self.nature_target, ["", *NATURES], 16),
-                                           ("只看 +", self.plus_target, ["", *ATTRS], 10),
-                                           ("只看 −", self.minus_target, ["", *ATTRS], 10)):
+        self.query_nature_widgets = {}
+        for label, key, var, choices, width in (("完整性格", "nature_name", self.nature_target, ["", *NATURES], 16),
+                                           ("只看 +", "nature_plus", self.plus_target, ["", *ATTRS], 10),
+                                           ("只看 −", "nature_minus", self.minus_target, ["", *ATTRS], 10)):
             ttk.Label(nature_row, text=label).pack(side="left", padx=(8, 3))
-            ttk.Combobox(nature_row, textvariable=var, values=choices, state="readonly", width=width).pack(side="left", padx=(0, 12))
-        ttk.Label(self.query_tab, text="三项可分别筛选；同时选择时需指向同一种性格。空白表示不限。", foreground="#526875").pack(anchor="w")
+            widget = ttk.Combobox(nature_row, textvariable=var, values=choices, state="readonly", width=width)
+            widget.pack(side="left", padx=(0, 12))
+            self.query_nature_widgets[key] = widget
+        query_nature = {"nature_name": self.nature_target, "nature_plus": self.plus_target, "nature_minus": self.minus_target}
+        for key, changed in (("nature_name", "name"), ("nature_plus", "plus"), ("nature_minus", "minus")):
+            query_nature[key].trace_add("write", lambda *_, c=changed: self._sync_nature(c, query_nature, self.query_nature_widgets))
+        ttk.Label(self.query_tab, text="性格任选一项；选一项会筛选其他选项，选两项会自动补齐第三项。空白表示不限。", foreground="#526875").pack(anchor="w")
         self.query_hint = ttk.Label(self.query_tab, text="", foreground="#9a5b16", wraplength=1060)
         self.query_hint.pack(anchor="w", pady=8)
         self.results = tk.Text(self.query_tab, wrap="word", font=("Microsoft YaHei UI", 10), padx=14, pady=12)
         self.results.pack(fill="both", expand=True)
         self.results.configure(state="disabled")
+
+    def _query_variables(self):
+        return (self.target_pet, self.mother_target, self.father_target, self.generations,
+                self.allow_unrecorded, self.nature_target, self.plus_target, self.minus_target,
+                *self.target_vars.values())
+
+    def _watch_query_options(self):
+        for variable in self._query_variables():
+            variable.trace_add("write", self._query_changed)
+
+    def _query_changed(self, *_):
+        if self._query_loading:
+            return
+        self._update_query_hint()
+        if self._query_after is not None:
+            self.after_cancel(self._query_after)
+        self._query_after = self.after(350, self._flush_query_options)
+
+    def _query_snapshot(self):
+        return {
+            "target_pet_id": self.resolve_pet(self.target_pet.get()),
+            "mother_id": self.parent_choices.get(self.mother_target.get()),
+            "father_id": self.parent_choices.get(self.father_target.get()),
+            "generations": self.generations.get(),
+            "allow_unrecorded": self.allow_unrecorded.get(),
+            "traits": [trait for trait, variable in self.target_vars.items() if variable.get()],
+            "nature": [self.nature_target.get(), self.plus_target.get(), self.minus_target.get()],
+        }
+
+    def _flush_query_options(self):
+        if self._query_after is None:
+            return
+        self.after_cancel(self._query_after)
+        self._query_after = None
+        if self._query_loading or not self._query_account_id:
+            return
+        with db() as connection:
+            connection.execute("INSERT OR REPLACE INTO settings(key,value) VALUES (?,?)",
+                               ("query:" + self._query_account_id,
+                                json.dumps(self._query_snapshot(), ensure_ascii=False)))
+
+    def _restore_query_options(self):
+        self._query_account_id = self.account_id()
+        with db() as connection:
+            row = connection.execute("SELECT value FROM settings WHERE key=?",
+                                     ("query:" + self._query_account_id,)).fetchone()
+        try:
+            options = json.loads(row["value"]) if row else {}
+            if not isinstance(options, dict):
+                options = {}
+        except (ValueError, TypeError):
+            options = {}
+        pet_id = options.get("target_pet_id")
+        self.target_pet.set(self.display_by_id.get(pet_id, ""))
+        for variable, record_id in ((self.mother_target, options.get("mother_id")),
+                                    (self.father_target, options.get("father_id"))):
+            variable.set(next((label for label, value in self.parent_choices.items()
+                               if value == record_id), ""))
+        generations = options.get("generations", 1)
+        self.generations.set(generations if generations in (1, 2, 3) else 1)
+        self.allow_unrecorded.set(bool(options.get("allow_unrecorded", False)))
+        traits = options.get("traits", [])
+        for trait, variable in self.target_vars.items():
+            variable.set(trait in traits)
+        nature = options.get("nature", ["", "", ""])
+        if not isinstance(nature, list) or len(nature) != 3:
+            nature = ["", "", ""]
+        self._nature_syncing = True
+        for variable, value in zip((self.nature_target, self.plus_target, self.minus_target), nature):
+            variable.set(value if isinstance(value, str) else "")
+        self._nature_syncing = False
+        query_nature = {"nature_name": self.nature_target, "nature_plus": self.plus_target,
+                        "nature_minus": self.minus_target}
+        self._sync_nature("name" if self.nature_target.get() else "plus",
+                          query_nature, self.query_nature_widgets)
+        self._update_query_hint()
+        self._set_results("")
+
+    def _update_query_hint(self):
+        if self.allow_unrecorded.get():
+            hint = "已允许未录入亲本；路线中的 [未录入] 精灵需自行取得，概率按默认值估算。"
+        else:
+            hint = "仅使用当前账号已录入的亲本。目标特征始终可选；没有可行路线时会在结果中说明。"
+        self.query_hint.configure(text=hint)
+
+    def _set_results(self, value):
+        self.results.configure(state="normal")
+        self.results.delete("1.0", "end")
+        self.results.insert("end", value)
+        self.results.configure(state="disabled")
+
+    def clear_query_options(self):
+        if self._query_after is not None:
+            self.after_cancel(self._query_after)
+            self._query_after = None
+        self._query_loading = True
+        self.target_pet.set("")
+        self.mother_target.set("")
+        self.father_target.set("")
+        self.generations.set(1)
+        self.allow_unrecorded.set(False)
+        for variable in self.target_vars.values():
+            variable.set(False)
+        self.nature_target.set("")
+        self.plus_target.set("")
+        self.minus_target.set("")
+        self._query_loading = False
+        self._update_query_hint()
+        self._set_results("")
+        with db() as connection:
+            connection.execute("DELETE FROM settings WHERE key=?", ("query:" + self.account_id(),))
+
+    def _close(self):
+        self._flush_query_options()
+        self.destroy()
 
     def _dex_ui(self):
         top = ttk.Frame(self.dex_tab)
@@ -337,7 +496,7 @@ class App(tk.Tk):
         ttk.Button(buttons, text="恢复全部默认值", command=self.restore_rules).pack(side="left")
         notes = (
             "声音奖牌模型：同侧×同侧常保留同侧；单侧×无牌只有小概率；相反两侧默认无牌；无牌×无牌也留极小概率。\n"
-            "体型：双亲分别换算到各自图鉴成年体重、身高区间的位置，再平均并按区间 ±2% 浮动；两项都落在边缘 2% 才算奖牌倾向。\n"
+            "体重奖牌：双亲分别换算到各自图鉴成年体重区间的位置，再平均并按区间 ±2% 浮动；落在边缘 2% 算奖牌倾向。\n"
             "体型多代概率用近似分布，声音只用奖牌类别；缺失原始数据会显示待确认。各特征联合概率按独立近似。详见 SOURCES.md。"
         )
         ttk.Label(self.rules_tab, text=notes, wraplength=1030, justify="left", foreground="#405664").pack(anchor="w", pady=5)
@@ -347,6 +506,15 @@ class App(tk.Tk):
             return
         self.listing.delete(*self.listing.get_children())
         records = read_records(self.account_id())
+        self.parent_choices = {f"#{r['id']} · {r['name']}（{PETS.get(r['pet_id'], {}).get('name', '?')}）": r["id"] for r in records}
+        record_sexes = {r["id"]: r["sex"] for r in records}
+        for picker, variable, sex in ((self.mother_picker, self.mother_target, "母"),
+                                      (self.father_picker, self.father_target, "公")):
+            choices = ["", *(label for label, record_id in self.parent_choices.items()
+                             if record_sexes[record_id] == sex)]
+            picker.configure(values=choices)
+            if variable.get() not in choices:
+                variable.set("")
         edge = self.display_rules()["size_edge"] * 100
         for r in records:
             features = [t for t, chance in record_traits(r, edge).items() if chance]
@@ -357,20 +525,7 @@ class App(tk.Tk):
             if size not in ("未录体重", "普通体型倾向"):
                 features.append(size)
             self.listing.insert("", "end", iid=str(r["id"]), values=(r["name"], PETS.get(r["pet_id"], {}).get("name", "?"), r["sex"], ", ".join(dict.fromkeys(features))))
-        possible = {t for r in records for t, value in record_traits(r, edge).items() if value}
-        if any(r.get("size_raw") for r in records):
-            possible.update(("大块头", "小不点"))
-        if any(r.get("voice_label") == "普通" for r in records):
-            possible.update(("婉转声", "粗嗓门"))
-        missing = []
-        for trait, widget in self.trait_widgets.items():
-            if trait in possible or trait in ("异色", "炫彩"):
-                widget.grid()
-            else:
-                widget.grid_remove()
-                self.target_vars[trait].set(False)
-                missing.append(trait)
-        self.query_hint.configure(text=("当前缺少亲本数据：" + "、".join(missing) + "。普通蛋仍可能隐性异色/炫彩；声音请填奖牌或普通，体型请录成年身高与体重。已有记录会保留。" if missing else ""))
+        self._update_query_hint()
         self.refresh_dex()
 
     def update_pet_preview(self):
@@ -381,14 +536,17 @@ class App(tk.Tk):
             self.pet_info.configure(text="输入图鉴中的完整精灵名，或点下拉箭头选择匹配项。")
             return
         pet = PETS[pet_id]
-        specimen = {"pet_id": pet_id, "size_raw": self.fields["size_raw"].get(), "height_raw": self.fields["height_raw"].get()}
+        specimen = {"pet_id": pet_id, "size_raw": self.fields["size_raw"].get()}
         edge = self.display_rules()["size_edge"] * 100
-        self.pet_info.configure(text=f"图鉴 {pet['number']} · 蛋组 {', '.join(pet['egg_groups']) or '未发现'} · 成年体重：{pet.get('adult_weight_range') or '?'} · 成年身高：{pet.get('adult_height_range') or '?'} · 体型：{inferred_size(specimen, edge)}（仅估计）")
+        self.pet_info.configure(text=f"图鉴 {pet['number']} · 蛋组 {', '.join(pet['egg_groups']) or '未发现'} · 成年体重：{pet.get('adult_weight_range') or '?'} · 体重奖牌：{inferred_size(specimen, edge)}（仅估计）")
 
     def clear_record(self):
         self.selected_id = None
+        self._nature_syncing = True
         for variable in self.fields.values():
             variable.set("")
+        self._nature_syncing = False
+        self._sync_nature("name", self.fields, self.record_nature_widgets)
         self.shiny.set(False)
         self.colorful.set(False)
         self.listing.selection_remove(self.listing.selection())
@@ -403,8 +561,11 @@ class App(tk.Tk):
         if not row:
             return
         self.selected_id = record_id
+        self._nature_syncing = True
         for key, variable in self.fields.items():
             variable.set(self.display_by_id.get(row["pet_id"], "") if key == "pet_display" else row[key] or "")
+        self._nature_syncing = False
+        self._sync_nature("name" if self.fields["nature_name"].get() else "plus", self.fields, self.record_nature_widgets)
         self.shiny.set(bool(row["shiny"]))
         self.colorful.set(bool(row["colorful"]))
 
@@ -415,13 +576,13 @@ class App(tk.Tk):
             messagebox.showerror("信息不完整", "请输入图鉴中的精灵全名（或从筛选列表选择），并选择公或母。")
             return
         name = values["name"] or PETS[pet_id]["name"]
-        for key in ("size_raw", "height_raw"):
+        for key in ("size_raw",):
             if values[key]:
                 try:
                     if float(values[key]) < 0:
                         raise ValueError
                 except ValueError:
-                    messagebox.showerror("体型数值有误", "体重和身高请输入非负数字。")
+                    messagebox.showerror("体重数值有误", "体重请输入非负数字。")
                     return
         nature_name = values["nature_name"]
         pair = (values["nature_plus"], values["nature_minus"])
@@ -438,8 +599,8 @@ class App(tk.Tk):
             values["nature_plus"], values["nature_minus"] = NATURES[nature_name]
         elif pair in NATURE_BY_PAIR:
             values["nature_name"] = NATURE_BY_PAIR[pair]
-        columns = ("account", "name", "pet_id", "sex", "size_raw", "height_raw", "voice_label", "shiny", "colorful", "notes", "nature_name", "nature_plus", "nature_minus")
-        payload = (self.account_id(), name, pet_id, values["sex"], values["size_raw"], values["height_raw"], values["voice_label"], int(self.shiny.get()), int(self.colorful.get()), values["notes"], values["nature_name"], values["nature_plus"], values["nature_minus"])
+        columns = ("account", "name", "pet_id", "sex", "size_raw", "voice_label", "shiny", "colorful", "notes", "nature_name", "nature_plus", "nature_minus")
+        payload = (self.account_id(), name, pet_id, values["sex"], values["size_raw"], values["voice_label"], int(self.shiny.get()), int(self.colorful.get()), values["notes"], values["nature_name"], values["nature_plus"], values["nature_minus"])
         with db() as connection:
             if self.selected_id:
                 connection.execute("UPDATE specimens SET " + ",".join(f"{c}=?" for c in columns) + " WHERE id=? AND account=?", payload + (self.selected_id, self.account_id()))
@@ -500,9 +661,16 @@ class App(tk.Tk):
         messagebox.showinfo("已恢复默认", "全部参数已恢复默认，并保存到本机。")
 
     def run_query(self):
-        pet_id = self.resolve_pet(self.target_pet.get())
-        if not pet_id:
-            messagebox.showerror("选择目标", "请从目标精灵列表选择精灵。")
+        self._flush_query_options()
+        target_text = self.target_pet.get().strip()
+        pet_id = self.resolve_pet(target_text) if target_text else None
+        mother_id = self.parent_choices.get(self.mother_target.get())
+        father_id = self.parent_choices.get(self.father_target.get())
+        if target_text and not pet_id:
+            messagebox.showerror("目标精灵有误", "请从目标精灵列表选择精灵，或留空。")
+            return
+        if not any((pet_id, mother_id, father_id)):
+            messagebox.showerror("查询条件不足", "目标精灵、母本、父本至少填写一项。")
             return
         records = read_records(self.account_id())
         targets = [t for t, var in self.target_vars.items() if var.get()]
@@ -521,19 +689,24 @@ class App(tk.Tk):
         except ValueError:
             messagebox.showerror("参数有误", "请先修正概率参数。")
             return
-        results = search(records, pet_id, targets, self.generations.get(), rules, nature)
-        base_id = PETS[pet_id]["family_base_id"]
-        lines = [f"目标：{PETS[pet_id]['name']}（孵化形态：{PETS[base_id]['name']}）  |  {self.account.get()}  |  最多 {self.generations.get()} 代", ""]
-        if not records:
-            lines.append("当前账号尚未录入种公种母。")
+        results = search(records, pet_id, targets, self.generations.get(), rules, nature,
+                         mother_id=mother_id, father_id=father_id,
+                         allow_unrecorded=self.allow_unrecorded.get())
+        target_label = (f"{PETS[pet_id]['name']}（孵化形态：{PETS[PETS[pet_id]['family_base_id']]['name']}）"
+                        if pet_id else "不限")
+        lines = [f"目标精灵：{target_label}  |  母本：{self.mother_target.get() or '不限'}  |  父本：{self.father_target.get() or '不限'}  |  {self.account.get()}  |  最多 {self.generations.get()} 代", ""]
+        if not records and not self.allow_unrecorded.get():
+            lines.append("当前账号尚未录入种公种母；可开启“允许未录入亲本”规划路线。")
         elif not results:
-            lines.append("现有记录中没有找到兼容的路线。请核对性别、蛋组及目标母系。记录仍保留。")
+            lines.append("在所选代数和当前概率模型下，没有找到满足目标的兼容路线。可调整亲本、目标或代数。")
         else:
-            lines.append("概率基于玩家资料及可修改的假设参数；体型、声音与跨特征联合概率均为估算。体型需要成年体重和身高；中间代需实际孵出对应性别。")
+            lines.append("概率基于玩家资料及可修改的假设参数；体重奖牌、声音与跨特征联合概率均为估算。体重奖牌只需成年体重；中间代需实际孵出对应性别。")
+            if self.allow_unrecorded.get():
+                lines.append("[未录入] 亲本按体重中值、普通声音、无异色炫彩建模；原始性格未知，使用前需取得并核实实际数据。")
             lines.append("")
             for i, candidate in enumerate(results[:50], 1):
                 joint = target_chance(candidate, targets, nature)
-                lines.append(f"{i}. {len(candidate.route)} 代  ·  目标特征条件概率 {percent(joint)}  ·  中间代性别路径 {percent(candidate.probability)}")
+                lines.append(f"{i}. {len(candidate.route)} 代  ·  需取得 {len(candidate.virtual_keys)} 种未录入亲本  ·  目标特征条件概率 {percent(joint)}  ·  中间代性别路径 {percent(candidate.probability)}")
                 lines.extend("   " + step for step in candidate.route)
                 lines.append("   各特征：" + "  ".join(f"{t} {percent(candidate.traits[t])}" for t in TRAITS))
                 lines.append("   外观拆分：" + "  ".join(f"{t} 显性 {percent(candidate.visible[t])} / 隐性 {percent(candidate.hidden[t])}" for t in ("异色", "炫彩")))
@@ -542,10 +715,7 @@ class App(tk.Tk):
                 lines.append("")
             if len(results) > 50:
                 lines.append(f"另有 {len(results)-50} 条路线未展示。")
-        self.results.configure(state="normal")
-        self.results.delete("1.0", "end")
-        self.results.insert("end", "\n".join(lines))
-        self.results.configure(state="disabled")
+        self._set_results("\n".join(lines))
 
     def refresh_dex(self):
         if not hasattr(self, "dex_list"):

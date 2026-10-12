@@ -84,41 +84,33 @@ def _value(text: str | None) -> float | None:
     return float(match.group()) if match else None
 
 
-def size_positions(record: dict) -> tuple[float | None, float | None]:
+def size_position(record: dict) -> float | None:
     pet = PETS.get(record.get("pet_id"), {})
-    values = (_value(record.get("size_raw")), _value(record.get("height_raw")))
-    ranges = (_range(pet.get("adult_weight_range") or pet.get("weight")),
-              _range(pet.get("adult_height_range") or pet.get("height")))
-    result = []
-    for value, bounds in zip(values, ranges):
-        if value is None or bounds is None or bounds[1] <= bounds[0]:
-            result.append(None)
-        else:
-            result.append(max(0.0, min(1.0, (value - bounds[0]) / (bounds[1] - bounds[0]))))
-    return result[0], result[1]
+    value = _value(record.get("size_raw"))
+    bounds = _range(pet.get("adult_weight_range") or pet.get("weight"))
+    if value is None or bounds is None or bounds[1] <= bounds[0]:
+        return None
+    return max(0.0, min(1.0, (value - bounds[0]) / (bounds[1] - bounds[0])))
 
 
 def inferred_size(record: dict, edge_percent: float = 2.0) -> str:
     """A guide based on adult body ranges, not a verified medal determination."""
     pet = PETS.get(record.get("pet_id"), {})
-    weight, height = _value(record.get("size_raw")), _value(record.get("height_raw"))
+    weight = _value(record.get("size_raw"))
     weight_range = _range(pet.get("adult_weight_range") or pet.get("weight"))
-    height_range = _range(pet.get("adult_height_range") or pet.get("height"))
     if weight is None:
         return "未录体重"
-    if not weight_range or not height_range:
+    if not weight_range:
         return "图鉴范围缺失"
-    if height is None:
-        return "需录身高"
     def position(value, bounds):
         return (value - bounds[0]) / (bounds[1] - bounds[0]) if bounds[1] > bounds[0] else None
-    wp, hp = position(weight, weight_range), position(height, height_range)
-    if wp is None or hp is None:
+    wp = position(weight, weight_range)
+    if wp is None:
         return "图鉴范围无效"
     edge = edge_percent / 100
-    if wp >= 1 - edge and hp >= 1 - edge:
+    if wp >= 1 - edge:
         return "大块头倾向"
-    if wp <= edge and hp <= edge:
+    if wp <= edge:
         return "小不点倾向"
     return "普通体型倾向"
 
@@ -133,9 +125,13 @@ class Candidate:
     probability: float | None = 1.0  # Chance the intermediate has the required sex.
     natures: dict[tuple[str, str] | None, float] | None = None
     voice: dict[str, float] | None = None
-    size: tuple[tuple[float, float] | None, tuple[float, float] | None] = (None, None)
+    size: tuple[float, float] | None = None
     visible: dict[str, float | None] | None = None
     hidden: dict[str, float | None] | None = None
+    record_id: int | None = None
+    mother_record_id: int | None = None
+    father_record_id: int | None = None
+    virtual_keys: frozenset[str] = frozenset()
 
 
 def _combine(a: float | None, b: float | None) -> float | None:
@@ -221,7 +217,8 @@ def _size_tail(state: tuple[float, float] | None, edge: float, high: bool,
     # For later generations use a normal approximation of propagated moments.
     sigma = math.sqrt(variance)
     cdf = (1 + math.erf((threshold - mean) / (sigma * math.sqrt(2)))) / 2
-    return max(0.0, min(1.0, 1 - cdf if high else cdf))
+    chance = max(0.0, min(1.0, 1 - cdf if high else cdf))
+    return 0.0 if chance < 1e-12 else 1.0 if chance > 1 - 1e-12 else chance
 
 
 def breed(mother: Candidate, father: Candidate, rules: dict[str, float], sex: str) -> Candidate | None:
@@ -243,47 +240,122 @@ def breed(mother: Candidate, father: Candidate, rules: dict[str, float], sex: st
     voice = _voice_child(mother.voice, father.voice, rules)
     traits["婉转声"] = voice["婉转声"] if voice else None
     traits["粗嗓门"] = voice["粗嗓门"] if voice else None
-    size = tuple(_size_child(a, b, rules["size_swing"]) for a, b in zip(mother.size, father.size))
+    size = _size_child(mother.size, father.size, rules["size_swing"])
     for trait, high in (("大块头", True), ("小不点", False)):
-        tails = [_size_tail(d, rules["size_edge"], high,
-                            rules["size_swing"] if a is not None and b is not None and a[1] == 0 and b[1] == 0 else None)
-                 for d, a, b in zip(size, mother.size, father.size)]
-        traits[trait] = _combine(*tails)
+        first_generation = (mother.size is not None and father.size is not None
+                            and mother.size[1] == 0 and father.size[1] == 0)
+        traits[trait] = _size_tail(size, rules["size_edge"], high,
+                                  rules["size_swing"] if first_generation else None)
     label = f"{PETS[child_pet]['name']}({sex})"
     step = f"{mother.label} × {father.label} → {label}"
     route = mother.route + tuple(x for x in father.route if x not in mother.route) + (step,)
     return Candidate(child_pet, sex, label, traits, route,
                      _combine(_combine(mother.probability, father.probability), ratio),
-                     _nature_child(mother, father, rules), voice, size, visible, hidden)
+                     _nature_child(mother, father, rules), voice, size, visible, hidden,
+                     None, mother.record_id, father.record_id,
+                     mother.virtual_keys | father.virtual_keys)
 
 
 def target_chance(candidate: Candidate, targets: list[str], nature: tuple[str, str, str] = ("", "", "")) -> float | None:
     """Independence approximation; never presented as a verified game mechanic."""
     result: float | None = nature_chance(candidate, *nature)
     for trait in targets:
+        if candidate.traits[trait] == 0:
+            return 0.0
         result = _combine(result, candidate.traits[trait])
     return result
 
 
-def search(records: list[dict], target_pet: str, targets: list[str], generations: int,
-           rules: dict[str, float], nature: tuple[str, str, str] = ("", "", ""), limit: int = 200) -> list[Candidate]:
-    target_pet = PETS[target_pet]["family_base_id"]
+def _virtual_parent(pet: dict, sex: str) -> Candidate:
+    traits = {trait: 0.0 for trait in TRAITS}
+    return Candidate(pet["id"], sex, f"[未录入] {pet['name']}({sex})", traits, (),
+                     1.0, {None: 1.0}, {"普通": 1.0}, (0.5, 0.0),
+                     virtual_keys=frozenset((f"{pet['id']}:{sex}",)))
+
+
+def _opportunity(candidate: Candidate, targets: list[str], nature: tuple[str, str, str]) -> tuple:
+    # Retain near-edge intermediate offspring even when the current medal chance is zero.
+    score = 1.0
+    for trait in targets:
+        if trait == "大块头":
+            score *= candidate.size[0] if candidate.size else 0.0
+        elif trait == "小不点":
+            score *= 1 - candidate.size[0] if candidate.size else 0.0
+        else:
+            score *= candidate.traits[trait] if candidate.traits[trait] is not None else 0.5
+    chance = nature_chance(candidate, *nature)
+    score *= chance if chance is not None else 0.5
+    return score, -len(candidate.virtual_keys), candidate.probability or 0
+
+
+def _trim_frontier(frontier: list[Candidate], limit: int, targets: list[str],
+                   nature: tuple[str, str, str]) -> list[Candidate]:
+    frontier.sort(key=lambda c: _opportunity(c, targets, nature), reverse=True)
+    if len(frontier) <= limit:
+        return frontier
+    # Keep species/sex variety before filling the remaining beam slots.
+    chosen, seen = [], set()
+    for candidate in frontier:
+        key = (candidate.pet_id, candidate.sex)
+        if key not in seen:
+            chosen.append(candidate)
+            seen.add(key)
+            if len(chosen) == limit:
+                return chosen
+    chosen_ids = {id(c) for c in chosen}
+    chosen.extend(c for c in frontier if id(c) not in chosen_ids)
+    return chosen[:limit]
+
+
+def search(records: list[dict], target_pet: str | None, targets: list[str], generations: int,
+           rules: dict[str, float], nature: tuple[str, str, str] = ("", "", ""), limit: int = 200,
+           mother_id: int | None = None, father_id: int | None = None,
+           allow_unrecorded: bool = False) -> list[Candidate]:
+    if target_pet:
+        target_pet = PETS[target_pet]["family_base_id"]
     owned = []
     for r in records:
         if r["pet_id"] not in PETS or r["sex"] not in ("公", "母"):
             continue
-        wp, hp = size_positions(r)
+        wp = size_position(r)
         voice_label = r.get("voice_label") or next((v for v in VOICE[:2] if v in (r.get("medals") or "")), "")
-        owned.append(Candidate(r["pet_id"], r["sex"], r["name"],
+        owned.append(Candidate(r["pet_id"], r["sex"], f"{r['name']} [#{r['id']}]",
                                record_traits(r, rules["size_edge"] * 100), (), 1.0,
                                record_natures(r), {voice_label: 1.0} if voice_label in VOICE else None,
-                               ((wp, 0.0) if wp is not None else None,
-                                (hp, 0.0) if hp is not None else None)))
-    mothers = [c for c in owned if c.sex == "母"]
-    fathers = [c for c in owned if c.sex == "公"]
+                               (wp, 0.0) if wp is not None else None,
+                               record_id=r["id"]))
+    virtual = ([_virtual_parent(p, sex) for p in CATALOG["pets"] if groups(p["id"])
+                for sex in ("母", "公") if sex_rate(p["id"], sex) != 0]
+               if allow_unrecorded else [])
+    mothers = [c for c in owned + virtual if c.sex == "母"]
+    fathers = [c for c in owned + virtual if c.sex == "公"]
+    selected_mother = next((c for c in owned if c.record_id == mother_id), None)
+    selected_father = next((c for c in owned if c.record_id == father_id), None)
+    if mother_id is not None and selected_mother is None:
+        return []
+    if father_id is not None and selected_father is None:
+        return []
+    relevant_groups = set()
+    if target_pet:
+        relevant_groups.update(g for p in CATALOG["pets"] if p["family_base_id"] == target_pet
+                               for g in groups(p["id"]))
+    if selected_mother:
+        relevant_groups.update(groups(selected_mother.pet_id))
+    if selected_father:
+        relevant_groups.update(groups(selected_father.pet_id))
+    if relevant_groups:
+        mothers = [m for m in mothers if m.record_id == mother_id or
+                   bool((groups(m.pet_id) | groups(PETS[m.pet_id]["family_base_id"]))
+                        & relevant_groups)]
+    fathers_by_group: dict[str, list[Candidate]] = {}
+    for father in fathers:
+        for group in groups(father.pet_id):
+            fathers_by_group.setdefault(group, []).append(father)
     frontier = []
     for m in mothers:
-        for f in fathers:
+        possible_fathers = {id(f): f for group in groups(m.pet_id)
+                            for f in fathers_by_group.get(group, ())}.values()
+        for f in possible_fathers:
             child = breed(m, f, rules, "母")
             if child:
                 frontier.append(child)
@@ -292,12 +364,15 @@ def search(records: list[dict], target_pet: str, targets: list[str], generations
                 frontier.append(child)
     results: list[Candidate] = []
     for generation in range(1, min(3, max(1, generations)) + 1):
-        results.extend(c for c in frontier if c.pet_id == target_pet and target_chance(c, targets, nature) != 0)
+        results.extend(c for c in frontier if (target_pet is None or c.pet_id == target_pet)
+                       and (mother_id is None or c.mother_record_id == mother_id)
+                       and (father_id is None or c.father_record_id == father_id)
+                       and target_chance(c, targets, nature) != 0)
         if generation == generations:
             break
+        frontier = _trim_frontier(frontier, limit, targets, nature)
         next_frontier = []
-        # A projected offspring can be paired with a currently owned parent.
-        # This keeps the plan actionable and avoids an unbounded fantasy lineage.
+        # A projected offspring can be paired with an owned or assumed parent.
         for c in frontier:
             partners = fathers if c.sex == "母" else mothers
             for partner in partners:
@@ -306,9 +381,12 @@ def search(records: list[dict], target_pet: str, targets: list[str], generations
                     child = breed(m, f, rules, sex)
                     if child:
                         next_frontier.append(child)
-        next_frontier.sort(key=lambda c: (target_chance(c, targets, nature) or 0, c.probability or 0), reverse=True)
-        frontier = next_frontier[:limit]
-    results.sort(key=lambda c: (target_chance(c, targets, nature) or 0, c.probability or 0, -len(c.route)), reverse=True)
+        frontier = next_frontier
+    def result_rank(candidate: Candidate):
+        chance = target_chance(candidate, targets, nature)
+        return (chance is None, len(candidate.route), len(candidate.virtual_keys),
+                -(chance or 0), -(candidate.probability or 0))
+    results.sort(key=result_rank)
     seen = set()
     unique = []
     for result in results:

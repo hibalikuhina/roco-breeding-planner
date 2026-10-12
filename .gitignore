@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 data/personal.sqlite3
 data/personal.sqlite3-*
+user_data/
