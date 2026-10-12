@@ -21,4 +21,8 @@
 
 ## 概率处理
 
-[游侠手游异色概率文章](https://m.ali213.net/news/gl2604/1763525.html)给出单方异色 2%–3.5% 等区间；[游侠网限定异色文章](https://gl.ali213.net/html/2026-4/1760703.html)则称单方异色约 30%–50%。这些数字相互冲突，也可能讨论不同场景。软件不默认使用任何一组。体型、声音、奖牌及炫彩的准确遗传率也未找到足够可靠的一致来源，故默认留空。
+- [玩家整理的游戏配置](https://github.com/mieli1722/roco_kingdom_world_conf/blob/main/PET_GLOBAL_CONFIG.json)：`pet_inheritance_ex_shining_rate_male/female=72`、`pet_inheritance_im_shining_rate=100`、`pet_inheritance_ex_glass_rate_male/female=36`、`pet_inheritance_personality_rate_male/female=3000`。按万分比解读为异色亲本各 0.72%、隐性异色约 1%、炫彩亲本各 0.36%、完整性格随父母各 30%。[玩家整理](https://www.4399.com/pcgame/topic/53477756.html)中的外观数字相符；[性格机制整理](https://www.233leyuan.com/post-detail/2053039458908291072)也报 30%/30%/40%。配置未给完整的服务器判定顺序，软件假设未出现显性异色与显性炫彩才属于普通蛋，并在此条件下分别估算两种隐性概率。
+- [性格图鉴](https://wiki.biligame.com/rocom/%E6%80%A7%E6%A0%BC)：30 个原始性格与加成、减益属性对应；软件按完整性格遗传，再分别查询 + 或 −。随机性格暂按 30 种均匀分配。
+- [音碟吼蛋重表](https://wiki.biligame.com/nrc/%E9%9F%B3%E7%A2%9F%E5%90%BC)：蛋重 2.940–7.040 kg，小不点 ≤3.022 kg，大块头 ≥6.958 kg，恰为区间两端各 2%。该证据针对蛋重；成年精灵判牌只是同口径的估算。
+- [玩家抓包项目记录](https://github.com/whoisnian/rocom-capture/blob/master/HISTORY.md)描述体重围绕双亲百分比均值浮动、声音基本取双亲均值。其记录没有给出准确幅度；因此体型遗传的 ±2% **未查明具体出处**，作为可修改假设。
+- 普通蛋隐性炫彩默认 **1% 未查明具体出处**。声音奖牌组合默认值（同侧 90%、一侧 2%、相反每侧 0%、双无牌每侧 0.5%）只是为规划路线设定的对称模型，**没有游戏实测概率依据**，均可修改或恢复默认。
