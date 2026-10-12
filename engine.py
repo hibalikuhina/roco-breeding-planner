@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -26,15 +27,49 @@ def sex_rate(pet_id: str, sex: str) -> float | None:
 
 
 def record_traits(record: dict) -> dict[str, float]:
-    medals = set(x.strip() for x in (record.get("medals") or "").split(",") if x.strip())
+    size = inferred_size(record)
+    legacy_medals = set(x.strip() for x in (record.get("medals") or "").split(",") if x.strip())
     values = {
         "异色": bool(record.get("shiny")), "炫彩": bool(record.get("colorful")),
-        "大块头": record.get("size_label") == "大块头" or "大块头" in medals,
-        "小不点": record.get("size_label") == "小不点" or "小不点" in medals,
-        "婉转声": record.get("voice_label") == "婉转声" or "婉转声" in medals,
-        "粗嗓门": record.get("voice_label") == "粗嗓门" or "粗嗓门" in medals,
+        "大块头": size == "大块头倾向" or (size in ("未录体重", "需录身高", "图鉴范围缺失") and (record.get("size_label") == "大块头" or "大块头" in legacy_medals)),
+        "小不点": size == "小不点倾向" or (size in ("未录体重", "需录身高", "图鉴范围缺失") and (record.get("size_label") == "小不点" or "小不点" in legacy_medals)),
+        "婉转声": record.get("voice_label") == "婉转声" or "婉转声" in legacy_medals,
+        "粗嗓门": record.get("voice_label") == "粗嗓门" or "粗嗓门" in legacy_medals,
     }
     return {trait: float(value) for trait, value in values.items()}
+
+
+def _range(text: str | None) -> tuple[float, float] | None:
+    numbers = re.findall(r"\d+(?:\.\d+)?", text or "")
+    return (float(numbers[0]), float(numbers[1])) if len(numbers) >= 2 else None
+
+
+def _value(text: str | None) -> float | None:
+    match = re.search(r"\d+(?:\.\d+)?", text or "")
+    return float(match.group()) if match else None
+
+
+def inferred_size(record: dict) -> str:
+    """A guide based on adult body ranges, not a verified medal determination."""
+    pet = PETS.get(record.get("pet_id"), {})
+    weight, height = _value(record.get("size_raw")), _value(record.get("height_raw"))
+    weight_range, height_range = _range(pet.get("weight")), _range(pet.get("height"))
+    if weight is None:
+        return "未录体重"
+    if not weight_range or not height_range:
+        return "图鉴范围缺失"
+    if height is None:
+        return "需录身高"
+    def position(value, bounds):
+        return (value - bounds[0]) / (bounds[1] - bounds[0]) if bounds[1] > bounds[0] else None
+    wp, hp = position(weight, weight_range), position(height, height_range)
+    if wp is None or hp is None:
+        return "图鉴范围无效"
+    if wp >= .98 and hp >= .98:
+        return "大块头倾向"
+    if wp <= .02 and hp <= .02:
+        return "小不点倾向"
+    return "普通体型倾向"
 
 
 @dataclass
