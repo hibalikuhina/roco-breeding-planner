@@ -248,8 +248,8 @@ class App(tk.Tk):
         entry = ttk.Entry(top, textvariable=self.dex_search)
         entry.pack(side="left", fill="x", expand=True, padx=10)
         self.dex_search.trace_add("write", lambda *_: self.refresh_dex())
-        self.dex_list = ttk.Treeview(self.dex_tab, columns=("number", "name", "groups", "sex", "egg"), show="headings")
-        for col, label, width in (("number", "编号", 75), ("name", "精灵", 170), ("groups", "蛋组", 200), ("sex", "雌雄比例", 110), ("egg", "蛋重范围", 160)):
+        self.dex_list = ttk.Treeview(self.dex_tab, columns=("number", "name", "groups", "sex", "weight"), show="headings")
+        for col, label, width in (("number", "编号", 75), ("name", "精灵", 170), ("groups", "蛋组", 200), ("sex", "雌雄比例", 110), ("weight", "成年体重范围", 160)):
             self.dex_list.heading(col, text=label)
             self.dex_list.column(col, width=width)
         self.dex_list.pack(fill="both", expand=True)
@@ -313,7 +313,7 @@ class App(tk.Tk):
             return
         pet = PETS[pet_id]
         specimen = {"pet_id": pet_id, "size_raw": self.fields["size_raw"].get(), "height_raw": self.fields["height_raw"].get()}
-        self.pet_info.configure(text=f"图鉴 {pet['number']} · 蛋组 {', '.join(pet['egg_groups']) or '未发现'} · 成年范围：{pet.get('weight') or '?'} / {pet.get('height') or '?'} · 体型：{inferred_size(specimen)}（仅估计）")
+        self.pet_info.configure(text=f"图鉴 {pet['number']} · 蛋组 {', '.join(pet['egg_groups']) or '未发现'} · 成年体重：{pet.get('adult_weight_range') or '?'} · 成年身高：{pet.get('adult_height_range') or '?'} · 体型：{inferred_size(specimen)}（仅估计）")
 
     def clear_record(self):
         self.selected_id = None
@@ -429,9 +429,8 @@ class App(tk.Tk):
             if needle and needle not in hay:
                 continue
             ratio = pet.get("gender_ratio") or {}
-            egg = pet.get("egg_size") or {}
             sex = f"公 {ratio.get('male','?')} : 母 {ratio.get('female','?')}"
-            weight = f"{egg.get('min','?')}–{egg.get('max','?')} {egg.get('unit','')}" if egg else "未知"
+            weight = pet.get("adult_weight_range") or "未知"
             self.dex_list.insert("", "end", iid=pet["id"], values=(pet["number"], pet["name"], ", ".join(pet["egg_groups"]) or "未发现", sex, weight))
 
     def show_dex_detail(self, _event=None):
@@ -439,8 +438,7 @@ class App(tk.Tk):
         if not selection:
             return
         pet = PETS[selection[0]]
-        egg = pet.get("egg_size") or {}
-        text = f"{pet['name']}｜图鉴 {pet['number']}｜身高 {pet.get('height') or '未知'}｜体重 {pet.get('weight') or '未知'}｜大块头蛋重阈值 {egg.get('huge_min','未知')} {egg.get('unit','')}｜小不点蛋重阈值 {egg.get('mini_max','未知')} {egg.get('unit','')}"
+        text = f"{pet['name']}｜图鉴 {pet['number']}｜成年体重范围 {pet.get('adult_weight_range') or '未知'}｜成年身高范围 {pet.get('adult_height_range') or '未知'}"
         self.dex_detail.configure(text=text)
 
 

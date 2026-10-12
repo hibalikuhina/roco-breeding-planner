@@ -27,10 +27,10 @@ def main():
             "family_base_id": bases.get(evolution, record["id"]),
             "egg_groups": [GROUPS.get(n, str(n)) for n in group_ids if n != 1],
             "egg_group_ids": group_ids,
-            "egg_size": attributes.get("egg_size"),
             "gender_ratio": record.get("gender_ratio"),
             "has_shiny": attributes.get("has_shiny"),
-            "height": record.get("height"), "weight": record.get("weight"),
+            "adult_height_range": record.get("height"),
+            "adult_weight_range": record.get("weight"),
             "season": record.get("season"),
         })
     output = {"source": SOURCE, "egg_groups": GROUPS, "pets": pets}

@@ -13,7 +13,7 @@
 ## 生蛋规则
 
 - [WIKI 奖牌图鉴](https://wiki.biligame.com/nrc/%E5%A5%96%E7%89%8C%E5%9B%BE%E9%89%B4)：大块头/小不点与体型、婉转声/粗嗓门与声音有关；部分奖牌与地点或时间有关。
-- [WIKI 精灵图鉴实例](https://wiki.biligame.com/nrc/%E5%B7%A8%E9%BC%93%E8%B1%A1)：蛋重量有明确的大小阈值，并声明仅适用于家园玩法获得的蛋。成年精灵体重不能直接套用这些阈值。
+- [WIKI 精灵图鉴实例](https://wiki.biligame.com/nrc/%E5%B7%A8%E9%BC%93%E8%B1%A1)：上游同时列有成年精灵体重范围和精灵蛋重量阈值。本地只保留成年精灵体重范围；蛋重阈值不用于本工具计算。
 - [玩家体型讨论](https://www.taptap.cn/moment/844744598214412822?group_id=228326)：仅身高、体重显示为满值也可能没有大块头牌，说明成年体型的判牌需要谨慎估计。
 - [游民星空玩家生蛋介绍](https://www.gamersky.com/handbook/202604/2116160.shtml)：蛋的物种由母方决定；亲本有异色、炫彩会提高特殊蛋机会。
 - [社区繁殖介绍](https://rocokingdomworld.org/zh-hant/guides/breeding-system/)：一公一母、共享蛋组，母方定种。

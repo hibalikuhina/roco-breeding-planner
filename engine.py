@@ -53,7 +53,8 @@ def inferred_size(record: dict) -> str:
     """A guide based on adult body ranges, not a verified medal determination."""
     pet = PETS.get(record.get("pet_id"), {})
     weight, height = _value(record.get("size_raw")), _value(record.get("height_raw"))
-    weight_range, height_range = _range(pet.get("weight")), _range(pet.get("height"))
+    weight_range = _range(pet.get("adult_weight_range") or pet.get("weight"))
+    height_range = _range(pet.get("adult_height_range") or pet.get("height"))
     if weight is None:
         return "未录体重"
     if not weight_range or not height_range:
