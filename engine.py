@@ -62,14 +62,15 @@ def child_trait(m: float | None, f: float | None, rate: float | None, base: floa
 def breed(mother: Candidate, father: Candidate, rules: dict[str, float | None], sex: str) -> Candidate | None:
     if not compatible({"pet_id": mother.pet_id}, {"pet_id": father.pet_id}):
         return None
-    ratio = sex_rate(mother.pet_id, sex)
+    child_pet = PETS[mother.pet_id]["family_base_id"]
+    ratio = sex_rate(child_pet, sex)
     if ratio == 0:
         return None
     traits = {t: child_trait(mother.traits[t], father.traits[t], rules.get(t)) for t in TRAITS}
-    label = f"{PETS[mother.pet_id]['name']}({sex})"
+    label = f"{PETS[child_pet]['name']}({sex})"
     step = f"{mother.label} × {father.label} → {label}"
     route = mother.route + tuple(x for x in father.route if x not in mother.route) + (step,)
-    return Candidate(mother.pet_id, sex, label, traits, route, _combine(_combine(mother.probability, father.probability), ratio))
+    return Candidate(child_pet, sex, label, traits, route, _combine(_combine(mother.probability, father.probability), ratio))
 
 
 def target_chance(candidate: Candidate, targets: list[str]) -> float | None:
@@ -82,6 +83,7 @@ def target_chance(candidate: Candidate, targets: list[str]) -> float | None:
 
 def search(records: list[dict], target_pet: str, targets: list[str], generations: int,
            rules: dict[str, float | None], limit: int = 200) -> list[Candidate]:
+    target_pet = PETS[target_pet]["family_base_id"]
     owned = [Candidate(r["pet_id"], r["sex"], r["name"], record_traits(r), ())
              for r in records if r["pet_id"] in PETS and r["sex"] in ("公", "母")]
     mothers = [c for c in owned if c.sex == "母"]

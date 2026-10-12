@@ -304,7 +304,8 @@ class App(tk.Tk):
             messagebox.showerror("参数有误", "请先修正概率参数：0–100 的数字，或留空。")
             return
         results = search(records, pet_id, targets, self.generations.get(), rules)
-        lines = [f"目标：{PETS[pet_id]['name']}  |  {self.account.get()}  |  最多 {self.generations.get()} 代", ""]
+        base_id = PETS[pet_id]["family_base_id"]
+        lines = [f"目标：{PETS[pet_id]['name']}（孵化形态：{PETS[base_id]['name']}）  |  {self.account.get()}  |  最多 {self.generations.get()} 代", ""]
         if not records:
             lines.append("当前账号尚未录入种公种母。")
         elif not results:
@@ -316,7 +317,7 @@ class App(tk.Tk):
                 joint = target_chance(candidate, targets)
                 lines.append(f"{i}. {len(candidate.route)} 代  ·  目标特征条件概率 {percent(joint)}  ·  中间代性别路径 {percent(candidate.probability)}")
                 lines.extend("   " + step for step in candidate.route)
-                lines.append("   各特征：" + "  ".join(f"{t} {percent(candidate.traits[t])}" for t in (targets or TRAITS)))
+                lines.append("   各特征：" + "  ".join(f"{t} {percent(candidate.traits[t])}" for t in TRAITS))
                 lines.append("")
             if len(results) > 50:
                 lines.append(f"另有 {len(results)-50} 条路线未展示。")

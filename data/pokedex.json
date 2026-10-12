@@ -1,6 +1,5 @@
 {
   "source": "https://jayegt002.github.io/rocom-wiki-data/data/pets.json",
-  "source_commit": "6ab264cb98eec1dd2dde0d7c6dfa200733a98d63",
   "egg_groups": {
     "1": "未发现",
     "2": "巨灵组",
@@ -24,6 +23,7 @@
       "number": "002",
       "name": "喵喵",
       "stage": 1,
+      "family_base_id": "pet_000001",
       "egg_groups": [
         "动物组",
         "拟人组"
@@ -53,6 +53,7 @@
       "number": "008",
       "name": "水蓝蓝",
       "stage": 1,
+      "family_base_id": "pet_000002",
       "egg_groups": [
         "魔力组"
       ],
@@ -80,6 +81,7 @@
       "number": "005",
       "name": "火花",
       "stage": 1,
+      "family_base_id": "pet_000003",
       "egg_groups": [
         "魔力组",
         "巨灵组"
@@ -109,6 +111,7 @@
       "number": "001",
       "name": "迪莫",
       "stage": 1,
+      "family_base_id": "pet_000004",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -128,6 +131,7 @@
       "number": "010",
       "name": "水灵",
       "stage": 3,
+      "family_base_id": "pet_000002",
       "egg_groups": [
         "魔力组"
       ],
@@ -155,6 +159,7 @@
       "number": "007",
       "name": "火神",
       "stage": 3,
+      "family_base_id": "pet_000003",
       "egg_groups": [
         "魔力组",
         "巨灵组"
@@ -184,6 +189,7 @@
       "number": "004",
       "name": "魔力猫",
       "stage": 3,
+      "family_base_id": "pet_000001",
       "egg_groups": [
         "动物组",
         "拟人组"
@@ -213,6 +219,7 @@
       "number": "179",
       "name": "草头鸭",
       "stage": 1,
+      "family_base_id": "pet_000008",
       "egg_groups": [
         "两栖组",
         "天空组"
@@ -242,6 +249,7 @@
       "number": "030",
       "name": "恶魔叮",
       "stage": 1,
+      "family_base_id": "pet_000009",
       "egg_groups": [
         "妖精组"
       ],
@@ -269,6 +277,7 @@
       "number": "131",
       "name": "恶魔狼",
       "stage": 1,
+      "family_base_id": "pet_000010",
       "egg_groups": [
         "动物组"
       ],
@@ -296,6 +305,7 @@
       "number": "011",
       "name": "鸭吉吉（蓬松的样子）",
       "stage": 1,
+      "family_base_id": "pet_000011",
       "egg_groups": [
         "天空组"
       ],
@@ -323,6 +333,7 @@
       "number": "284",
       "name": "铠甲虫",
       "stage": 2,
+      "family_base_id": "pet_000035",
       "egg_groups": [
         "昆虫组",
         "天空组"
@@ -352,6 +363,7 @@
       "number": "105",
       "name": "阿米亚特",
       "stage": 1,
+      "family_base_id": "pet_000013",
       "egg_groups": [
         "大地组",
         "巨灵组"
@@ -381,6 +393,7 @@
       "number": "106",
       "name": "阿米樱",
       "stage": 2,
+      "family_base_id": "pet_000013",
       "egg_groups": [
         "大地组",
         "巨灵组"
@@ -410,6 +423,7 @@
       "number": "107",
       "name": "罗隐",
       "stage": 3,
+      "family_base_id": "pet_000013",
       "egg_groups": [
         "大地组",
         "巨灵组"
@@ -439,6 +453,7 @@
       "number": "063",
       "name": "蹦蹦种子（海神球形态）",
       "stage": 1,
+      "family_base_id": "pet_000016",
       "egg_groups": [
         "植物组"
       ],
@@ -466,6 +481,7 @@
       "number": "064",
       "name": "蹦蹦草（海神球形态）",
       "stage": 2,
+      "family_base_id": "pet_000016",
       "egg_groups": [
         "植物组"
       ],
@@ -493,6 +509,7 @@
       "number": "065",
       "name": "蹦蹦花（海神球形态）",
       "stage": 3,
+      "family_base_id": "pet_000016",
       "egg_groups": [
         "植物组"
       ],
@@ -520,6 +537,7 @@
       "number": "277",
       "name": "地鼠（枯水期的样子）",
       "stage": 1,
+      "family_base_id": "pet_000019",
       "egg_groups": [
         "动物组"
       ],
@@ -547,6 +565,7 @@
       "number": "278",
       "name": "遁鼠（枯水期的样子）",
       "stage": 2,
+      "family_base_id": "pet_000019",
       "egg_groups": [
         "动物组"
       ],
@@ -574,6 +593,7 @@
       "number": "279",
       "name": "遁地鼠（枯水期的样子）",
       "stage": 3,
+      "family_base_id": "pet_000019",
       "egg_groups": [
         "动物组"
       ],
@@ -601,6 +621,7 @@
       "number": "003",
       "name": "喵呜",
       "stage": 2,
+      "family_base_id": "pet_000001",
       "egg_groups": [
         "动物组",
         "拟人组"
@@ -630,6 +651,7 @@
       "number": "093",
       "name": "绿草精灵",
       "stage": 1,
+      "family_base_id": "pet_000023",
       "egg_groups": [
         "妖精组",
         "拟人组"
@@ -659,6 +681,7 @@
       "number": "070",
       "name": "蒲公英娃娃",
       "stage": 2,
+      "family_base_id": "pet_000031",
       "egg_groups": [
         "植物组",
         "天空组"
@@ -688,6 +711,7 @@
       "number": "019",
       "name": "冬羽雀",
       "stage": 2,
+      "family_base_id": "pet_000420",
       "egg_groups": [
         "天空组"
       ],
@@ -715,6 +739,7 @@
       "number": "041",
       "name": "奇丽草",
       "stage": 1,
+      "family_base_id": "pet_000026",
       "egg_groups": [
         "植物组"
       ],
@@ -742,6 +767,7 @@
       "number": "042",
       "name": "奇丽叶",
       "stage": 2,
+      "family_base_id": "pet_000026",
       "egg_groups": [
         "植物组"
       ],
@@ -769,6 +795,7 @@
       "number": "043",
       "name": "奇丽花",
       "stage": 3,
+      "family_base_id": "pet_000026",
       "egg_groups": [
         "植物组"
       ],
@@ -796,6 +823,7 @@
       "number": "006",
       "name": "焰火",
       "stage": 2,
+      "family_base_id": "pet_000003",
       "egg_groups": [
         "魔力组",
         "巨灵组"
@@ -825,6 +853,7 @@
       "number": "009",
       "name": "波波拉",
       "stage": 2,
+      "family_base_id": "pet_000002",
       "egg_groups": [
         "魔力组"
       ],
@@ -852,6 +881,7 @@
       "number": "069",
       "name": "蒲公英",
       "stage": 1,
+      "family_base_id": "pet_000031",
       "egg_groups": [
         "植物组",
         "天空组"
@@ -881,6 +911,7 @@
       "number": "094",
       "name": "魔草巫灵",
       "stage": 2,
+      "family_base_id": "pet_000023",
       "egg_groups": [
         "妖精组",
         "拟人组"
@@ -910,6 +941,7 @@
       "number": "011",
       "name": "鸭吉吉（紧实的样子）",
       "stage": 1,
+      "family_base_id": "pet_000033",
       "egg_groups": [
         "天空组"
       ],
@@ -937,6 +969,7 @@
       "number": "020",
       "name": "岚鸟",
       "stage": 3,
+      "family_base_id": "pet_000420",
       "egg_groups": [
         "天空组"
       ],
@@ -964,6 +997,7 @@
       "number": "283",
       "name": "小甲虫",
       "stage": 1,
+      "family_base_id": "pet_000035",
       "egg_groups": [
         "昆虫组",
         "天空组"
@@ -993,6 +1027,7 @@
       "number": "031",
       "name": "叮叮恶魔",
       "stage": 2,
+      "family_base_id": "pet_000009",
       "egg_groups": [
         "妖精组"
       ],
@@ -1020,6 +1055,7 @@
       "number": "044",
       "name": "丢丢（草地附近的样子）",
       "stage": 1,
+      "family_base_id": "pet_000037",
       "egg_groups": [
         "两栖组"
       ],
@@ -1047,6 +1083,7 @@
       "number": "045",
       "name": "卡卡虫（草地附近的样子）",
       "stage": 2,
+      "family_base_id": "pet_000037",
       "egg_groups": [
         "两栖组"
       ],
@@ -1074,6 +1111,7 @@
       "number": "046",
       "name": "卡瓦重（草地附近的样子）",
       "stage": 3,
+      "family_base_id": "pet_000037",
       "egg_groups": [
         "两栖组"
       ],
@@ -1101,6 +1139,7 @@
       "number": "071",
       "name": "伊贝儿",
       "stage": 1,
+      "family_base_id": "pet_000040",
       "egg_groups": [
         "植物组",
         "软体组"
@@ -1130,6 +1169,7 @@
       "number": "072",
       "name": "伊贝粉粉",
       "stage": 2,
+      "family_base_id": "pet_000040",
       "egg_groups": [
         "植物组",
         "软体组"
@@ -1159,6 +1199,7 @@
       "number": "015",
       "name": "锥尾羊",
       "stage": 1,
+      "family_base_id": "pet_000042",
       "egg_groups": [
         "动物组"
       ],
@@ -1186,6 +1227,7 @@
       "number": "016",
       "name": "铃兰羊",
       "stage": 2,
+      "family_base_id": "pet_000042",
       "egg_groups": [
         "动物组"
       ],
@@ -1213,6 +1255,7 @@
       "number": "017",
       "name": "花影羚羊",
       "stage": 3,
+      "family_base_id": "pet_000042",
       "egg_groups": [
         "动物组"
       ],
@@ -1240,6 +1283,7 @@
       "number": "073",
       "name": "白发懒人",
       "stage": 1,
+      "family_base_id": "pet_000045",
       "egg_groups": [
         "拟人组",
         "巨灵组"
@@ -1269,6 +1313,7 @@
       "number": "095",
       "name": "记忆石",
       "stage": 1,
+      "family_base_id": "pet_000046",
       "egg_groups": [
         "大地组"
       ],
@@ -1296,6 +1341,7 @@
       "number": "012",
       "name": "板板壳",
       "stage": 1,
+      "family_base_id": "pet_000047",
       "egg_groups": [
         "两栖组"
       ],
@@ -1323,6 +1369,7 @@
       "number": "013",
       "name": "咔咔壳",
       "stage": 2,
+      "family_base_id": "pet_000047",
       "egg_groups": [
         "两栖组"
       ],
@@ -1350,6 +1397,7 @@
       "number": "014",
       "name": "水泡壳",
       "stage": 3,
+      "family_base_id": "pet_000047",
       "egg_groups": [
         "两栖组"
       ],
@@ -1377,6 +1425,7 @@
       "number": "082",
       "name": "一窝蜂",
       "stage": 1,
+      "family_base_id": "pet_000050",
       "egg_groups": [
         "昆虫组",
         "天空组"
@@ -1406,6 +1455,7 @@
       "number": "083",
       "name": "黄蜂后",
       "stage": 2,
+      "family_base_id": "pet_000050",
       "egg_groups": [
         "昆虫组",
         "天空组"
@@ -1435,6 +1485,7 @@
       "number": "054",
       "name": "小灵面",
       "stage": 1,
+      "family_base_id": "pet_000052",
       "egg_groups": [
         "魔力组"
       ],
@@ -1462,6 +1513,7 @@
       "number": "055",
       "name": "暗影灵面（睁眼的样子）",
       "stage": 2,
+      "family_base_id": "pet_000053",
       "egg_groups": [
         "魔力组"
       ],
@@ -1489,6 +1541,7 @@
       "number": "116",
       "name": "小独角兽",
       "stage": 1,
+      "family_base_id": "pet_000054",
       "egg_groups": [
         "动物组",
         "巨灵组"
@@ -1518,6 +1571,7 @@
       "number": "117",
       "name": "白金独角兽",
       "stage": 2,
+      "family_base_id": "pet_000054",
       "egg_groups": [
         "动物组",
         "巨灵组"
@@ -1547,6 +1601,7 @@
       "number": "035",
       "name": "幽影树",
       "stage": 1,
+      "family_base_id": "pet_000056",
       "egg_groups": [
         "植物组",
         "妖精组"
@@ -1576,6 +1631,7 @@
       "number": "123",
       "name": "忽幽狸",
       "stage": 1,
+      "family_base_id": "pet_000057",
       "egg_groups": [
         "动物组",
         "拟人组"
@@ -1605,6 +1661,7 @@
       "number": "124",
       "name": "影狸",
       "stage": 2,
+      "family_base_id": "pet_000057",
       "egg_groups": [
         "动物组",
         "拟人组"
@@ -1634,6 +1691,7 @@
       "number": "180",
       "name": "卷毛鸭",
       "stage": 2,
+      "family_base_id": "pet_000008",
       "egg_groups": [
         "两栖组",
         "天空组"
@@ -1663,6 +1721,7 @@
       "number": "092",
       "name": "锤头鹳",
       "stage": 1,
+      "family_base_id": "pet_000060",
       "egg_groups": [
         "天空组",
         "两栖组"
@@ -1692,6 +1751,7 @@
       "number": "047",
       "name": "护主犬",
       "stage": 1,
+      "family_base_id": "pet_000061",
       "egg_groups": [
         "动物组"
       ],
@@ -1719,6 +1779,7 @@
       "number": "048",
       "name": "音速犬",
       "stage": 2,
+      "family_base_id": "pet_000061",
       "egg_groups": [
         "动物组"
       ],
@@ -1746,6 +1807,7 @@
       "number": "274",
       "name": "格兰种子",
       "stage": 1,
+      "family_base_id": "pet_000063",
       "egg_groups": [
         "植物组",
         "妖精组"
@@ -1775,6 +1837,7 @@
       "number": "275",
       "name": "格兰花",
       "stage": 2,
+      "family_base_id": "pet_000063",
       "egg_groups": [
         "植物组",
         "妖精组"
@@ -1804,6 +1867,7 @@
       "number": "276",
       "name": "格兰球",
       "stage": 3,
+      "family_base_id": "pet_000063",
       "egg_groups": [
         "植物组",
         "妖精组"
@@ -1833,6 +1897,7 @@
       "number": "147",
       "name": "灵狐",
       "stage": 1,
+      "family_base_id": "pet_000066",
       "egg_groups": [
         "动物组"
       ],
@@ -1860,6 +1925,7 @@
       "number": "148",
       "name": "九尾狐",
       "stage": 2,
+      "family_base_id": "pet_000066",
       "egg_groups": [
         "动物组"
       ],
@@ -1887,6 +1953,7 @@
       "number": "149",
       "name": "尖嘴狐仙",
       "stage": 3,
+      "family_base_id": "pet_000066",
       "egg_groups": [
         "动物组"
       ],
@@ -1914,6 +1981,7 @@
       "number": "376",
       "name": "烈钻鸟",
       "stage": 1,
+      "family_base_id": "pet_000069",
       "egg_groups": [
         "天空组",
         "动物组"
@@ -1943,6 +2011,7 @@
       "number": "377",
       "name": "长尾火鸟",
       "stage": 2,
+      "family_base_id": "pet_000069",
       "egg_groups": [
         "天空组",
         "动物组"
@@ -1972,6 +2041,7 @@
       "number": "378",
       "name": "火羽",
       "stage": 3,
+      "family_base_id": "pet_000069",
       "egg_groups": [
         "天空组",
         "动物组"
@@ -2001,6 +2071,7 @@
       "number": "255",
       "name": "治愈兔",
       "stage": 1,
+      "family_base_id": "pet_000072",
       "egg_groups": [
         "动物组",
         "妖精组"
@@ -2030,6 +2101,7 @@
       "number": "256",
       "name": "红丝绒",
       "stage": 2,
+      "family_base_id": "pet_000072",
       "egg_groups": [
         "动物组",
         "妖精组"
@@ -2059,6 +2131,7 @@
       "number": "249",
       "name": "可爱猿",
       "stage": 1,
+      "family_base_id": "pet_000074",
       "egg_groups": [
         "巨灵组",
         "拟人组"
@@ -2088,6 +2161,7 @@
       "number": "250",
       "name": "炽热猿",
       "stage": 2,
+      "family_base_id": "pet_000074",
       "egg_groups": [
         "巨灵组",
         "拟人组"
@@ -2117,6 +2191,7 @@
       "number": "251",
       "name": "火焰猿",
       "stage": 3,
+      "family_base_id": "pet_000074",
       "egg_groups": [
         "巨灵组",
         "拟人组"
@@ -2146,6 +2221,7 @@
       "number": "266",
       "name": "可立鸡",
       "stage": 1,
+      "family_base_id": "pet_000077",
       "egg_groups": [
         "天空组",
         "拟人组"
@@ -2175,6 +2251,7 @@
       "number": "267",
       "name": "晕晕鸡",
       "stage": 2,
+      "family_base_id": "pet_000077",
       "egg_groups": [
         "天空组",
         "拟人组"
@@ -2204,6 +2281,7 @@
       "number": "268",
       "name": "绅士鸡",
       "stage": 3,
+      "family_base_id": "pet_000079",
       "egg_groups": [
         "天空组",
         "拟人组"
@@ -2233,6 +2311,7 @@
       "number": "269",
       "name": "武者鸡",
       "stage": 3,
+      "family_base_id": "pet_000080",
       "egg_groups": [
         "天空组",
         "拟人组"
@@ -2262,6 +2341,7 @@
       "number": "216",
       "name": "火尾瓦特",
       "stage": 1,
+      "family_base_id": "pet_000081",
       "egg_groups": [
         "巨灵组"
       ],
@@ -2289,6 +2369,7 @@
       "number": "217",
       "name": "火尾战士",
       "stage": 2,
+      "family_base_id": "pet_000081",
       "egg_groups": [
         "巨灵组"
       ],
@@ -2316,6 +2397,7 @@
       "number": "218",
       "name": "烈火守护",
       "stage": 3,
+      "family_base_id": "pet_000081",
       "egg_groups": [
         "巨灵组"
       ],
@@ -2343,6 +2425,7 @@
       "number": "195",
       "name": "呆小路",
       "stage": 1,
+      "family_base_id": "pet_000084",
       "egg_groups": [
         "动物组",
         "拟人组"
@@ -2372,6 +2455,7 @@
       "number": "196",
       "name": "舞动路路",
       "stage": 2,
+      "family_base_id": "pet_000084",
       "egg_groups": [
         "动物组",
         "拟人组"
@@ -2401,6 +2485,7 @@
       "number": "197",
       "name": "白发路路",
       "stage": 3,
+      "family_base_id": "pet_000084",
       "egg_groups": [
         "动物组",
         "拟人组"
@@ -2430,6 +2515,7 @@
       "number": "049",
       "name": "绿耳松鼠",
       "stage": 1,
+      "family_base_id": "pet_000087",
       "egg_groups": [
         "动物组"
       ],
@@ -2457,6 +2543,7 @@
       "number": "050",
       "name": "抱枕松鼠",
       "stage": 2,
+      "family_base_id": "pet_000087",
       "egg_groups": [
         "动物组"
       ],
@@ -2484,6 +2571,7 @@
       "number": "051",
       "name": "蹦床松鼠",
       "stage": 3,
+      "family_base_id": "pet_000087",
       "egg_groups": [
         "动物组"
       ],
@@ -2511,6 +2599,7 @@
       "number": "074",
       "name": "动力猿",
       "stage": 2,
+      "family_base_id": "pet_000045",
       "egg_groups": [
         "拟人组",
         "巨灵组"
@@ -2540,6 +2629,7 @@
       "number": "075",
       "name": "瞌睡王",
       "stage": 3,
+      "family_base_id": "pet_000045",
       "egg_groups": [
         "拟人组",
         "巨灵组"
@@ -2569,6 +2659,7 @@
       "number": "027",
       "name": "布是石",
       "stage": 1,
+      "family_base_id": "pet_000092",
       "egg_groups": [
         "大地组",
         "巨灵组"
@@ -2598,6 +2689,7 @@
       "number": "028",
       "name": "布是岩",
       "stage": 2,
+      "family_base_id": "pet_000092",
       "egg_groups": [
         "大地组",
         "巨灵组"
@@ -2627,6 +2719,7 @@
       "number": "029",
       "name": "布克棱岩",
       "stage": 3,
+      "family_base_id": "pet_000092",
       "egg_groups": [
         "大地组",
         "巨灵组"
@@ -2656,6 +2749,7 @@
       "number": "024",
       "name": "石肤蜥",
       "stage": 1,
+      "family_base_id": "pet_000095",
       "egg_groups": [
         "两栖组",
         "大地组"
@@ -2685,6 +2779,7 @@
       "number": "025",
       "name": "石刺蜥",
       "stage": 2,
+      "family_base_id": "pet_000095",
       "egg_groups": [
         "两栖组",
         "大地组"
@@ -2714,6 +2809,7 @@
       "number": "026",
       "name": "石冠王蜥",
       "stage": 3,
+      "family_base_id": "pet_000095",
       "egg_groups": [
         "两栖组",
         "大地组"
@@ -2743,6 +2839,7 @@
       "number": "113",
       "name": "仪使者",
       "stage": 1,
+      "family_base_id": "pet_000098",
       "egg_groups": [
         "妖精组",
         "大地组"
@@ -2772,6 +2869,7 @@
       "number": "114",
       "name": "仪式之星",
       "stage": 2,
+      "family_base_id": "pet_000098",
       "egg_groups": [
         "妖精组",
         "大地组"
@@ -2801,6 +2899,7 @@
       "number": "115",
       "name": "仪式巨像",
       "stage": 3,
+      "family_base_id": "pet_000098",
       "egg_groups": [
         "妖精组",
         "大地组"
@@ -2830,6 +2929,7 @@
       "number": "185",
       "name": "甜田螺",
       "stage": 1,
+      "family_base_id": "pet_000101",
       "egg_groups": [
         "妖精组",
         "软体组"
@@ -2859,6 +2959,7 @@
       "number": "186",
       "name": "壳乙螺",
       "stage": 2,
+      "family_base_id": "pet_000101",
       "egg_groups": [
         "妖精组",
         "软体组"
@@ -2888,6 +2989,7 @@
       "number": "187",
       "name": "卡洛儿",
       "stage": 3,
+      "family_base_id": "pet_000101",
       "egg_groups": [
         "妖精组",
         "软体组"
@@ -2917,6 +3019,7 @@
       "number": "108",
       "name": "风铃鲨",
       "stage": 1,
+      "family_base_id": "pet_000104",
       "egg_groups": [
         "海洋组",
         "天空组"
@@ -2946,6 +3049,7 @@
       "number": "109",
       "name": "蓝蝶鲨",
       "stage": 2,
+      "family_base_id": "pet_000104",
       "egg_groups": [
         "海洋组",
         "天空组"
@@ -2975,6 +3079,7 @@
       "number": "110",
       "name": "彩蝶鲨",
       "stage": 3,
+      "family_base_id": "pet_000104",
       "egg_groups": [
         "海洋组",
         "天空组"
@@ -3004,6 +3109,7 @@
       "number": "313",
       "name": "果冻",
       "stage": 1,
+      "family_base_id": "pet_000107",
       "egg_groups": [
         "海洋组",
         "魔力组"
@@ -3033,6 +3139,7 @@
       "number": "244",
       "name": "翡翠水母",
       "stage": 1,
+      "family_base_id": "pet_000108",
       "egg_groups": [
         "海洋组",
         "软体组"
@@ -3062,6 +3169,7 @@
       "number": "245",
       "name": "琉璃水母",
       "stage": 2,
+      "family_base_id": "pet_000108",
       "egg_groups": [
         "海洋组",
         "软体组"
@@ -3091,6 +3199,7 @@
       "number": "142",
       "name": "大耳帽兜",
       "stage": 1,
+      "family_base_id": "pet_000110",
       "egg_groups": [
         "妖精组",
         "拟人组"
@@ -3120,6 +3229,7 @@
       "number": "143",
       "name": "帽兜娃娃",
       "stage": 2,
+      "family_base_id": "pet_000110",
       "egg_groups": [
         "妖精组",
         "拟人组"
@@ -3149,6 +3259,7 @@
       "number": "144",
       "name": "雪影娃娃",
       "stage": 3,
+      "family_base_id": "pet_000110",
       "egg_groups": [
         "妖精组",
         "拟人组"
@@ -3178,6 +3289,7 @@
       "number": "234",
       "name": "脆筒甜甜",
       "stage": 1,
+      "family_base_id": "pet_000113",
       "egg_groups": [
         "软体组",
         "魔力组"
@@ -3207,6 +3319,7 @@
       "number": "235",
       "name": "香草甜甜（樱桃饰品）",
       "stage": 2,
+      "family_base_id": "pet_000114",
       "egg_groups": [
         "软体组",
         "魔力组"
@@ -3236,6 +3349,7 @@
       "number": "236",
       "name": "圣代甜甜（樱桃巧克力口味）",
       "stage": 3,
+      "family_base_id": "pet_000115",
       "egg_groups": [
         "软体组",
         "魔力组"
@@ -3265,6 +3379,7 @@
       "number": "165",
       "name": "小狮鹫（崖间地的样子）",
       "stage": 1,
+      "family_base_id": "pet_000116",
       "egg_groups": [
         "动物组",
         "天空组"
@@ -3294,6 +3409,7 @@
       "number": "166",
       "name": "神圣狮鹫（崖间地的样子）",
       "stage": 2,
+      "family_base_id": "pet_000116",
       "egg_groups": [
         "动物组",
         "天空组"
@@ -3323,6 +3439,7 @@
       "number": "167",
       "name": "皇家狮鹫（崖间地的样子）",
       "stage": 3,
+      "family_base_id": "pet_000116",
       "egg_groups": [
         "动物组",
         "天空组"
@@ -3352,6 +3469,7 @@
       "number": "168",
       "name": "圆眼蜘蛛",
       "stage": 1,
+      "family_base_id": "pet_000119",
       "egg_groups": [
         "昆虫组"
       ],
@@ -3379,6 +3497,7 @@
       "number": "169",
       "name": "尖角蜘蛛",
       "stage": 2,
+      "family_base_id": "pet_000119",
       "egg_groups": [
         "昆虫组"
       ],
@@ -3406,6 +3525,7 @@
       "number": "170",
       "name": "芋香巨角蛛",
       "stage": 3,
+      "family_base_id": "pet_000119",
       "egg_groups": [
         "昆虫组"
       ],
@@ -3433,6 +3553,7 @@
       "number": "032",
       "name": "毛毛",
       "stage": 1,
+      "family_base_id": "pet_000122",
       "egg_groups": [
         "昆虫组",
         "软体组"
@@ -3462,6 +3583,7 @@
       "number": "033",
       "name": "爬爬",
       "stage": 2,
+      "family_base_id": "pet_000122",
       "egg_groups": [
         "昆虫组",
         "软体组"
@@ -3491,6 +3613,7 @@
       "number": "034",
       "name": "化蝶（平常的样子）",
       "stage": 3,
+      "family_base_id": "pet_000124",
       "egg_groups": [
         "昆虫组",
         "软体组"
@@ -3520,6 +3643,7 @@
       "number": "099",
       "name": "小草虫",
       "stage": 1,
+      "family_base_id": "pet_000125",
       "egg_groups": [
         "昆虫组",
         "拟人组"
@@ -3549,6 +3673,7 @@
       "number": "100",
       "name": "草衣虫",
       "stage": 2,
+      "family_base_id": "pet_000125",
       "egg_groups": [
         "昆虫组",
         "拟人组"
@@ -3578,6 +3703,7 @@
       "number": "101",
       "name": "花衣蝶",
       "stage": 3,
+      "family_base_id": "pet_000125",
       "egg_groups": [
         "昆虫组",
         "拟人组"
@@ -3607,6 +3733,7 @@
       "number": "085",
       "name": "小夜",
       "stage": 1,
+      "family_base_id": "pet_000128",
       "egg_groups": [
         "拟人组",
         "妖精组"
@@ -3636,6 +3763,7 @@
       "number": "086",
       "name": "紫夜",
       "stage": 2,
+      "family_base_id": "pet_000128",
       "egg_groups": [
         "拟人组",
         "妖精组"
@@ -3665,6 +3793,7 @@
       "number": "087",
       "name": "朔夜伊芙",
       "stage": 3,
+      "family_base_id": "pet_000128",
       "egg_groups": [
         "拟人组",
         "妖精组"
@@ -3694,6 +3823,7 @@
       "number": "021",
       "name": "小灵菇",
       "stage": 1,
+      "family_base_id": "pet_000131",
       "egg_groups": [
         "植物组",
         "魔力组"
@@ -3723,6 +3853,7 @@
       "number": "022",
       "name": "幻灵菇",
       "stage": 2,
+      "family_base_id": "pet_000131",
       "egg_groups": [
         "植物组",
         "魔力组"
@@ -3752,6 +3883,7 @@
       "number": "023",
       "name": "幻影灵菇",
       "stage": 3,
+      "family_base_id": "pet_000131",
       "egg_groups": [
         "植物组",
         "魔力组"
@@ -3781,6 +3913,7 @@
       "number": "327",
       "name": "空空颅",
       "stage": 1,
+      "family_base_id": "pet_000134",
       "egg_groups": [
         "魔力组",
         "巨灵组"
@@ -3810,6 +3943,7 @@
       "number": "328",
       "name": "夜宿颅",
       "stage": 2,
+      "family_base_id": "pet_000134",
       "egg_groups": [
         "魔力组",
         "巨灵组"
@@ -3839,6 +3973,7 @@
       "number": "329",
       "name": "夜枭",
       "stage": 3,
+      "family_base_id": "pet_000134",
       "egg_groups": [
         "魔力组",
         "巨灵组"
@@ -3868,6 +4003,7 @@
       "number": "125",
       "name": "多多",
       "stage": 1,
+      "family_base_id": "pet_000137",
       "egg_groups": [
         "拟人组"
       ],
@@ -3895,6 +4031,7 @@
       "number": "126",
       "name": "多啦多",
       "stage": 2,
+      "family_base_id": "pet_000137",
       "egg_groups": [
         "拟人组"
       ],
@@ -3922,6 +4059,7 @@
       "number": "127",
       "name": "古啦多",
       "stage": 3,
+      "family_base_id": "pet_000137",
       "egg_groups": [
         "拟人组"
       ],
@@ -3949,6 +4087,7 @@
       "number": "246",
       "name": "裘洛",
       "stage": 1,
+      "family_base_id": "pet_000140",
       "egg_groups": [
         "动物组",
         "妖精组"
@@ -3978,6 +4117,7 @@
       "number": "247",
       "name": "裘力",
       "stage": 2,
+      "family_base_id": "pet_000140",
       "egg_groups": [
         "动物组",
         "妖精组"
@@ -4007,6 +4147,7 @@
       "number": "248",
       "name": "裘卡",
       "stage": 3,
+      "family_base_id": "pet_000140",
       "egg_groups": [
         "动物组",
         "妖精组"
@@ -4036,6 +4177,7 @@
       "number": "084",
       "name": "花魁蜂后",
       "stage": 3,
+      "family_base_id": "pet_000050",
       "egg_groups": [
         "昆虫组",
         "天空组"
@@ -4065,6 +4207,7 @@
       "number": "342",
       "name": "春团",
       "stage": 1,
+      "family_base_id": "pet_000144",
       "egg_groups": [
         "动物组",
         "妖精组"
@@ -4094,6 +4237,7 @@
       "number": "343",
       "name": "春兔",
       "stage": 2,
+      "family_base_id": "pet_000144",
       "egg_groups": [
         "动物组",
         "妖精组"
@@ -4123,6 +4267,7 @@
       "number": "060",
       "name": "伏地兽",
       "stage": 1,
+      "family_base_id": "pet_000146",
       "egg_groups": [
         "动物组"
       ],
@@ -4150,6 +4295,7 @@
       "number": "061",
       "name": "贪食鼹",
       "stage": 2,
+      "family_base_id": "pet_000146",
       "egg_groups": [
         "动物组"
       ],
@@ -4177,6 +4323,7 @@
       "number": "062",
       "name": "巨噬针鼹",
       "stage": 3,
+      "family_base_id": "pet_000146",
       "egg_groups": [
         "动物组"
       ],
@@ -4204,6 +4351,7 @@
       "number": "111",
       "name": "石石",
       "stage": 1,
+      "family_base_id": "pet_000149",
       "egg_groups": [
         "大地组",
         "魔力组"
@@ -4233,6 +4381,7 @@
       "number": "112",
       "name": "巨灵石",
       "stage": 2,
+      "family_base_id": "pet_000149",
       "egg_groups": [
         "大地组",
         "魔力组"
@@ -4262,6 +4411,7 @@
       "number": "134",
       "name": "雪豆丁",
       "stage": 1,
+      "family_base_id": "pet_000151",
       "egg_groups": [
         "拟人组",
         "巨灵组"
@@ -4291,6 +4441,7 @@
       "number": "135",
       "name": "雪蛮人",
       "stage": 2,
+      "family_base_id": "pet_000151",
       "egg_groups": [
         "拟人组",
         "巨灵组"
@@ -4320,6 +4471,7 @@
       "number": "136",
       "name": "雪巨人",
       "stage": 3,
+      "family_base_id": "pet_000151",
       "egg_groups": [
         "拟人组",
         "巨灵组"
@@ -4349,6 +4501,7 @@
       "number": "096",
       "name": "咔咔羽毛",
       "stage": 1,
+      "family_base_id": "pet_000154",
       "egg_groups": [
         "天空组"
       ],
@@ -4376,6 +4529,7 @@
       "number": "097",
       "name": "咔咔雀",
       "stage": 2,
+      "family_base_id": "pet_000154",
       "egg_groups": [
         "天空组"
       ],
@@ -4403,6 +4557,7 @@
       "number": "098",
       "name": "咔咔鸟",
       "stage": 3,
+      "family_base_id": "pet_000154",
       "egg_groups": [
         "天空组"
       ],
@@ -4430,6 +4585,7 @@
       "number": "214",
       "name": "矮脚爬爬",
       "stage": 1,
+      "family_base_id": "pet_000157",
       "egg_groups": [
         "昆虫组",
         "巨灵组"
@@ -4459,6 +4615,7 @@
       "number": "215",
       "name": "恶魔红钻",
       "stage": 2,
+      "family_base_id": "pet_000157",
       "egg_groups": [
         "昆虫组",
         "巨灵组"
@@ -4488,6 +4645,7 @@
       "number": "293",
       "name": "小帕尔",
       "stage": 1,
+      "family_base_id": "pet_000159",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -4507,6 +4665,7 @@
       "number": "294",
       "name": "帕尔萨斯",
       "stage": 2,
+      "family_base_id": "pet_000159",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -4526,6 +4685,7 @@
       "number": "295",
       "name": "龙息帕尔",
       "stage": 3,
+      "family_base_id": "pet_000159",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -4545,6 +4705,7 @@
       "number": "400",
       "name": "瑰眼仔",
       "stage": 1,
+      "family_base_id": "pet_000162",
       "egg_groups": [
         "巨灵组",
         "昆虫组"
@@ -4574,6 +4735,7 @@
       "number": "401",
       "name": "耳翎瑰魅",
       "stage": 2,
+      "family_base_id": "pet_000162",
       "egg_groups": [
         "巨灵组",
         "昆虫组"
@@ -4603,6 +4765,7 @@
       "number": "402",
       "name": "邪眼巨魔",
       "stage": 3,
+      "family_base_id": "pet_000162",
       "egg_groups": [
         "巨灵组",
         "昆虫组"
@@ -4632,6 +4795,7 @@
       "number": "205",
       "name": "拉特",
       "stage": 1,
+      "family_base_id": "pet_000165",
       "egg_groups": [
         "妖精组"
       ],
@@ -4659,6 +4823,7 @@
       "number": "206",
       "name": "酷拉",
       "stage": 2,
+      "family_base_id": "pet_000165",
       "egg_groups": [
         "妖精组"
       ],
@@ -4686,6 +4851,7 @@
       "number": "066",
       "name": "电咩咩",
       "stage": 1,
+      "family_base_id": "pet_000167",
       "egg_groups": [
         "动物组"
       ],
@@ -4713,6 +4879,7 @@
       "number": "067",
       "name": "粉咩咩",
       "stage": 2,
+      "family_base_id": "pet_000167",
       "egg_groups": [
         "动物组"
       ],
@@ -4740,6 +4907,7 @@
       "number": "068",
       "name": "电球咩咩",
       "stage": 3,
+      "family_base_id": "pet_000167",
       "egg_groups": [
         "动物组"
       ],
@@ -4767,6 +4935,7 @@
       "number": "080",
       "name": "小星光（星光能量的样子）",
       "stage": 1,
+      "family_base_id": "pet_000170",
       "egg_groups": [
         "动物组"
       ],
@@ -4794,6 +4963,7 @@
       "number": "081",
       "name": "星光狮（星光能量的样子）",
       "stage": 2,
+      "family_base_id": "pet_000170",
       "egg_groups": [
         "动物组"
       ],
@@ -4821,6 +4991,7 @@
       "number": "207",
       "name": "闪电环",
       "stage": 1,
+      "family_base_id": "pet_000172",
       "egg_groups": [
         "魔力组"
       ],
@@ -4848,6 +5019,7 @@
       "number": "208",
       "name": "刺电环",
       "stage": 2,
+      "family_base_id": "pet_000172",
       "egg_groups": [
         "魔力组"
       ],
@@ -4875,6 +5047,7 @@
       "number": "209",
       "name": "荆棘电环",
       "stage": 3,
+      "family_base_id": "pet_000172",
       "egg_groups": [
         "魔力组"
       ],
@@ -4902,6 +5075,7 @@
       "number": "330",
       "name": "粉粉星",
       "stage": 1,
+      "family_base_id": "pet_000175",
       "egg_groups": [
         "妖精组",
         "软体组"
@@ -4931,6 +5105,7 @@
       "number": "331",
       "name": "小皮球",
       "stage": 2,
+      "family_base_id": "pet_000175",
       "egg_groups": [
         "妖精组",
         "软体组"
@@ -4960,6 +5135,7 @@
       "number": "263",
       "name": "机械方方",
       "stage": 1,
+      "family_base_id": "pet_000177",
       "egg_groups": [
         "机械组",
         "拟人组"
@@ -4989,6 +5165,7 @@
       "number": "264",
       "name": "多彩方方",
       "stage": 2,
+      "family_base_id": "pet_000177",
       "egg_groups": [
         "机械组",
         "拟人组"
@@ -5018,6 +5195,7 @@
       "number": "265",
       "name": "立方人",
       "stage": 3,
+      "family_base_id": "pet_000177",
       "egg_groups": [
         "机械组",
         "拟人组"
@@ -5047,6 +5225,7 @@
       "number": "332",
       "name": "贝瑟",
       "stage": 1,
+      "family_base_id": "pet_000180",
       "egg_groups": [
         "机械组"
       ],
@@ -5074,6 +5253,7 @@
       "number": "333",
       "name": "贝加尔",
       "stage": 2,
+      "family_base_id": "pet_000180",
       "egg_groups": [
         "机械组"
       ],
@@ -5101,6 +5281,7 @@
       "number": "334",
       "name": "贝古斯",
       "stage": 3,
+      "family_base_id": "pet_000180",
       "egg_groups": [
         "机械组"
       ],
@@ -5128,6 +5309,7 @@
       "number": "221",
       "name": "多西",
       "stage": 1,
+      "family_base_id": "pet_000183",
       "egg_groups": [
         "机械组",
         "巨灵组"
@@ -5157,6 +5339,7 @@
       "number": "222",
       "name": "库多西",
       "stage": 2,
+      "family_base_id": "pet_000183",
       "egg_groups": [
         "机械组",
         "巨灵组"
@@ -5186,6 +5369,7 @@
       "number": "223",
       "name": "波多西",
       "stage": 3,
+      "family_base_id": "pet_000183",
       "egg_groups": [
         "机械组",
         "巨灵组"
@@ -5215,6 +5399,7 @@
       "number": "224",
       "name": "小翼龙",
       "stage": 1,
+      "family_base_id": "pet_000186",
       "egg_groups": [
         "天空组",
         "飞龙组"
@@ -5244,6 +5429,7 @@
       "number": "225",
       "name": "翼龙",
       "stage": 2,
+      "family_base_id": "pet_000186",
       "egg_groups": [
         "天空组",
         "飞龙组"
@@ -5273,6 +5459,7 @@
       "number": "203",
       "name": "伊雷龙",
       "stage": 1,
+      "family_base_id": "pet_000188",
       "egg_groups": [
         "飞龙组"
       ],
@@ -5300,6 +5487,7 @@
       "number": "181",
       "name": "海豹战士",
       "stage": 1,
+      "family_base_id": "pet_000189",
       "egg_groups": [
         "动物组",
         "两栖组"
@@ -5329,6 +5517,7 @@
       "number": "182",
       "name": "海豹船长",
       "stage": 2,
+      "family_base_id": "pet_000189",
       "egg_groups": [
         "动物组",
         "两栖组"
@@ -5358,6 +5547,7 @@
       "number": "212",
       "name": "古钟蛇",
       "stage": 1,
+      "family_base_id": "pet_000191",
       "egg_groups": [
         "动物组",
         "两栖组"
@@ -5387,6 +5577,7 @@
       "number": "213",
       "name": "寒音蛇",
       "stage": 2,
+      "family_base_id": "pet_000191",
       "egg_groups": [
         "动物组",
         "两栖组"
@@ -5416,6 +5607,7 @@
       "number": "079",
       "name": "菊花梨",
       "stage": 1,
+      "family_base_id": "pet_000193",
       "egg_groups": [
         "植物组"
       ],
@@ -5443,6 +5635,7 @@
       "number": "396",
       "name": "友爱天天",
       "stage": 1,
+      "family_base_id": "pet_000194",
       "egg_groups": [
         "天空组",
         "妖精组"
@@ -5472,6 +5665,7 @@
       "number": "397",
       "name": "友爱星飞",
       "stage": 2,
+      "family_base_id": "pet_000194",
       "egg_groups": [
         "天空组",
         "妖精组"
@@ -5501,6 +5695,7 @@
       "number": "414",
       "name": "加灵",
       "stage": 1,
+      "family_base_id": "pet_000196",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -5520,6 +5715,7 @@
       "number": "415",
       "name": "加益",
       "stage": 2,
+      "family_base_id": "pet_000196",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -5539,6 +5735,7 @@
       "number": "416",
       "name": "加尔",
       "stage": 3,
+      "family_base_id": "pet_000198",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -5558,6 +5755,7 @@
       "number": "417",
       "name": "黑化加尔",
       "stage": 3,
+      "family_base_id": "pet_000199",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -5577,6 +5775,7 @@
       "number": "373",
       "name": "牵线木偶",
       "stage": 1,
+      "family_base_id": "pet_000200",
       "egg_groups": [
         "妖精组",
         "拟人组"
@@ -5606,6 +5805,7 @@
       "number": "374",
       "name": "帅帅魔偶",
       "stage": 2,
+      "family_base_id": "pet_000200",
       "egg_groups": [
         "妖精组",
         "拟人组"
@@ -5635,6 +5835,7 @@
       "number": "163",
       "name": "小怂猫",
       "stage": 1,
+      "family_base_id": "pet_000202",
       "egg_groups": [
         "动物组",
         "拟人组"
@@ -5664,6 +5865,7 @@
       "number": "164",
       "name": "怒目怂猫",
       "stage": 2,
+      "family_base_id": "pet_000202",
       "egg_groups": [
         "动物组",
         "拟人组"
@@ -5693,6 +5895,7 @@
       "number": "128",
       "name": "哭哭菇",
       "stage": 1,
+      "family_base_id": "pet_000204",
       "egg_groups": [
         "植物组"
       ],
@@ -5720,6 +5923,7 @@
       "number": "129",
       "name": "怖须菇",
       "stage": 2,
+      "family_base_id": "pet_000204",
       "egg_groups": [
         "植物组"
       ],
@@ -5747,6 +5951,7 @@
       "number": "130",
       "name": "怖哭菇",
       "stage": 3,
+      "family_base_id": "pet_000204",
       "egg_groups": [
         "植物组"
       ],
@@ -5774,6 +5979,7 @@
       "number": "307",
       "name": "绒绒",
       "stage": 1,
+      "family_base_id": "pet_000207",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -5793,6 +5999,7 @@
       "number": "308",
       "name": "小绒茧",
       "stage": 2,
+      "family_base_id": "pet_000207",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -5812,6 +6019,7 @@
       "number": "309",
       "name": "绒仙子",
       "stage": 3,
+      "family_base_id": "pet_000207",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -5831,6 +6039,7 @@
       "number": "231",
       "name": "小鹬",
       "stage": 1,
+      "family_base_id": "pet_000210",
       "egg_groups": [
         "天空组"
       ],
@@ -5858,6 +6067,7 @@
       "number": "232",
       "name": "鄙目鹬",
       "stage": 2,
+      "family_base_id": "pet_000210",
       "egg_groups": [
         "天空组"
       ],
@@ -5885,6 +6095,7 @@
       "number": "233",
       "name": "高脚鹬",
       "stage": 3,
+      "family_base_id": "pet_000210",
       "egg_groups": [
         "天空组"
       ],
@@ -5912,6 +6123,7 @@
       "number": "193",
       "name": "奔波鼠",
       "stage": 1,
+      "family_base_id": "pet_000213",
       "egg_groups": [
         "动物组",
         "拟人组"
@@ -5941,6 +6153,7 @@
       "number": "194",
       "name": "流浪鼠",
       "stage": 2,
+      "family_base_id": "pet_000213",
       "egg_groups": [
         "动物组",
         "拟人组"
@@ -5970,6 +6183,7 @@
       "number": "252",
       "name": "布鲁斯",
       "stage": 1,
+      "family_base_id": "pet_000215",
       "egg_groups": [
         "软体组",
         "海洋组"
@@ -5999,6 +6213,7 @@
       "number": "253",
       "name": "雪顶布鲁斯",
       "stage": 2,
+      "family_base_id": "pet_000215",
       "egg_groups": [
         "软体组",
         "海洋组"
@@ -6028,6 +6243,7 @@
       "number": "254",
       "name": "冰钻布鲁斯",
       "stage": 3,
+      "family_base_id": "pet_000215",
       "egg_groups": [
         "软体组",
         "海洋组"
@@ -6057,6 +6273,7 @@
       "number": "137",
       "name": "呼呼猪",
       "stage": 1,
+      "family_base_id": "pet_000218",
       "egg_groups": [
         "动物组"
       ],
@@ -6084,6 +6301,7 @@
       "number": "138",
       "name": "獠牙猪",
       "stage": 2,
+      "family_base_id": "pet_000218",
       "egg_groups": [
         "动物组"
       ],
@@ -6111,6 +6329,7 @@
       "number": "430",
       "name": "卡波",
       "stage": 1,
+      "family_base_id": "pet_000220",
       "egg_groups": [
         "妖精组"
       ],
@@ -6138,6 +6357,7 @@
       "number": "431",
       "name": "卡拉波斯",
       "stage": 2,
+      "family_base_id": "pet_000220",
       "egg_groups": [
         "妖精组"
       ],
@@ -6165,6 +6385,7 @@
       "number": "242",
       "name": "胆小鳗鱼",
       "stage": 1,
+      "family_base_id": "pet_000222",
       "egg_groups": [
         "海洋组"
       ],
@@ -6192,6 +6413,7 @@
       "number": "243",
       "name": "闪电鳗鱼",
       "stage": 2,
+      "family_base_id": "pet_000222",
       "egg_groups": [
         "海洋组"
       ],
@@ -6219,6 +6441,7 @@
       "number": "289",
       "name": "大头骨龙",
       "stage": 1,
+      "family_base_id": "pet_000224",
       "egg_groups": [
         "飞龙组",
         "巨灵组"
@@ -6248,6 +6471,7 @@
       "number": "290",
       "name": "寂灭骨龙",
       "stage": 2,
+      "family_base_id": "pet_000224",
       "egg_groups": [
         "飞龙组",
         "巨灵组"
@@ -6277,6 +6501,7 @@
       "number": "102",
       "name": "绿翼鸟",
       "stage": 1,
+      "family_base_id": "pet_000226",
       "egg_groups": [
         "天空组",
         "妖精组"
@@ -6306,6 +6531,7 @@
       "number": "103",
       "name": "魔翼鸟",
       "stage": 2,
+      "family_base_id": "pet_000226",
       "egg_groups": [
         "天空组",
         "妖精组"
@@ -6335,6 +6561,7 @@
       "number": "104",
       "name": "魔眷鸟",
       "stage": 3,
+      "family_base_id": "pet_000226",
       "egg_groups": [
         "天空组",
         "妖精组"
@@ -6364,6 +6591,7 @@
       "number": "018",
       "name": "雪绒鸟（春天的样子）",
       "stage": 1,
+      "family_base_id": "pet_000229",
       "egg_groups": [
         "天空组"
       ],
@@ -6391,6 +6619,7 @@
       "number": "018",
       "name": "雪绒鸟（夏天的样子）",
       "stage": 1,
+      "family_base_id": "pet_000230",
       "egg_groups": [
         "天空组"
       ],
@@ -6418,6 +6647,7 @@
       "number": "018",
       "name": "雪绒鸟（秋天的样子）",
       "stage": 1,
+      "family_base_id": "pet_000231",
       "egg_groups": [
         "天空组"
       ],
@@ -6445,6 +6675,7 @@
       "number": "019",
       "name": "冬羽雀（春天的样子）",
       "stage": 2,
+      "family_base_id": "pet_000229",
       "egg_groups": [
         "天空组"
       ],
@@ -6472,6 +6703,7 @@
       "number": "019",
       "name": "冬羽雀（夏天的样子）",
       "stage": 2,
+      "family_base_id": "pet_000230",
       "egg_groups": [
         "天空组"
       ],
@@ -6499,6 +6731,7 @@
       "number": "019",
       "name": "冬羽雀（秋天的样子）",
       "stage": 2,
+      "family_base_id": "pet_000231",
       "egg_groups": [
         "天空组"
       ],
@@ -6526,6 +6759,7 @@
       "number": "020",
       "name": "岚鸟（春天的样子）",
       "stage": 3,
+      "family_base_id": "pet_000229",
       "egg_groups": [
         "天空组"
       ],
@@ -6553,6 +6787,7 @@
       "number": "020",
       "name": "岚鸟（夏天的样子）",
       "stage": 3,
+      "family_base_id": "pet_000230",
       "egg_groups": [
         "天空组"
       ],
@@ -6580,6 +6815,7 @@
       "number": "020",
       "name": "岚鸟（秋天的样子）",
       "stage": 3,
+      "family_base_id": "pet_000231",
       "egg_groups": [
         "天空组"
       ],
@@ -6607,6 +6843,7 @@
       "number": "044",
       "name": "丢丢（火山附近的样子）",
       "stage": 1,
+      "family_base_id": "pet_000238",
       "egg_groups": [
         "两栖组"
       ],
@@ -6634,6 +6871,7 @@
       "number": "044",
       "name": "丢丢（沙地附近的样子）",
       "stage": 1,
+      "family_base_id": "pet_000239",
       "egg_groups": [
         "两栖组"
       ],
@@ -6661,6 +6899,7 @@
       "number": "044",
       "name": "丢丢（雪山附近的样子）",
       "stage": 1,
+      "family_base_id": "pet_000240",
       "egg_groups": [
         "两栖组"
       ],
@@ -6688,6 +6927,7 @@
       "number": "045",
       "name": "卡卡虫（火山附近的样子）",
       "stage": 2,
+      "family_base_id": "pet_000238",
       "egg_groups": [
         "两栖组"
       ],
@@ -6715,6 +6955,7 @@
       "number": "045",
       "name": "卡卡虫（沙地附近的样子）",
       "stage": 2,
+      "family_base_id": "pet_000239",
       "egg_groups": [
         "两栖组"
       ],
@@ -6742,6 +6983,7 @@
       "number": "045",
       "name": "卡卡虫（雪山附近的样子）",
       "stage": 2,
+      "family_base_id": "pet_000240",
       "egg_groups": [
         "两栖组"
       ],
@@ -6769,6 +7011,7 @@
       "number": "046",
       "name": "卡瓦重（火山附近的样子）",
       "stage": 3,
+      "family_base_id": "pet_000238",
       "egg_groups": [
         "两栖组"
       ],
@@ -6796,6 +7039,7 @@
       "number": "046",
       "name": "卡瓦重（沙地附近的样子）",
       "stage": 3,
+      "family_base_id": "pet_000239",
       "egg_groups": [
         "两栖组"
       ],
@@ -6823,6 +7067,7 @@
       "number": "046",
       "name": "卡瓦重（雪山附近的样子）",
       "stage": 3,
+      "family_base_id": "pet_000240",
       "egg_groups": [
         "两栖组"
       ],
@@ -6850,6 +7095,7 @@
       "number": "063",
       "name": "蹦蹦种子（彩玉球形态）",
       "stage": 1,
+      "family_base_id": "pet_000247",
       "egg_groups": [
         "植物组"
       ],
@@ -6877,6 +7123,7 @@
       "number": "063",
       "name": "蹦蹦种子（短毛球形态）",
       "stage": 1,
+      "family_base_id": "pet_000248",
       "egg_groups": [
         "植物组"
       ],
@@ -6904,6 +7151,7 @@
       "number": "063",
       "name": "蹦蹦种子（象牙球形态）",
       "stage": 1,
+      "family_base_id": "pet_000249",
       "egg_groups": [
         "植物组"
       ],
@@ -6931,6 +7179,7 @@
       "number": "064",
       "name": "蹦蹦草（彩玉球形态）",
       "stage": 2,
+      "family_base_id": "pet_000247",
       "egg_groups": [
         "植物组"
       ],
@@ -6958,6 +7207,7 @@
       "number": "064",
       "name": "蹦蹦草（短毛球形态）",
       "stage": 2,
+      "family_base_id": "pet_000248",
       "egg_groups": [
         "植物组"
       ],
@@ -6985,6 +7235,7 @@
       "number": "064",
       "name": "蹦蹦草（象牙球形态）",
       "stage": 2,
+      "family_base_id": "pet_000249",
       "egg_groups": [
         "植物组"
       ],
@@ -7012,6 +7263,7 @@
       "number": "065",
       "name": "蹦蹦花（彩玉球形态）",
       "stage": 3,
+      "family_base_id": "pet_000247",
       "egg_groups": [
         "植物组"
       ],
@@ -7039,6 +7291,7 @@
       "number": "065",
       "name": "蹦蹦花（短毛球形态）",
       "stage": 3,
+      "family_base_id": "pet_000248",
       "egg_groups": [
         "植物组"
       ],
@@ -7066,6 +7319,7 @@
       "number": "065",
       "name": "蹦蹦花（象牙球形态）",
       "stage": 3,
+      "family_base_id": "pet_000249",
       "egg_groups": [
         "植物组"
       ],
@@ -7093,6 +7347,7 @@
       "number": "039",
       "name": "矿晶虫",
       "stage": 1,
+      "family_base_id": "pet_000256",
       "egg_groups": [
         "软体组",
         "大地组"
@@ -7122,6 +7377,7 @@
       "number": "040",
       "name": "晶石蜗（西瓜碧玺的样子）",
       "stage": 2,
+      "family_base_id": "pet_000257",
       "egg_groups": [
         "软体组",
         "大地组"
@@ -7151,6 +7407,7 @@
       "number": "310",
       "name": "犀角鸟",
       "stage": 1,
+      "family_base_id": "pet_000258",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -7170,6 +7427,7 @@
       "number": "311",
       "name": "光纤兽",
       "stage": 2,
+      "family_base_id": "pet_000258",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -7189,6 +7447,7 @@
       "number": "312",
       "name": "疾光千兽",
       "stage": 3,
+      "family_base_id": "pet_000258",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -7208,6 +7467,7 @@
       "number": "036",
       "name": "小鼠獭",
       "stage": 1,
+      "family_base_id": "pet_000261",
       "egg_groups": [
         "动物组",
         "两栖组"
@@ -7237,6 +7497,7 @@
       "number": "037",
       "name": "燕尾獭",
       "stage": 2,
+      "family_base_id": "pet_000261",
       "egg_groups": [
         "动物组",
         "两栖组"
@@ -7266,6 +7527,7 @@
       "number": "038",
       "name": "卷胡巨獭",
       "stage": 3,
+      "family_base_id": "pet_000261",
       "egg_groups": [
         "动物组",
         "两栖组"
@@ -7295,6 +7557,7 @@
       "number": "335",
       "name": "粉星仔",
       "stage": 1,
+      "family_base_id": "pet_000264",
       "egg_groups": [
         "妖精组",
         "天空组"
@@ -7324,6 +7587,7 @@
       "number": "336",
       "name": "粉耳星兔",
       "stage": 2,
+      "family_base_id": "pet_000265",
       "egg_groups": [
         "妖精组",
         "天空组"
@@ -7353,6 +7617,7 @@
       "number": "403",
       "name": "觅觅蝠",
       "stage": 1,
+      "family_base_id": "pet_000266",
       "egg_groups": [
         "巨灵组",
         "天空组"
@@ -7382,6 +7647,7 @@
       "number": "404",
       "name": "翻翻蝠",
       "stage": 2,
+      "family_base_id": "pet_000266",
       "egg_groups": [
         "巨灵组",
         "天空组"
@@ -7411,6 +7677,7 @@
       "number": "405",
       "name": "夜游魔",
       "stage": 3,
+      "family_base_id": "pet_000266",
       "egg_groups": [
         "巨灵组",
         "天空组"
@@ -7440,6 +7707,7 @@
       "number": "076",
       "name": "海盔虫",
       "stage": 1,
+      "family_base_id": "pet_000269",
       "egg_groups": [
         "海洋组",
         "巨灵组"
@@ -7469,6 +7737,7 @@
       "number": "077",
       "name": "刺盔虫",
       "stage": 2,
+      "family_base_id": "pet_000269",
       "egg_groups": [
         "海洋组",
         "巨灵组"
@@ -7498,6 +7767,7 @@
       "number": "078",
       "name": "千棘盔",
       "stage": 3,
+      "family_base_id": "pet_000269",
       "egg_groups": [
         "海洋组",
         "巨灵组"
@@ -7527,6 +7797,7 @@
       "number": "139",
       "name": "雪娃娃",
       "stage": 1,
+      "family_base_id": "pet_000272",
       "egg_groups": [
         "妖精组"
       ],
@@ -7554,6 +7825,7 @@
       "number": "140",
       "name": "冰封怨灵",
       "stage": 2,
+      "family_base_id": "pet_000272",
       "egg_groups": [
         "妖精组"
       ],
@@ -7581,6 +7853,7 @@
       "number": "141",
       "name": "雪灵",
       "stage": 3,
+      "family_base_id": "pet_000272",
       "egg_groups": [
         "妖精组"
       ],
@@ -7608,6 +7881,7 @@
       "number": "390",
       "name": "雪灵兽",
       "stage": 1,
+      "family_base_id": "pet_000275",
       "egg_groups": [
         "动物组"
       ],
@@ -7635,6 +7909,7 @@
       "number": "391",
       "name": "幻雪兽",
       "stage": 2,
+      "family_base_id": "pet_000275",
       "egg_groups": [
         "动物组"
       ],
@@ -7662,6 +7937,7 @@
       "number": "392",
       "name": "饮雪狂兽",
       "stage": 3,
+      "family_base_id": "pet_000275",
       "egg_groups": [
         "动物组"
       ],
@@ -7689,6 +7965,7 @@
       "number": "088",
       "name": "乖乖鹄",
       "stage": 1,
+      "family_base_id": "pet_000278",
       "egg_groups": [
         "天空组",
         "两栖组"
@@ -7718,6 +7995,7 @@
       "number": "089",
       "name": "蓝珠天鹅",
       "stage": 2,
+      "family_base_id": "pet_000278",
       "egg_groups": [
         "天空组",
         "两栖组"
@@ -7747,6 +8025,7 @@
       "number": "090",
       "name": "翠顶夫人",
       "stage": 3,
+      "family_base_id": "pet_000280",
       "egg_groups": [
         "天空组",
         "两栖组"
@@ -7776,6 +8055,7 @@
       "number": "406",
       "name": "芽眼魔",
       "stage": 1,
+      "family_base_id": "pet_000281",
       "egg_groups": [
         "巨灵组",
         "妖精组"
@@ -7805,6 +8085,7 @@
       "number": "407",
       "name": "叶眼魔",
       "stage": 2,
+      "family_base_id": "pet_000281",
       "egg_groups": [
         "巨灵组",
         "妖精组"
@@ -7834,6 +8115,7 @@
       "number": "408",
       "name": "障眼魔",
       "stage": 3,
+      "family_base_id": "pet_000281",
       "egg_groups": [
         "巨灵组",
         "妖精组"
@@ -7863,6 +8145,7 @@
       "number": "257",
       "name": "红绒十字",
       "stage": 3,
+      "family_base_id": "pet_000072",
       "egg_groups": [
         "动物组",
         "妖精组"
@@ -7892,6 +8175,7 @@
       "number": "387",
       "name": "霹雳宝宝",
       "stage": 1,
+      "family_base_id": "pet_000285",
       "egg_groups": [
         "巨灵组",
         "拟人组"
@@ -7921,6 +8205,7 @@
       "number": "388",
       "name": "雷鸣小子",
       "stage": 2,
+      "family_base_id": "pet_000285",
       "egg_groups": [
         "巨灵组",
         "拟人组"
@@ -7950,6 +8235,7 @@
       "number": "389",
       "name": "雷神之子",
       "stage": 3,
+      "family_base_id": "pet_000285",
       "egg_groups": [
         "巨灵组",
         "拟人组"
@@ -7979,6 +8265,7 @@
       "number": "226",
       "name": "电动长颈鹿",
       "stage": 1,
+      "family_base_id": "pet_000288",
       "egg_groups": [
         "动物组"
       ],
@@ -8006,6 +8293,7 @@
       "number": "227",
       "name": "奔乐鹿",
       "stage": 2,
+      "family_base_id": "pet_000288",
       "egg_groups": [
         "动物组"
       ],
@@ -8033,6 +8321,7 @@
       "number": "228",
       "name": "爵士鹿",
       "stage": 3,
+      "family_base_id": "pet_000288",
       "egg_groups": [
         "动物组"
       ],
@@ -8060,6 +8349,7 @@
       "number": "422",
       "name": "蝴蝶陶陶",
       "stage": 1,
+      "family_base_id": "pet_000291",
       "egg_groups": [
         "动物组",
         "拟人组"
@@ -8089,6 +8379,7 @@
       "number": "423",
       "name": "铆钉毛毛",
       "stage": 2,
+      "family_base_id": "pet_000291",
       "egg_groups": [
         "动物组",
         "拟人组"
@@ -8118,6 +8409,7 @@
       "number": "424",
       "name": "徘徊爪爪",
       "stage": 3,
+      "family_base_id": "pet_000291",
       "egg_groups": [
         "动物组",
         "拟人组"
@@ -8147,6 +8439,7 @@
       "number": "052",
       "name": "嘟嘟煲",
       "stage": 1,
+      "family_base_id": "pet_000294",
       "egg_groups": [
         "妖精组",
         "大地组"
@@ -8176,6 +8469,7 @@
       "number": "053",
       "name": "嘟嘟锅",
       "stage": 2,
+      "family_base_id": "pet_000294",
       "egg_groups": [
         "妖精组",
         "大地组"
@@ -8205,6 +8499,7 @@
       "number": "345",
       "name": "幽星光",
       "stage": 1,
+      "family_base_id": "pet_000296",
       "egg_groups": [
         "妖精组",
         "巨灵组"
@@ -8234,6 +8529,7 @@
       "number": "346",
       "name": "曜星光",
       "stage": 2,
+      "family_base_id": "pet_000296",
       "egg_groups": [
         "妖精组",
         "巨灵组"
@@ -8263,6 +8559,7 @@
       "number": "347",
       "name": "暮星辰",
       "stage": 3,
+      "family_base_id": "pet_000296",
       "egg_groups": [
         "妖精组",
         "巨灵组"
@@ -8292,6 +8589,7 @@
       "number": "344",
       "name": "春花兔",
       "stage": 3,
+      "family_base_id": "pet_000144",
       "egg_groups": [
         "动物组",
         "妖精组"
@@ -8321,6 +8619,7 @@
       "number": "198",
       "name": "逗逗",
       "stage": 1,
+      "family_base_id": "pet_000300",
       "egg_groups": [
         "动物组",
         "巨灵组"
@@ -8350,6 +8649,7 @@
       "number": "199",
       "name": "气球猫",
       "stage": 2,
+      "family_base_id": "pet_000300",
       "egg_groups": [
         "动物组",
         "巨灵组"
@@ -8379,6 +8679,7 @@
       "number": "200",
       "name": "梦想三三",
       "stage": 3,
+      "family_base_id": "pet_000300",
       "egg_groups": [
         "动物组",
         "巨灵组"
@@ -8408,6 +8709,7 @@
       "number": "118",
       "name": "旋叶虫（金黄的样子）",
       "stage": 1,
+      "family_base_id": "pet_000303",
       "egg_groups": [
         "昆虫组",
         "植物组"
@@ -8437,6 +8739,7 @@
       "number": "120",
       "name": "风滚暮虫（金黄的样子）",
       "stage": 3,
+      "family_base_id": "pet_000303",
       "egg_groups": [
         "昆虫组",
         "植物组"
@@ -8466,6 +8769,7 @@
       "number": "174",
       "name": "菇菇丁",
       "stage": 1,
+      "family_base_id": "pet_000305",
       "egg_groups": [
         "植物组"
       ],
@@ -8493,6 +8797,7 @@
       "number": "175",
       "name": "多菇丁",
       "stage": 2,
+      "family_base_id": "pet_000305",
       "egg_groups": [
         "植物组"
       ],
@@ -8520,6 +8825,7 @@
       "number": "176",
       "name": "九幽菇",
       "stage": 3,
+      "family_base_id": "pet_000305",
       "egg_groups": [
         "植物组"
       ],
@@ -8547,6 +8853,7 @@
       "number": "273",
       "name": "深蓝鲸",
       "stage": 1,
+      "family_base_id": "pet_000308",
       "egg_groups": [
         "海洋组",
         "巨灵组"
@@ -8576,6 +8883,7 @@
       "number": "320",
       "name": "双灯鱼",
       "stage": 1,
+      "family_base_id": "pet_000309",
       "egg_groups": [
         "海洋组"
       ],
@@ -8603,6 +8911,7 @@
       "number": "321",
       "name": "利灯鱼",
       "stage": 2,
+      "family_base_id": "pet_000309",
       "egg_groups": [
         "海洋组"
       ],
@@ -8630,6 +8939,7 @@
       "number": "239",
       "name": "豆丁鱼",
       "stage": 1,
+      "family_base_id": "pet_000311",
       "egg_groups": [
         "海洋组",
         "飞龙组"
@@ -8659,6 +8969,7 @@
       "number": "240",
       "name": "快鳍鱼",
       "stage": 2,
+      "family_base_id": "pet_000311",
       "egg_groups": [
         "海洋组",
         "飞龙组"
@@ -8688,6 +8999,7 @@
       "number": "241",
       "name": "龙鱼",
       "stage": 3,
+      "family_base_id": "pet_000311",
       "egg_groups": [
         "海洋组",
         "飞龙组"
@@ -8717,6 +9029,7 @@
       "number": "351",
       "name": "凡雀",
       "stage": 1,
+      "family_base_id": "pet_000314",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -8736,6 +9049,7 @@
       "number": "352",
       "name": "紫翎鹰",
       "stage": 2,
+      "family_base_id": "pet_000314",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -8755,6 +9069,7 @@
       "number": "353",
       "name": "凡鹰",
       "stage": 3,
+      "family_base_id": "pet_000314",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -8774,6 +9089,7 @@
       "number": "150",
       "name": "里奥",
       "stage": 1,
+      "family_base_id": "pet_000317",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -8793,6 +9109,7 @@
       "number": "151",
       "name": "灵羽勇士",
       "stage": 2,
+      "family_base_id": "pet_000317",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -8812,6 +9129,7 @@
       "number": "152",
       "name": "圣羽翼王",
       "stage": 3,
+      "family_base_id": "pet_000317",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -8831,6 +9149,7 @@
       "number": "317",
       "name": "星尘虫",
       "stage": 1,
+      "family_base_id": "pet_000320",
       "egg_groups": [
         "昆虫组"
       ],
@@ -8858,6 +9177,7 @@
       "number": "318",
       "name": "落星虫",
       "stage": 2,
+      "family_base_id": "pet_000320",
       "egg_groups": [
         "昆虫组"
       ],
@@ -8885,6 +9205,7 @@
       "number": "319",
       "name": "陨星虫",
       "stage": 3,
+      "family_base_id": "pet_000320",
       "egg_groups": [
         "昆虫组"
       ],
@@ -8912,6 +9233,7 @@
       "number": "381",
       "name": "碎晶蝎",
       "stage": 1,
+      "family_base_id": "pet_000323",
       "egg_groups": [
         "昆虫组",
         "大地组"
@@ -8941,6 +9263,7 @@
       "number": "382",
       "name": "晶尾蝎",
       "stage": 2,
+      "family_base_id": "pet_000323",
       "egg_groups": [
         "昆虫组",
         "大地组"
@@ -8970,6 +9293,7 @@
       "number": "383",
       "name": "蝎子王",
       "stage": 3,
+      "family_base_id": "pet_000323",
       "egg_groups": [
         "昆虫组",
         "大地组"
@@ -8999,6 +9323,7 @@
       "number": "056",
       "name": "幽冥眼（睁眼的样子）",
       "stage": 3,
+      "family_base_id": "pet_000326",
       "egg_groups": [
         "魔力组"
       ],
@@ -9026,6 +9351,7 @@
       "number": "229",
       "name": "缇塔",
       "stage": 1,
+      "family_base_id": "pet_000327",
       "egg_groups": [
         "机械组"
       ],
@@ -9053,6 +9379,7 @@
       "number": "230",
       "name": "声波缇塔",
       "stage": 2,
+      "family_base_id": "pet_000327",
       "egg_groups": [
         "机械组"
       ],
@@ -9080,6 +9407,7 @@
       "number": "145",
       "name": "权杖-Ⅱ",
       "stage": 1,
+      "family_base_id": "pet_000329",
       "egg_groups": [
         "机械组"
       ],
@@ -9107,6 +9435,7 @@
       "number": "146",
       "name": "权杖-V",
       "stage": 2,
+      "family_base_id": "pet_000329",
       "egg_groups": [
         "机械组"
       ],
@@ -9134,6 +9463,7 @@
       "number": "204",
       "name": "伊兰亚龙",
       "stage": 2,
+      "family_base_id": "pet_000188",
       "egg_groups": [
         "飞龙组"
       ],
@@ -9161,6 +9491,7 @@
       "number": "291",
       "name": "厉毒小萝",
       "stage": 1,
+      "family_base_id": "pet_000332",
       "egg_groups": [
         "拟人组",
         "天空组"
@@ -9190,6 +9521,7 @@
       "number": "292",
       "name": "厉毒修萝",
       "stage": 2,
+      "family_base_id": "pet_000332",
       "egg_groups": [
         "拟人组",
         "天空组"
@@ -9219,6 +9551,7 @@
       "number": "220",
       "name": "海枝枝（碧蓝珊瑚）",
       "stage": 1,
+      "family_base_id": "pet_000334",
       "egg_groups": [
         "海洋组",
         "植物组"
@@ -9248,6 +9581,7 @@
       "number": "220",
       "name": "海枝枝（杏黄百合）",
       "stage": 1,
+      "family_base_id": "pet_000335",
       "egg_groups": [
         "海洋组",
         "植物组"
@@ -9277,6 +9611,7 @@
       "number": "220",
       "name": "海枝枝（洋红沙丁）",
       "stage": 1,
+      "family_base_id": "pet_000336",
       "egg_groups": [
         "海洋组",
         "植物组"
@@ -9306,6 +9641,7 @@
       "number": "220",
       "name": "海枝枝（翠绿纶布）",
       "stage": 1,
+      "family_base_id": "pet_000337",
       "egg_groups": [
         "海洋组",
         "植物组"
@@ -9335,6 +9671,7 @@
       "number": "132",
       "name": "小电企鹅",
       "stage": 1,
+      "family_base_id": "pet_000338",
       "egg_groups": [
         "天空组"
       ],
@@ -9362,6 +9699,7 @@
       "number": "133",
       "name": "电企鹅",
       "stage": 2,
+      "family_base_id": "pet_000338",
       "egg_groups": [
         "天空组"
       ],
@@ -9389,6 +9727,7 @@
       "number": "325",
       "name": "柴渣虫",
       "stage": 1,
+      "family_base_id": "pet_000340",
       "egg_groups": [
         "昆虫组",
         "植物组"
@@ -9418,6 +9757,7 @@
       "number": "326",
       "name": "燃薪虫",
       "stage": 2,
+      "family_base_id": "pet_000340",
       "egg_groups": [
         "昆虫组",
         "植物组"
@@ -9447,6 +9787,7 @@
       "number": "057",
       "name": "梦游（穿旧睡衣的样子）",
       "stage": 1,
+      "family_base_id": "pet_000342",
       "egg_groups": [
         "魔力组",
         "妖精组"
@@ -9476,6 +9817,7 @@
       "number": "058",
       "name": "梦悠悠（穿旧睡衣的样子）",
       "stage": 2,
+      "family_base_id": "pet_000342",
       "egg_groups": [
         "魔力组",
         "妖精组"
@@ -9505,6 +9847,7 @@
       "number": "057",
       "name": "梦游（穿星星睡衣的样子）",
       "stage": 1,
+      "family_base_id": "pet_000344",
       "egg_groups": [
         "妖精组",
         "魔力组"
@@ -9534,6 +9877,7 @@
       "number": "058",
       "name": "梦悠悠（穿星星睡衣的样子）",
       "stage": 2,
+      "family_base_id": "pet_000344",
       "egg_groups": [
         "妖精组",
         "魔力组"
@@ -9563,6 +9907,7 @@
       "number": "080",
       "name": "小星光（月光能量的样子）",
       "stage": 1,
+      "family_base_id": "pet_000346",
       "egg_groups": [
         "动物组"
       ],
@@ -9590,6 +9935,7 @@
       "number": "081",
       "name": "星光狮（月光能量的样子）",
       "stage": 2,
+      "family_base_id": "pet_000346",
       "egg_groups": [
         "动物组"
       ],
@@ -9617,6 +9963,7 @@
       "number": "272",
       "name": "噼啪鸟",
       "stage": 1,
+      "family_base_id": "pet_000348",
       "egg_groups": [
         "天空组",
         "巨灵组"
@@ -9646,6 +9993,7 @@
       "number": "040",
       "name": "晶石蜗（莲花刚玉的样子）",
       "stage": 2,
+      "family_base_id": "pet_000349",
       "egg_groups": [
         "软体组",
         "大地组"
@@ -9675,6 +10023,7 @@
       "number": "040",
       "name": "晶石蜗（星彩榴石的样子）",
       "stage": 2,
+      "family_base_id": "pet_000350",
       "egg_groups": [
         "软体组",
         "大地组"
@@ -9704,6 +10053,7 @@
       "number": "040",
       "name": "晶石蜗（火山琉璃的样子）",
       "stage": 2,
+      "family_base_id": "pet_000351",
       "egg_groups": [
         "软体组",
         "大地组"
@@ -9733,6 +10083,7 @@
       "number": "040",
       "name": "晶石蜗（蓝锥矿的样子）",
       "stage": 2,
+      "family_base_id": "pet_000352",
       "egg_groups": [
         "软体组",
         "大地组"
@@ -9762,6 +10113,7 @@
       "number": "011",
       "name": "鸭吉吉（急急急鸭）",
       "stage": 1,
+      "family_base_id": "pet_000353",
       "egg_groups": [
         "天空组"
       ],
@@ -9789,6 +10141,7 @@
       "number": "011",
       "name": "鸭吉吉（等一等鸭）",
       "stage": 1,
+      "family_base_id": "pet_000354",
       "egg_groups": [
         "天空组"
       ],
@@ -9816,6 +10169,7 @@
       "number": "277",
       "name": "地鼠（储水时的样子）",
       "stage": 1,
+      "family_base_id": "pet_000355",
       "egg_groups": [
         "动物组"
       ],
@@ -9843,6 +10197,7 @@
       "number": "278",
       "name": "遁鼠（储水时的样子）",
       "stage": 2,
+      "family_base_id": "pet_000355",
       "egg_groups": [
         "动物组"
       ],
@@ -9870,6 +10225,7 @@
       "number": "279",
       "name": "遁地鼠（储水时的样子）",
       "stage": 3,
+      "family_base_id": "pet_000355",
       "egg_groups": [
         "动物组"
       ],
@@ -9897,6 +10253,7 @@
       "number": "322",
       "name": "月牙雪熊",
       "stage": 1,
+      "family_base_id": "pet_000358",
       "egg_groups": [
         "动物组",
         "巨灵组"
@@ -9926,6 +10283,7 @@
       "number": "236",
       "name": "圣代甜甜（樱桃草莓口味）",
       "stage": 3,
+      "family_base_id": "pet_000359",
       "egg_groups": [
         "软体组",
         "魔力组"
@@ -9955,6 +10313,7 @@
       "number": "236",
       "name": "圣代甜甜（樱桃抹茶口味）",
       "stage": 3,
+      "family_base_id": "pet_000360",
       "egg_groups": [
         "软体组",
         "魔力组"
@@ -9984,6 +10343,7 @@
       "number": "236",
       "name": "圣代甜甜（蓝莓巧克力口味）",
       "stage": 3,
+      "family_base_id": "pet_000361",
       "egg_groups": [
         "软体组",
         "魔力组"
@@ -10013,6 +10373,7 @@
       "number": "236",
       "name": "圣代甜甜（蓝莓草莓口味）",
       "stage": 3,
+      "family_base_id": "pet_000362",
       "egg_groups": [
         "软体组",
         "魔力组"
@@ -10042,6 +10403,7 @@
       "number": "236",
       "name": "圣代甜甜（蓝莓抹茶口味）",
       "stage": 3,
+      "family_base_id": "pet_000363",
       "egg_groups": [
         "软体组",
         "魔力组"
@@ -10071,6 +10433,7 @@
       "number": "236",
       "name": "圣代甜甜（杨桃巧克力口味）",
       "stage": 3,
+      "family_base_id": "pet_000364",
       "egg_groups": [
         "软体组",
         "魔力组"
@@ -10100,6 +10463,7 @@
       "number": "236",
       "name": "圣代甜甜（杨桃草莓口味）",
       "stage": 3,
+      "family_base_id": "pet_000365",
       "egg_groups": [
         "软体组",
         "魔力组"
@@ -10129,6 +10493,7 @@
       "number": "236",
       "name": "圣代甜甜（杨桃抹茶口味）",
       "stage": 3,
+      "family_base_id": "pet_000366",
       "egg_groups": [
         "软体组",
         "魔力组"
@@ -10158,6 +10523,7 @@
       "number": "409",
       "name": "星云旅者",
       "stage": 1,
+      "family_base_id": "pet_000367",
       "egg_groups": [
         "妖精组",
         "魔力组"
@@ -10187,6 +10553,7 @@
       "number": "165",
       "name": "小狮鹫（高山地的样子）",
       "stage": 1,
+      "family_base_id": "pet_000368",
       "egg_groups": [
         "动物组",
         "天空组"
@@ -10216,6 +10583,7 @@
       "number": "166",
       "name": "神圣狮鹫（高山地的样子）",
       "stage": 2,
+      "family_base_id": "pet_000368",
       "egg_groups": [
         "动物组",
         "天空组"
@@ -10245,6 +10613,7 @@
       "number": "167",
       "name": "皇家狮鹫（高山地的样子）",
       "stage": 3,
+      "family_base_id": "pet_000368",
       "egg_groups": [
         "动物组",
         "天空组"
@@ -10274,6 +10643,7 @@
       "number": "034",
       "name": "化蝶（幽冥眼的样子）",
       "stage": 3,
+      "family_base_id": "pet_000371",
       "egg_groups": [
         "昆虫组",
         "软体组"
@@ -10303,6 +10673,7 @@
       "number": "034",
       "name": "化蝶（喵喵的样子）",
       "stage": 3,
+      "family_base_id": "pet_000372",
       "egg_groups": [
         "昆虫组",
         "软体组"
@@ -10332,6 +10703,7 @@
       "number": "034",
       "name": "化蝶（奇丽花的样子）",
       "stage": 3,
+      "family_base_id": "pet_000373",
       "egg_groups": [
         "昆虫组",
         "软体组"
@@ -10361,6 +10733,7 @@
       "number": "338",
       "name": "布瓜蝌",
       "stage": 1,
+      "family_base_id": "pet_000374",
       "egg_groups": [
         "两栖组"
       ],
@@ -10388,6 +10761,7 @@
       "number": "339",
       "name": "上岸蛙",
       "stage": 2,
+      "family_base_id": "pet_000374",
       "egg_groups": [
         "两栖组"
       ],
@@ -10415,6 +10789,7 @@
       "number": "076",
       "name": "海盔虫（磨损的样子）",
       "stage": 1,
+      "family_base_id": "pet_000376",
       "egg_groups": [
         "海洋组",
         "巨灵组"
@@ -10444,6 +10819,7 @@
       "number": "077",
       "name": "刺盔虫（磨损的样子）",
       "stage": 2,
+      "family_base_id": "pet_000376",
       "egg_groups": [
         "海洋组",
         "巨灵组"
@@ -10473,6 +10849,7 @@
       "number": "078",
       "name": "千棘盔（磨损的样子）",
       "stage": 3,
+      "family_base_id": "pet_000376",
       "egg_groups": [
         "海洋组",
         "巨灵组"
@@ -10502,6 +10879,7 @@
       "number": "235",
       "name": "香草甜甜（杨桃饰品）",
       "stage": 2,
+      "family_base_id": "pet_000379",
       "egg_groups": [
         "软体组",
         "魔力组"
@@ -10531,6 +10909,7 @@
       "number": "235",
       "name": "香草甜甜（蓝莓饰品）",
       "stage": 2,
+      "family_base_id": "pet_000380",
       "egg_groups": [
         "软体组",
         "魔力组"
@@ -10560,6 +10939,7 @@
       "number": "055",
       "name": "暗影灵面（闭眼的样子）",
       "stage": 2,
+      "family_base_id": "pet_000381",
       "egg_groups": [
         "魔力组"
       ],
@@ -10587,6 +10967,7 @@
       "number": "056",
       "name": "幽冥眼（闭眼的样子）",
       "stage": 3,
+      "family_base_id": "pet_000382",
       "egg_groups": [
         "魔力组"
       ],
@@ -10614,6 +10995,7 @@
       "number": "119",
       "name": "蓬叶虫（金黄的样子）",
       "stage": 2,
+      "family_base_id": "pet_000303",
       "egg_groups": [
         "昆虫组",
         "植物组"
@@ -10643,6 +11025,7 @@
       "number": "261",
       "name": "螺旋帕帕",
       "stage": 1,
+      "family_base_id": "pet_000384",
       "egg_groups": [
         "机械组",
         "天空组"
@@ -10672,6 +11055,7 @@
       "number": "337",
       "name": "落陨星兔",
       "stage": 2,
+      "family_base_id": "pet_000385",
       "egg_groups": [
         "妖精组",
         "天空组"
@@ -10701,6 +11085,7 @@
       "number": "040",
       "name": "晶石蜗（烧蓝黄金的样子）",
       "stage": 2,
+      "family_base_id": "pet_000386",
       "egg_groups": [
         "软体组",
         "大地组"
@@ -10730,6 +11115,7 @@
       "number": "362",
       "name": "小丑豆豆",
       "stage": 1,
+      "family_base_id": "pet_000387",
       "egg_groups": [
         "妖精组",
         "拟人组"
@@ -10759,6 +11145,7 @@
       "number": "363",
       "name": "小丑兔",
       "stage": 2,
+      "family_base_id": "pet_000387",
       "egg_groups": [
         "妖精组",
         "拟人组"
@@ -10788,6 +11175,7 @@
       "number": "364",
       "name": "小丑公爵",
       "stage": 3,
+      "family_base_id": "pet_000387",
       "egg_groups": [
         "妖精组",
         "拟人组"
@@ -10817,6 +11205,7 @@
       "number": "287",
       "name": "吸泥鸥",
       "stage": 1,
+      "family_base_id": "pet_000390",
       "egg_groups": [
         "天空组",
         "两栖组"
@@ -10846,6 +11235,7 @@
       "number": "288",
       "name": "泥吼牙",
       "stage": 2,
+      "family_base_id": "pet_000390",
       "egg_groups": [
         "天空组",
         "两栖组"
@@ -10875,6 +11265,7 @@
       "number": "059",
       "name": "兽花蕾",
       "stage": 1,
+      "family_base_id": "pet_000392",
       "egg_groups": [
         "植物组"
       ],
@@ -10902,6 +11293,7 @@
       "number": "011",
       "name": "鸭吉吉（燃了鸭）",
       "stage": 1,
+      "family_base_id": "pet_000393",
       "egg_groups": [
         "天空组"
       ],
@@ -10929,6 +11321,7 @@
       "number": "118",
       "name": "旋叶虫（枯叶的样子）",
       "stage": 1,
+      "family_base_id": "pet_000394",
       "egg_groups": [
         "昆虫组",
         "植物组"
@@ -10958,6 +11351,7 @@
       "number": "119",
       "name": "蓬叶虫（枯叶的样子）",
       "stage": 2,
+      "family_base_id": "pet_000394",
       "egg_groups": [
         "昆虫组",
         "植物组"
@@ -10987,6 +11381,7 @@
       "number": "120",
       "name": "风滚暮虫（枯叶的样子）",
       "stage": 3,
+      "family_base_id": "pet_000394",
       "egg_groups": [
         "昆虫组",
         "植物组"
@@ -11016,6 +11411,7 @@
       "number": "162",
       "name": "公平鸽",
       "stage": 1,
+      "family_base_id": "pet_000397",
       "egg_groups": [
         "天空组"
       ],
@@ -11043,6 +11439,7 @@
       "number": "024",
       "name": "石肤蜥（球球尾巴的样子）",
       "stage": 1,
+      "family_base_id": "pet_000398",
       "egg_groups": [
         "两栖组",
         "大地组"
@@ -11072,6 +11469,7 @@
       "number": "025",
       "name": "石刺蜥（球球尾巴的样子）",
       "stage": 2,
+      "family_base_id": "pet_000398",
       "egg_groups": [
         "两栖组",
         "大地组"
@@ -11101,6 +11499,7 @@
       "number": "026",
       "name": "石冠王蜥（球球尾巴的样子）",
       "stage": 3,
+      "family_base_id": "pet_000398",
       "egg_groups": [
         "两栖组",
         "大地组"
@@ -11130,6 +11529,7 @@
       "number": "201",
       "name": "花怨鳗",
       "stage": 1,
+      "family_base_id": "pet_000401",
       "egg_groups": [
         "海洋组",
         "两栖组"
@@ -11159,6 +11559,7 @@
       "number": "202",
       "name": "鳗尾兽",
       "stage": 2,
+      "family_base_id": "pet_000401",
       "egg_groups": [
         "海洋组",
         "两栖组"
@@ -11188,6 +11589,7 @@
       "number": "171",
       "name": "波波螺",
       "stage": 1,
+      "family_base_id": "pet_000403",
       "egg_groups": [
         "两栖组",
         "大地组"
@@ -11217,6 +11619,7 @@
       "number": "172",
       "name": "消波螺",
       "stage": 2,
+      "family_base_id": "pet_000403",
       "egg_groups": [
         "两栖组",
         "大地组"
@@ -11246,6 +11649,7 @@
       "number": "173",
       "name": "嗜波螺",
       "stage": 3,
+      "family_base_id": "pet_000403",
       "egg_groups": [
         "两栖组",
         "大地组"
@@ -11275,6 +11679,7 @@
       "number": "171",
       "name": "波波螺（被污染的样子）",
       "stage": 1,
+      "family_base_id": "pet_000406",
       "egg_groups": [
         "两栖组",
         "大地组"
@@ -11304,6 +11709,7 @@
       "number": "172",
       "name": "消波螺（被污染的样子）",
       "stage": 2,
+      "family_base_id": "pet_000406",
       "egg_groups": [
         "两栖组",
         "大地组"
@@ -11333,6 +11739,7 @@
       "number": "173",
       "name": "嗜波螺（被污染的样子）",
       "stage": 3,
+      "family_base_id": "pet_000406",
       "egg_groups": [
         "两栖组",
         "大地组"
@@ -11362,6 +11769,7 @@
       "number": "012",
       "name": "板板壳（蜕皮时的样子）",
       "stage": 1,
+      "family_base_id": "pet_000409",
       "egg_groups": [
         "两栖组"
       ],
@@ -11389,6 +11797,7 @@
       "number": "013",
       "name": "咔咔壳（蜕皮时的样子）",
       "stage": 2,
+      "family_base_id": "pet_000409",
       "egg_groups": [
         "两栖组"
       ],
@@ -11416,6 +11825,7 @@
       "number": "014",
       "name": "水泡壳（蜕皮时的样子）",
       "stage": 3,
+      "family_base_id": "pet_000409",
       "egg_groups": [
         "两栖组"
       ],
@@ -11443,6 +11853,7 @@
       "number": "219",
       "name": "里拉鳐",
       "stage": 1,
+      "family_base_id": "pet_000412",
       "egg_groups": [
         "海洋组",
         "妖精组"
@@ -11472,6 +11883,7 @@
       "number": "314",
       "name": "抹茶布丁",
       "stage": 2,
+      "family_base_id": "pet_000413",
       "egg_groups": [
         "海洋组",
         "魔力组"
@@ -11501,6 +11913,7 @@
       "number": "315",
       "name": "椰浆布丁",
       "stage": 2,
+      "family_base_id": "pet_000414",
       "egg_groups": [
         "海洋组"
       ],
@@ -11528,6 +11941,7 @@
       "number": "316",
       "name": "熔岩布丁",
       "stage": 2,
+      "family_base_id": "pet_000415",
       "egg_groups": [
         "海洋组"
       ],
@@ -11555,6 +11969,7 @@
       "number": "183",
       "name": "号儿鱼",
       "stage": 1,
+      "family_base_id": "pet_000416",
       "egg_groups": [
         "海洋组",
         "妖精组"
@@ -11584,6 +11999,7 @@
       "number": "184",
       "name": "圆号鱼",
       "stage": 2,
+      "family_base_id": "pet_000416",
       "egg_groups": [
         "海洋组",
         "妖精组"
@@ -11613,6 +12029,7 @@
       "number": "354",
       "name": "小雪人",
       "stage": 1,
+      "family_base_id": "pet_000418",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -11632,6 +12049,7 @@
       "number": "355",
       "name": "雪怪",
       "stage": 2,
+      "family_base_id": "pet_000418",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -11651,6 +12069,7 @@
       "number": "018",
       "name": "雪绒鸟",
       "stage": 1,
+      "family_base_id": "pet_000420",
       "egg_groups": [
         "天空组"
       ],
@@ -11678,6 +12097,7 @@
       "number": "177",
       "name": "斑斑",
       "stage": 1,
+      "family_base_id": "pet_000421",
       "egg_groups": [
         "天空组"
       ],
@@ -11705,6 +12125,7 @@
       "number": "178",
       "name": "斑枭",
       "stage": 2,
+      "family_base_id": "pet_000421",
       "egg_groups": [
         "天空组"
       ],
@@ -11732,6 +12153,7 @@
       "number": "258",
       "name": "乌达（极昼的样子）",
       "stage": 1,
+      "family_base_id": "pet_000423",
       "egg_groups": [
         "巨灵组"
       ],
@@ -11759,6 +12181,7 @@
       "number": "259",
       "name": "迷你乌（极昼的样子）",
       "stage": 2,
+      "family_base_id": "pet_000423",
       "egg_groups": [
         "巨灵组"
       ],
@@ -11786,6 +12209,7 @@
       "number": "260",
       "name": "乌拉塔（极昼的样子）",
       "stage": 3,
+      "family_base_id": "pet_000423",
       "egg_groups": [
         "巨灵组"
       ],
@@ -11813,6 +12237,7 @@
       "number": "258",
       "name": "乌达（极夜的样子）",
       "stage": 1,
+      "family_base_id": "pet_000426",
       "egg_groups": [
         "巨灵组"
       ],
@@ -11840,6 +12265,7 @@
       "number": "259",
       "name": "迷你乌（极夜的样子）",
       "stage": 2,
+      "family_base_id": "pet_000426",
       "egg_groups": [
         "巨灵组"
       ],
@@ -11867,6 +12293,7 @@
       "number": "260",
       "name": "乌拉塔（极夜的样子）",
       "stage": 3,
+      "family_base_id": "pet_000426",
       "egg_groups": [
         "巨灵组"
       ],
@@ -11894,6 +12321,7 @@
       "number": "285",
       "name": "圣剑侍从",
       "stage": 1,
+      "family_base_id": "pet_000429",
       "egg_groups": [
         "机械组",
         "巨灵组"
@@ -11923,6 +12351,7 @@
       "number": "286",
       "name": "圣剑-X",
       "stage": 2,
+      "family_base_id": "pet_000429",
       "egg_groups": [
         "机械组",
         "巨灵组"
@@ -11952,6 +12381,7 @@
       "number": "262",
       "name": "帕帕斯卡",
       "stage": 2,
+      "family_base_id": "pet_000384",
       "egg_groups": [
         "机械组",
         "天空组"
@@ -11981,6 +12411,7 @@
       "number": "188",
       "name": "棋棋（白子）",
       "stage": 1,
+      "family_base_id": "pet_000432",
       "egg_groups": [
         "妖精组"
       ],
@@ -12008,6 +12439,7 @@
       "number": "189",
       "name": "棋骑士（白子）",
       "stage": 2,
+      "family_base_id": "pet_000433",
       "egg_groups": [
         "妖精组"
       ],
@@ -12035,6 +12467,7 @@
       "number": "192",
       "name": "棋绮后（白子）",
       "stage": 2,
+      "family_base_id": "pet_000434",
       "egg_groups": [
         "妖精组"
       ],
@@ -12062,6 +12495,7 @@
       "number": "190",
       "name": "棋齐垒（白子）",
       "stage": 2,
+      "family_base_id": "pet_000435",
       "egg_groups": [
         "妖精组"
       ],
@@ -12089,6 +12523,7 @@
       "number": "191",
       "name": "棋祈督（白子）",
       "stage": 2,
+      "family_base_id": "pet_000436",
       "egg_groups": [
         "妖精组"
       ],
@@ -12116,6 +12551,7 @@
       "number": "188",
       "name": "棋棋（黑子）",
       "stage": 1,
+      "family_base_id": "pet_000437",
       "egg_groups": [
         "妖精组"
       ],
@@ -12143,6 +12579,7 @@
       "number": "189",
       "name": "棋骑士（黑子）",
       "stage": 2,
+      "family_base_id": "pet_000438",
       "egg_groups": [
         "妖精组"
       ],
@@ -12170,6 +12607,7 @@
       "number": "192",
       "name": "棋绮后（黑子）",
       "stage": 2,
+      "family_base_id": "pet_000439",
       "egg_groups": [
         "妖精组"
       ],
@@ -12197,6 +12635,7 @@
       "number": "190",
       "name": "棋齐垒（黑子）",
       "stage": 2,
+      "family_base_id": "pet_000440",
       "egg_groups": [
         "妖精组"
       ],
@@ -12224,6 +12663,7 @@
       "number": "191",
       "name": "棋祈督（黑子）",
       "stage": 2,
+      "family_base_id": "pet_000441",
       "egg_groups": [
         "妖精组"
       ],
@@ -12251,6 +12691,7 @@
       "number": "438",
       "name": "栗鼠",
       "stage": 1,
+      "family_base_id": "pet_000442",
       "egg_groups": [
         "动物组"
       ],
@@ -12278,6 +12719,7 @@
       "number": "439",
       "name": "壳栗丝鼠",
       "stage": 2,
+      "family_base_id": "pet_000442",
       "egg_groups": [
         "动物组"
       ],
@@ -12305,6 +12747,7 @@
       "number": "121",
       "name": "小黑猫",
       "stage": 1,
+      "family_base_id": "pet_000444",
       "egg_groups": [
         "动物组",
         "妖精组"
@@ -12334,6 +12777,7 @@
       "number": "122",
       "name": "黑猫巫师",
       "stage": 2,
+      "family_base_id": "pet_000444",
       "egg_groups": [
         "动物组",
         "妖精组"
@@ -12363,6 +12807,7 @@
       "number": "091",
       "name": "黑羽夫人",
       "stage": 3,
+      "family_base_id": "pet_000446",
       "egg_groups": [
         "天空组",
         "两栖组"
@@ -12392,6 +12837,7 @@
       "number": "356",
       "name": "爆焰仔",
       "stage": 1,
+      "family_base_id": "pet_000447",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -12411,6 +12857,7 @@
       "number": "357",
       "name": "爆焰喷喷",
       "stage": 2,
+      "family_base_id": "pet_000447",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -12430,6 +12877,7 @@
       "number": "280",
       "name": "墨鱿士",
       "stage": 1,
+      "family_base_id": "pet_000449",
       "egg_groups": [
         "海洋组",
         "软体组"
@@ -12459,6 +12907,7 @@
       "number": "281",
       "name": "混乱鱿彩",
       "stage": 2,
+      "family_base_id": "pet_000450",
       "egg_groups": [
         "海洋组",
         "软体组"
@@ -12488,6 +12937,7 @@
       "number": "282",
       "name": "秩序鱿墨",
       "stage": 2,
+      "family_base_id": "pet_000451",
       "egg_groups": [
         "海洋组",
         "软体组"
@@ -12517,6 +12967,7 @@
       "number": "237",
       "name": "刺轮砣（上弦的样子）",
       "stage": 1,
+      "family_base_id": "pet_000452",
       "egg_groups": [
         "海洋组"
       ],
@@ -12544,6 +12995,7 @@
       "number": "238",
       "name": "月亮砣（上弦的样子）",
       "stage": 2,
+      "family_base_id": "pet_000452",
       "egg_groups": [
         "海洋组"
       ],
@@ -12571,6 +13023,7 @@
       "number": "237",
       "name": "刺轮砣（下弦的样子）",
       "stage": 1,
+      "family_base_id": "pet_000454",
       "egg_groups": [
         "海洋组"
       ],
@@ -12598,6 +13051,7 @@
       "number": "238",
       "name": "月亮砣（下弦的样子）",
       "stage": 2,
+      "family_base_id": "pet_000454",
       "egg_groups": [
         "海洋组"
       ],
@@ -12625,6 +13079,7 @@
       "number": "427",
       "name": "十字蝌蚪",
       "stage": 1,
+      "family_base_id": "pet_000456",
       "egg_groups": [
         "两栖组",
         "拟人组"
@@ -12654,6 +13109,7 @@
       "number": "428",
       "name": "十字蛙",
       "stage": 2,
+      "family_base_id": "pet_000456",
       "egg_groups": [
         "两栖组",
         "拟人组"
@@ -12683,6 +13139,7 @@
       "number": "429",
       "name": "深渊蛙",
       "stage": 3,
+      "family_base_id": "pet_000456",
       "egg_groups": [
         "两栖组",
         "拟人组"
@@ -12712,6 +13169,7 @@
       "number": "153",
       "name": "松仔",
       "stage": 1,
+      "family_base_id": "pet_000459",
       "egg_groups": [
         "动物组"
       ],
@@ -12739,6 +13197,7 @@
       "number": "154",
       "name": "松叶羊",
       "stage": 2,
+      "family_base_id": "pet_000459",
       "egg_groups": [
         "动物组"
       ],
@@ -12766,6 +13225,7 @@
       "number": "155",
       "name": "针叶巡林",
       "stage": 3,
+      "family_base_id": "pet_000459",
       "egg_groups": [
         "动物组"
       ],
@@ -12793,6 +13253,7 @@
       "number": "159",
       "name": "水滴蛇",
       "stage": 1,
+      "family_base_id": "pet_000462",
       "egg_groups": [
         "两栖组",
         "妖精组"
@@ -12822,6 +13283,7 @@
       "number": "160",
       "name": "水蛇锁",
       "stage": 2,
+      "family_base_id": "pet_000462",
       "egg_groups": [
         "两栖组",
         "妖精组"
@@ -12851,6 +13313,7 @@
       "number": "161",
       "name": "游蛇魔使",
       "stage": 3,
+      "family_base_id": "pet_000462",
       "egg_groups": [
         "两栖组",
         "妖精组"
@@ -12880,6 +13343,7 @@
       "number": "156",
       "name": "小勇狮",
       "stage": 1,
+      "family_base_id": "pet_000465",
       "egg_groups": [
         "动物组"
       ],
@@ -12907,6 +13371,7 @@
       "number": "157",
       "name": "炽焰狮",
       "stage": 2,
+      "family_base_id": "pet_000465",
       "egg_groups": [
         "动物组"
       ],
@@ -12934,6 +13399,7 @@
       "number": "158",
       "name": "炽心勇狮",
       "stage": 3,
+      "family_base_id": "pet_000465",
       "egg_groups": [
         "动物组"
       ],
@@ -12961,6 +13427,7 @@
       "number": "296",
       "name": "毛头小蛛",
       "stage": 1,
+      "family_base_id": "pet_000468",
       "egg_groups": [
         "昆虫组",
         "妖精组"
@@ -12990,6 +13457,7 @@
       "number": "297",
       "name": "捕尘长绒",
       "stage": 2,
+      "family_base_id": "pet_000469",
       "egg_groups": [
         "昆虫组",
         "妖精组"
@@ -13019,6 +13487,7 @@
       "number": "298",
       "name": "食尘短绒",
       "stage": 2,
+      "family_base_id": "pet_000470",
       "egg_groups": [
         "昆虫组",
         "妖精组"
@@ -13048,6 +13517,7 @@
       "number": "299",
       "name": "画精灵",
       "stage": 1,
+      "family_base_id": "pet_000471",
       "egg_groups": [
         "妖精组",
         "巨灵组"
@@ -13077,6 +13547,7 @@
       "number": "300",
       "name": "画像守护",
       "stage": 2,
+      "family_base_id": "pet_000471",
       "egg_groups": [
         "妖精组",
         "巨灵组"
@@ -13106,6 +13577,7 @@
       "number": "301",
       "name": "画间法师手",
       "stage": 3,
+      "family_base_id": "pet_000473",
       "egg_groups": [
         "妖精组",
         "巨灵组"
@@ -13135,6 +13607,7 @@
       "number": "302",
       "name": "画间沉铁兽",
       "stage": 3,
+      "family_base_id": "pet_000474",
       "egg_groups": [
         "妖精组",
         "巨灵组"
@@ -13164,6 +13637,7 @@
       "number": "303",
       "name": "书魔虫",
       "stage": 1,
+      "family_base_id": "pet_000475",
       "egg_groups": [
         "妖精组",
         "巨灵组"
@@ -13193,6 +13667,7 @@
       "number": "304",
       "name": "书卷守护",
       "stage": 2,
+      "family_base_id": "pet_000475",
       "egg_groups": [
         "妖精组",
         "巨灵组"
@@ -13222,6 +13697,7 @@
       "number": "305",
       "name": "古卷执政官",
       "stage": 3,
+      "family_base_id": "pet_000477",
       "egg_groups": [
         "妖精组",
         "巨灵组"
@@ -13251,6 +13727,7 @@
       "number": "306",
       "name": "古卷匣魔像",
       "stage": 3,
+      "family_base_id": "pet_000478",
       "egg_groups": [
         "妖精组",
         "巨灵组"
@@ -13280,6 +13757,7 @@
       "number": "323",
       "name": "嗜光嗡嗡",
       "stage": 1,
+      "family_base_id": "pet_000479",
       "egg_groups": [
         "昆虫组"
       ],
@@ -13307,6 +13785,7 @@
       "number": "324",
       "name": "窃光蚊",
       "stage": 2,
+      "family_base_id": "pet_000479",
       "egg_groups": [
         "昆虫组"
       ],
@@ -13334,6 +13813,7 @@
       "number": "412",
       "name": "不咕钟",
       "stage": 1,
+      "family_base_id": "pet_000481",
       "egg_groups": [
         "天空组",
         "机械组"
@@ -13363,6 +13843,7 @@
       "number": "413",
       "name": "溯源钟",
       "stage": 2,
+      "family_base_id": "pet_000481",
       "egg_groups": [
         "天空组",
         "机械组"
@@ -13392,6 +13873,7 @@
       "number": "210",
       "name": "小箱怪",
       "stage": 1,
+      "family_base_id": "pet_000483",
       "egg_groups": [
         "机械组",
         "妖精组"
@@ -13421,6 +13903,7 @@
       "number": "211",
       "name": "迷迷箱怪",
       "stage": 2,
+      "family_base_id": "pet_000483",
       "egg_groups": [
         "机械组",
         "妖精组"
@@ -13450,6 +13933,7 @@
       "number": "375",
       "name": "学院呱呱",
       "stage": 1,
+      "family_base_id": "pet_000485",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -13469,6 +13953,7 @@
       "number": "360",
       "name": "加油海葵",
       "stage": 1,
+      "family_base_id": "pet_000486",
       "egg_groups": [
         "妖精组",
         "两栖组"
@@ -13498,6 +13983,7 @@
       "number": "361",
       "name": "加油蟹（两只海葵的样子）",
       "stage": 2,
+      "family_base_id": "pet_000487",
       "egg_groups": [
         "妖精组",
         "两栖组"
@@ -13527,6 +14013,7 @@
       "number": "432",
       "name": "守夜烛",
       "stage": 1,
+      "family_base_id": "pet_000488",
       "egg_groups": [
         "妖精组"
       ],
@@ -13554,6 +14041,7 @@
       "number": "433",
       "name": "流明坎德拉",
       "stage": 2,
+      "family_base_id": "pet_000488",
       "egg_groups": [
         "妖精组"
       ],
@@ -13581,6 +14069,7 @@
       "number": "365",
       "name": "烟花团",
       "stage": 1,
+      "family_base_id": "pet_000490",
       "egg_groups": [
         "机械组",
         "魔力组"
@@ -13610,6 +14099,7 @@
       "number": "366",
       "name": "烟花伯爵",
       "stage": 2,
+      "family_base_id": "pet_000490",
       "egg_groups": [
         "机械组",
         "魔力组"
@@ -13639,6 +14129,7 @@
       "number": "367",
       "name": "咕咕帽",
       "stage": 1,
+      "family_base_id": "pet_000492",
       "egg_groups": [
         "妖精组"
       ],
@@ -13666,6 +14157,7 @@
       "number": "368",
       "name": "咕德帽帽",
       "stage": 2,
+      "family_base_id": "pet_000492",
       "egg_groups": [
         "妖精组"
       ],
@@ -13693,6 +14185,7 @@
       "number": "436",
       "name": "稻草人",
       "stage": 1,
+      "family_base_id": "pet_000494",
       "egg_groups": [
         "妖精组"
       ],
@@ -13720,6 +14213,7 @@
       "number": "437",
       "name": "稻草守护者",
       "stage": 2,
+      "family_base_id": "pet_000494",
       "egg_groups": [
         "妖精组"
       ],
@@ -13747,6 +14241,7 @@
       "number": "270",
       "name": "优优",
       "stage": 1,
+      "family_base_id": "pet_000496",
       "egg_groups": [
         "动物组"
       ],
@@ -13774,6 +14269,7 @@
       "number": "271",
       "name": "绒光优优",
       "stage": 2,
+      "family_base_id": "pet_000496",
       "egg_groups": [
         "动物组"
       ],
@@ -13801,6 +14297,7 @@
       "number": "434",
       "name": "蜜果骸",
       "stage": 1,
+      "family_base_id": "pet_000498",
       "egg_groups": [
         "妖精组",
         "植物组"
@@ -13830,6 +14327,7 @@
       "number": "435",
       "name": "半朽蜜果灵",
       "stage": 2,
+      "family_base_id": "pet_000498",
       "egg_groups": [
         "妖精组",
         "植物组"
@@ -13859,6 +14357,7 @@
       "number": "371",
       "name": "小鼓象",
       "stage": 1,
+      "family_base_id": "pet_000500",
       "egg_groups": [
         "动物组",
         "机械组"
@@ -13888,6 +14387,7 @@
       "number": "372",
       "name": "巨鼓象",
       "stage": 2,
+      "family_base_id": "pet_000500",
       "egg_groups": [
         "动物组",
         "机械组"
@@ -13917,6 +14417,7 @@
       "number": "418",
       "name": "咬咬小子",
       "stage": 1,
+      "family_base_id": "pet_000502",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -13936,6 +14437,7 @@
       "number": "419",
       "name": "胡桃王子",
       "stage": 2,
+      "family_base_id": "pet_000502",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -13955,6 +14457,7 @@
       "number": "420",
       "name": "足尖元件",
       "stage": 1,
+      "family_base_id": "pet_000504",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -13974,6 +14477,7 @@
       "number": "421",
       "name": "离心舞者",
       "stage": 2,
+      "family_base_id": "pet_000504",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -13993,6 +14497,7 @@
       "number": "358",
       "name": "猴麦仔",
       "stage": 1,
+      "family_base_id": "pet_000506",
       "egg_groups": [
         "动物组",
         "机械组"
@@ -14022,6 +14527,7 @@
       "number": "359",
       "name": "音碟吼",
       "stage": 2,
+      "family_base_id": "pet_000506",
       "egg_groups": [
         "动物组",
         "机械组"
@@ -14051,6 +14557,7 @@
       "number": "348",
       "name": "钨丝贝贝",
       "stage": 1,
+      "family_base_id": "pet_000508",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -14070,6 +14577,7 @@
       "number": "349",
       "name": "辉光幕机",
       "stage": 2,
+      "family_base_id": "pet_000508",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -14089,6 +14597,7 @@
       "number": "350",
       "name": "机幕方舟",
       "stage": 3,
+      "family_base_id": "pet_000508",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -14108,6 +14617,7 @@
       "number": "369",
       "name": "炫光迪迪",
       "stage": 1,
+      "family_base_id": "pet_000511",
       "egg_groups": [
         "动物组",
         "大地组"
@@ -14137,6 +14647,7 @@
       "number": "370",
       "name": "霹雳迪迪",
       "stage": 2,
+      "family_base_id": "pet_000511",
       "egg_groups": [
         "动物组",
         "大地组"
@@ -14166,6 +14677,7 @@
       "number": "011",
       "name": "鸭吉吉（起来鸭）",
       "stage": 1,
+      "family_base_id": "pet_000513",
       "egg_groups": [
         "天空组"
       ],
@@ -14193,6 +14705,7 @@
       "number": "361",
       "name": "加油蟹（单只海葵的样子）",
       "stage": 2,
+      "family_base_id": "pet_000514",
       "egg_groups": [
         "妖精组",
         "两栖组"
@@ -14222,6 +14735,7 @@
       "number": "340",
       "name": "火红尾",
       "stage": 1,
+      "family_base_id": "pet_000515",
       "egg_groups": [
         "动物组"
       ],
@@ -14249,6 +14763,7 @@
       "number": "341",
       "name": "雅丹鬃",
       "stage": 2,
+      "family_base_id": "pet_000515",
       "egg_groups": [
         "动物组"
       ],
@@ -14276,6 +14791,7 @@
       "number": "440",
       "name": "睡铃雪影娃娃",
       "stage": 1,
+      "family_base_id": "pet_000517",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -14295,6 +14811,7 @@
       "number": "398",
       "name": "莫比乌乌",
       "stage": 1,
+      "family_base_id": "pet_000518",
       "egg_groups": [
         "妖精组",
         "飞龙组"
@@ -14324,6 +14841,7 @@
       "number": "399",
       "name": "克莱因龙",
       "stage": 2,
+      "family_base_id": "pet_000518",
       "egg_groups": [
         "妖精组",
         "飞龙组"
@@ -14353,6 +14871,7 @@
       "number": "384",
       "name": "森豆丁",
       "stage": 1,
+      "family_base_id": "pet_000520",
       "egg_groups": [
         "巨灵组",
         "拟人组"
@@ -14382,6 +14901,7 @@
       "number": "385",
       "name": "森蛮人",
       "stage": 2,
+      "family_base_id": "pet_000520",
       "egg_groups": [
         "巨灵组",
         "拟人组"
@@ -14411,6 +14931,7 @@
       "number": "386",
       "name": "森巨人",
       "stage": 3,
+      "family_base_id": "pet_000520",
       "egg_groups": [
         "巨灵组",
         "拟人组"
@@ -14440,6 +14961,7 @@
       "number": "379",
       "name": "叮叮卯",
       "stage": 1,
+      "family_base_id": "pet_000523",
       "egg_groups": [
         "昆虫组",
         "机械组"
@@ -14469,6 +14991,7 @@
       "number": "380",
       "name": "飞飞钥",
       "stage": 2,
+      "family_base_id": "pet_000523",
       "egg_groups": [
         "昆虫组",
         "机械组"
@@ -14498,6 +15021,7 @@
       "number": "393",
       "name": "火豆丁",
       "stage": 1,
+      "family_base_id": "pet_000525",
       "egg_groups": [
         "巨灵组",
         "拟人组"
@@ -14527,6 +15051,7 @@
       "number": "394",
       "name": "火蛮人",
       "stage": 2,
+      "family_base_id": "pet_000525",
       "egg_groups": [
         "巨灵组",
         "拟人组"
@@ -14556,6 +15081,7 @@
       "number": "395",
       "name": "火巨人",
       "stage": 3,
+      "family_base_id": "pet_000525",
       "egg_groups": [
         "巨灵组",
         "拟人组"
@@ -14585,6 +15111,7 @@
       "number": "410",
       "name": "点点",
       "stage": 1,
+      "family_base_id": "pet_000528",
       "egg_groups": [
         "动物组",
         "妖精组"
@@ -14614,6 +15141,7 @@
       "number": "411",
       "name": "珀尔鼬",
       "stage": 2,
+      "family_base_id": "pet_000528",
       "egg_groups": [
         "动物组",
         "妖精组"
@@ -14643,6 +15171,7 @@
       "number": "425",
       "name": "苞米仔",
       "stage": 1,
+      "family_base_id": "pet_000530",
       "egg_groups": [
         "植物组",
         "拟人组"
@@ -14672,6 +15201,7 @@
       "number": "426",
       "name": "炮米花",
       "stage": 2,
+      "family_base_id": "pet_000530",
       "egg_groups": [
         "植物组",
         "拟人组"
@@ -14701,6 +15231,7 @@
       "number": "040",
       "name": "钻石蜗（西瓜碧玺的样子）",
       "stage": 4,
+      "family_base_id": "pet_000534",
       "egg_groups": [
         "软体组",
         "大地组"
@@ -14730,6 +15261,7 @@
       "number": "117",
       "name": "彩虹独角兽",
       "stage": 4,
+      "family_base_id": "pet_000054",
       "egg_groups": [
         "动物组",
         "巨灵组"
@@ -14759,6 +15291,7 @@
       "number": "004",
       "name": "叶冕魔力猫",
       "stage": 4,
+      "family_base_id": "pet_000001",
       "egg_groups": [
         "动物组",
         "拟人组"
@@ -14788,6 +15321,7 @@
       "number": "065",
       "name": "蹦蹦果（海神球形态）",
       "stage": 4,
+      "family_base_id": "pet_000016",
       "egg_groups": [
         "植物组"
       ],
@@ -14815,6 +15349,7 @@
       "number": "043",
       "name": "奇丽果",
       "stage": 4,
+      "family_base_id": "pet_000026",
       "egg_groups": [
         "植物组"
       ],
@@ -14842,6 +15377,7 @@
       "number": "011",
       "name": "鸭吉吉国王（蓬松的样子）",
       "stage": 4,
+      "family_base_id": "pet_000011",
       "egg_groups": [
         "天空组"
       ],
@@ -14869,6 +15405,7 @@
       "number": "122",
       "name": "黑猫密探",
       "stage": 4,
+      "family_base_id": "pet_000444",
       "egg_groups": [
         "动物组",
         "妖精组"
@@ -14898,6 +15435,7 @@
       "number": "029",
       "name": "迷嶂布莱克",
       "stage": 4,
+      "family_base_id": "pet_000092",
       "egg_groups": [
         "大地组",
         "巨灵组"
@@ -14927,6 +15465,7 @@
       "number": "115",
       "name": "祭礼巨像",
       "stage": 4,
+      "family_base_id": "pet_000098",
       "egg_groups": [
         "妖精组",
         "大地组"
@@ -14956,6 +15495,7 @@
       "number": "010",
       "name": "圣水守护",
       "stage": 4,
+      "family_base_id": "pet_000002",
       "egg_groups": [
         "魔力组"
       ],
@@ -14983,6 +15523,7 @@
       "number": "110",
       "name": "神谕鲨",
       "stage": 4,
+      "family_base_id": "pet_000104",
       "egg_groups": [
         "海洋组",
         "天空组"
@@ -15012,6 +15553,7 @@
       "number": "078",
       "name": "千棘海针",
       "stage": 4,
+      "family_base_id": "pet_000269",
       "egg_groups": [
         "海洋组",
         "巨灵组"
@@ -15041,6 +15583,7 @@
       "number": "144",
       "name": "雪影冰灵",
       "stage": 4,
+      "family_base_id": "pet_000110",
       "egg_groups": [
         "妖精组",
         "拟人组"
@@ -15070,6 +15613,7 @@
       "number": "020",
       "name": "霜翼领主",
       "stage": 4,
+      "family_base_id": "pet_000420",
       "egg_groups": [
         "天空组"
       ],
@@ -15097,6 +15641,7 @@
       "number": "084",
       "name": "女王蜂",
       "stage": 4,
+      "family_base_id": "pet_000050",
       "egg_groups": [
         "昆虫组",
         "天空组"
@@ -15126,6 +15671,7 @@
       "number": "131",
       "name": "恶魔狼王",
       "stage": 4,
+      "family_base_id": "pet_000010",
       "egg_groups": [
         "动物组"
       ],
@@ -15153,6 +15699,7 @@
       "number": "007",
       "name": "烈火战神",
       "stage": 4,
+      "family_base_id": "pet_000003",
       "egg_groups": [
         "魔力组",
         "巨灵组"
@@ -15182,6 +15729,7 @@
       "number": "048",
       "name": "风暴战犬",
       "stage": 4,
+      "family_base_id": "pet_000061",
       "egg_groups": [
         "动物组"
       ],
@@ -15209,6 +15757,7 @@
       "number": "035",
       "name": "幻影荆棘",
       "stage": 4,
+      "family_base_id": "pet_000056",
       "egg_groups": [
         "植物组",
         "妖精组"
@@ -15238,6 +15787,7 @@
       "number": "228",
       "name": "波普鹿",
       "stage": 4,
+      "family_base_id": "pet_000288",
       "egg_groups": [
         "动物组"
       ],
@@ -15265,6 +15815,7 @@
       "number": "286",
       "name": "圣剑骑士",
       "stage": 4,
+      "family_base_id": "pet_000429",
       "egg_groups": [
         "机械组",
         "巨灵组"
@@ -15294,6 +15845,7 @@
       "number": "204",
       "name": "伊兰龙",
       "stage": 4,
+      "family_base_id": "pet_000188",
       "egg_groups": [
         "飞龙组"
       ],
@@ -15321,6 +15873,7 @@
       "number": "189",
       "name": "棋契陛下（白棋棋骑士分支）",
       "stage": 4,
+      "family_base_id": "pet_000556",
       "egg_groups": [
         "妖精组"
       ],
@@ -15348,6 +15901,7 @@
       "number": "200",
       "name": "奇梦咪",
       "stage": 4,
+      "family_base_id": "pet_000300",
       "egg_groups": [
         "动物组",
         "巨灵组"
@@ -15377,6 +15931,7 @@
       "number": "001",
       "name": "圣光迪莫",
       "stage": 4,
+      "family_base_id": "pet_000004",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -15396,6 +15951,7 @@
       "number": "001",
       "name": "圣草迪莫",
       "stage": 4,
+      "family_base_id": "pet_000004",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -15415,6 +15971,7 @@
       "number": "001",
       "name": "圣火迪莫",
       "stage": 4,
+      "family_base_id": "pet_000004",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -15434,6 +15991,7 @@
       "number": "001",
       "name": "圣水迪莫",
       "stage": 4,
+      "family_base_id": "pet_000004",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -15453,6 +16011,7 @@
       "number": "078",
       "name": "千棘海针（磨损的样子）",
       "stage": 4,
+      "family_base_id": "pet_000376",
       "egg_groups": [
         "海洋组",
         "巨灵组"
@@ -15482,6 +16041,7 @@
       "number": "020",
       "name": "霜翼领主（春天的样子）",
       "stage": 4,
+      "family_base_id": "pet_000229",
       "egg_groups": [
         "天空组"
       ],
@@ -15509,6 +16069,7 @@
       "number": "020",
       "name": "霜翼领主（夏天的样子）",
       "stage": 4,
+      "family_base_id": "pet_000230",
       "egg_groups": [
         "天空组"
       ],
@@ -15536,6 +16097,7 @@
       "number": "020",
       "name": "霜翼领主（秋天的样子）",
       "stage": 4,
+      "family_base_id": "pet_000231",
       "egg_groups": [
         "天空组"
       ],
@@ -15563,6 +16125,7 @@
       "number": "065",
       "name": "蹦蹦果（彩玉球形态）",
       "stage": 4,
+      "family_base_id": "pet_000247",
       "egg_groups": [
         "植物组"
       ],
@@ -15590,6 +16153,7 @@
       "number": "065",
       "name": "蹦蹦果（短毛球形态）",
       "stage": 4,
+      "family_base_id": "pet_000248",
       "egg_groups": [
         "植物组"
       ],
@@ -15617,6 +16181,7 @@
       "number": "065",
       "name": "蹦蹦果（象牙球形态）",
       "stage": 4,
+      "family_base_id": "pet_000249",
       "egg_groups": [
         "植物组"
       ],
@@ -15644,6 +16209,7 @@
       "number": "011",
       "name": "鸭吉吉国王（紧实的样子）",
       "stage": 4,
+      "family_base_id": "pet_000033",
       "egg_groups": [
         "天空组"
       ],
@@ -15671,6 +16237,7 @@
       "number": "011",
       "name": "鸭吉吉国王（急急急鸭）",
       "stage": 4,
+      "family_base_id": "pet_000353",
       "egg_groups": [
         "天空组"
       ],
@@ -15698,6 +16265,7 @@
       "number": "011",
       "name": "鸭吉吉国王（等一等鸭）",
       "stage": 4,
+      "family_base_id": "pet_000354",
       "egg_groups": [
         "天空组"
       ],
@@ -15725,6 +16293,7 @@
       "number": "011",
       "name": "鸭吉吉国王（燃了鸭）",
       "stage": 4,
+      "family_base_id": "pet_000393",
       "egg_groups": [
         "天空组"
       ],
@@ -15752,6 +16321,7 @@
       "number": "192",
       "name": "棋契陛下（白棋棋绮后分支）",
       "stage": 4,
+      "family_base_id": "pet_000573",
       "egg_groups": [
         "妖精组"
       ],
@@ -15779,6 +16349,7 @@
       "number": "190",
       "name": "棋契陛下（白棋棋齐垒分支）",
       "stage": 4,
+      "family_base_id": "pet_000574",
       "egg_groups": [
         "妖精组"
       ],
@@ -15806,6 +16377,7 @@
       "number": "191",
       "name": "棋契陛下（白棋棋祈督分支）",
       "stage": 4,
+      "family_base_id": "pet_000575",
       "egg_groups": [
         "妖精组"
       ],
@@ -15833,6 +16405,7 @@
       "number": "189",
       "name": "棋契陛下（黑棋棋骑士分支）",
       "stage": 4,
+      "family_base_id": "pet_000576",
       "egg_groups": [
         "妖精组"
       ],
@@ -15860,6 +16433,7 @@
       "number": "192",
       "name": "棋契陛下（黑棋棋绮后分支）",
       "stage": 4,
+      "family_base_id": "pet_000577",
       "egg_groups": [
         "妖精组"
       ],
@@ -15887,6 +16461,7 @@
       "number": "190",
       "name": "棋契陛下（黑棋棋齐垒分支）",
       "stage": 4,
+      "family_base_id": "pet_000578",
       "egg_groups": [
         "妖精组"
       ],
@@ -15914,6 +16489,7 @@
       "number": "191",
       "name": "棋契陛下（黑棋棋祈督分支）",
       "stage": 4,
+      "family_base_id": "pet_000579",
       "egg_groups": [
         "妖精组"
       ],
@@ -15941,6 +16517,7 @@
       "number": "040",
       "name": "钻石蜗（莲花刚玉的样子）",
       "stage": 4,
+      "family_base_id": "pet_000580",
       "egg_groups": [
         "软体组",
         "大地组"
@@ -15970,6 +16547,7 @@
       "number": "040",
       "name": "钻石蜗（星彩榴石的样子）",
       "stage": 4,
+      "family_base_id": "pet_000581",
       "egg_groups": [
         "软体组",
         "大地组"
@@ -15999,6 +16577,7 @@
       "number": "040",
       "name": "钻石蜗（火山琉璃的样子）",
       "stage": 4,
+      "family_base_id": "pet_000582",
       "egg_groups": [
         "软体组",
         "大地组"
@@ -16028,6 +16607,7 @@
       "number": "040",
       "name": "钻石蜗（蓝锥矿的样子）",
       "stage": 4,
+      "family_base_id": "pet_000583",
       "egg_groups": [
         "软体组",
         "大地组"
@@ -16057,6 +16637,7 @@
       "number": "040",
       "name": "钻石蜗（烧蓝黄金的样子）",
       "stage": 4,
+      "family_base_id": "pet_000584",
       "egg_groups": [
         "软体组",
         "大地组"
@@ -16086,6 +16667,7 @@
       "number": "011",
       "name": "鸭吉吉国王（起来鸭）",
       "stage": 4,
+      "family_base_id": "pet_000513",
       "egg_groups": [
         "天空组"
       ],
@@ -16113,6 +16695,7 @@
       "number": "107",
       "name": "深渊罗隐",
       "stage": 4,
+      "family_base_id": "pet_000013",
       "egg_groups": [
         "大地组",
         "巨灵组"
@@ -16142,6 +16725,7 @@
       "number": "233",
       "name": "高帽鹬者",
       "stage": 4,
+      "family_base_id": "pet_000210",
       "egg_groups": [
         "天空组"
       ],
@@ -16169,6 +16753,7 @@
       "number": "031",
       "name": "恶魔男爵",
       "stage": 4,
+      "family_base_id": "pet_000009",
       "egg_groups": [
         "妖精组"
       ],
@@ -16196,6 +16781,7 @@
       "number": "120",
       "name": "暮风隐者（金黄的样子）",
       "stage": 4,
+      "family_base_id": "pet_000303",
       "egg_groups": [
         "昆虫组",
         "植物组"
@@ -16225,6 +16811,7 @@
       "number": "288",
       "name": "淤泥乌泽",
       "stage": 4,
+      "family_base_id": "pet_000390",
       "egg_groups": [
         "天空组",
         "两栖组"
@@ -16254,6 +16841,7 @@
       "number": "329",
       "name": "暗夜颅主",
       "stage": 4,
+      "family_base_id": "pet_000134",
       "egg_groups": [
         "魔力组",
         "巨灵组"
@@ -16283,6 +16871,7 @@
       "number": "206",
       "name": "风暴酷拉",
       "stage": 4,
+      "family_base_id": "pet_000165",
       "egg_groups": [
         "妖精组"
       ],
@@ -16310,6 +16899,7 @@
       "number": "004",
       "name": "武斗酷猫",
       "stage": 4,
+      "family_base_id": "pet_000001",
       "egg_groups": [
         "动物组",
         "拟人组"
@@ -16339,6 +16929,7 @@
       "number": "120",
       "name": "暮风隐者（枯叶的样子）",
       "stage": 4,
+      "family_base_id": "pet_000394",
       "egg_groups": [
         "昆虫组",
         "植物组"
@@ -16368,6 +16959,7 @@
       "number": "441",
       "name": "宝藏小狐",
       "stage": 1,
+      "family_base_id": "pet_000595",
       "egg_groups": [
         "动物组"
       ],
@@ -16395,6 +16987,7 @@
       "number": "442",
       "name": "宝藏沙狐",
       "stage": 2,
+      "family_base_id": "pet_000595",
       "egg_groups": [
         "动物组"
       ],
@@ -16422,6 +17015,7 @@
       "number": "463",
       "name": "星星眼",
       "stage": 1,
+      "family_base_id": "pet_000597",
       "egg_groups": [
         "天空组",
         "大地组"
@@ -16448,6 +17042,7 @@
       "number": "454",
       "name": "未完虫",
       "stage": 1,
+      "family_base_id": "pet_000598",
       "egg_groups": [
         "昆虫组",
         "魔力组"
@@ -16474,6 +17069,7 @@
       "number": "449",
       "name": "热团团",
       "stage": 1,
+      "family_base_id": "pet_000599",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -16490,6 +17086,7 @@
       "number": "450",
       "name": "焰米龙",
       "stage": 2,
+      "family_base_id": "pet_000599",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -16506,6 +17103,7 @@
       "number": "451",
       "name": "圣凯布米龙",
       "stage": 3,
+      "family_base_id": "pet_000599",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -16522,6 +17120,7 @@
       "number": "455",
       "name": "玳龟",
       "stage": 1,
+      "family_base_id": "pet_000602",
       "egg_groups": [
         "巨灵组",
         "两栖组"
@@ -16548,6 +17147,7 @@
       "number": "456",
       "name": "玳塔",
       "stage": 2,
+      "family_base_id": "pet_000602",
       "egg_groups": [
         "巨灵组",
         "两栖组"
@@ -16574,6 +17174,7 @@
       "number": "457",
       "name": "量风碗",
       "stage": 1,
+      "family_base_id": "pet_000604",
       "egg_groups": [
         "昆虫组",
         "机械组"
@@ -16600,6 +17201,7 @@
       "number": "458",
       "name": "测风蝉",
       "stage": 2,
+      "family_base_id": "pet_000604",
       "egg_groups": [
         "昆虫组",
         "机械组"
@@ -16626,6 +17228,7 @@
       "number": "443",
       "name": "诅咒狼灵",
       "stage": 1,
+      "family_base_id": "pet_000606",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -16642,6 +17245,7 @@
       "number": "444",
       "name": "新月狼灵",
       "stage": 2,
+      "family_base_id": "pet_000606",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -16658,6 +17262,7 @@
       "number": "445",
       "name": "银月狼王",
       "stage": 3,
+      "family_base_id": "pet_000606",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -16674,6 +17279,7 @@
       "number": "446",
       "name": "新月鹭",
       "stage": 1,
+      "family_base_id": "pet_000609",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -16690,6 +17296,7 @@
       "number": "447",
       "name": "月辉鹭",
       "stage": 2,
+      "family_base_id": "pet_000609",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -16706,6 +17313,7 @@
       "number": "448",
       "name": "月使鹭纳",
       "stage": 3,
+      "family_base_id": "pet_000609",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -16722,6 +17330,7 @@
       "number": "452",
       "name": "章脑丸",
       "stage": 1,
+      "family_base_id": "pet_000612",
       "egg_groups": [
         "妖精组",
         "软体组"
@@ -16748,6 +17357,7 @@
       "number": "453",
       "name": "智辉章脑",
       "stage": 2,
+      "family_base_id": "pet_000612",
       "egg_groups": [
         "妖精组",
         "软体组"
@@ -16774,6 +17384,7 @@
       "number": "459",
       "name": "小浣蛋",
       "stage": 1,
+      "family_base_id": "pet_000614",
       "egg_groups": [
         "动物组",
         "拟人组"
@@ -16800,6 +17411,7 @@
       "number": "460",
       "name": "黑手浣熊",
       "stage": 2,
+      "family_base_id": "pet_000614",
       "egg_groups": [
         "动物组",
         "拟人组"
@@ -16826,6 +17438,7 @@
       "number": "461",
       "name": "幽铃",
       "stage": 1,
+      "family_base_id": "pet_000616",
       "egg_groups": [
         "妖精组",
         "魔力组"
@@ -16852,6 +17465,7 @@
       "number": "462",
       "name": "摇铃魔偶",
       "stage": 2,
+      "family_base_id": "pet_000616",
       "egg_groups": [
         "妖精组",
         "魔力组"
@@ -16878,6 +17492,7 @@
       "number": "464",
       "name": "布灵",
       "stage": 1,
+      "family_base_id": "pet_000618",
       "egg_groups": [
         "妖精组"
       ],
@@ -16902,6 +17517,7 @@
       "number": "465",
       "name": "布灵布灵",
       "stage": 2,
+      "family_base_id": "pet_000618",
       "egg_groups": [
         "妖精组"
       ],
@@ -16926,6 +17542,7 @@
       "number": "466",
       "name": "果实立方人",
       "stage": 1,
+      "family_base_id": "pet_000622",
       "egg_groups": [],
       "egg_group_ids": [
         1
@@ -16942,6 +17559,7 @@
       "number": "218",
       "name": "烈焰狂战士",
       "stage": 4,
+      "family_base_id": "pet_000081",
       "egg_groups": [
         "巨灵组"
       ],
@@ -16966,6 +17584,7 @@
       "number": "238",
       "name": "满月砣（上弦的样子）",
       "stage": 4,
+      "family_base_id": "pet_000452",
       "egg_groups": [
         "海洋组"
       ],
@@ -16990,6 +17609,7 @@
       "number": "238",
       "name": "满月砣（下弦的样子）",
       "stage": 4,
+      "family_base_id": "pet_000454",
       "egg_groups": [
         "海洋组"
       ],
@@ -17014,6 +17634,7 @@
       "number": "047",
       "name": "护主犬（看守麦田的样子）",
       "stage": 1,
+      "family_base_id": "pet_000628",
       "egg_groups": [
         "动物组"
       ],
@@ -17038,6 +17659,7 @@
       "number": "048",
       "name": "音速犬（看守麦田的样子）",
       "stage": 2,
+      "family_base_id": "pet_000628",
       "egg_groups": [
         "动物组"
       ],
@@ -17062,6 +17684,7 @@
       "number": "162",
       "name": "公平鸽（称量的样子）",
       "stage": 1,
+      "family_base_id": "pet_000630",
       "egg_groups": [
         "天空组"
       ],
@@ -17086,6 +17709,7 @@
       "number": "048",
       "name": "风暴战犬（看守麦田的样子）",
       "stage": 4,
+      "family_base_id": "pet_000628",
       "egg_groups": [
         "动物组"
       ],
