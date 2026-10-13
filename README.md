@@ -2,7 +2,9 @@
 
 这是一个离线 Windows 桌面工具。它保存多个账号各自的种公种母资料，按图鉴蛋组查找一至三代的生蛋路线。
 
-离线图鉴数据 `data/pokedex.json` 依 [CC BY-SA 4.0](data/LICENSE.md) 发布；来源、署名及修改说明见 [SOURCES.md](SOURCES.md)。程序源码尚未单独设置重用许可。
+## 许可
+
+本项目的原创程序源码按 [MIT License](LICENSE) 发布，版权署名为 `hibalikuhina`。离线图鉴数据 `data/pokedex.json` 是独立授权的衍生数据，依 [CC BY-SA 4.0](data/LICENSE.md) 发布，不适用 MIT License；其来源、署名及修改说明见 [SOURCES.md](SOURCES.md)。
 
 ## 运行
 
