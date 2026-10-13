@@ -8,7 +8,7 @@
 - [JayeGT002/rocom-wiki-data](https://github.com/JayeGT002/rocom-wiki-data)：WIKI 数据镜像及结构化 JSON；本地快照取自该项目的 [pets.json](https://jayegt002.github.io/rocom-wiki-data/data/pets.json)，仓库提交 `6ab264cb98eec1dd2dde0d7c6dfa200733a98d63`。本项目只保留查询所需字段，去除描述、图片等字段。
 - [WIKI 孵蛋组别查询](https://wiki.biligame.com/rocom/%E5%AD%B5%E8%9B%8B%E7%BB%84%E5%88%AB%E6%9F%A5%E8%AF%A2)：未发现组不参与配对。
 
-图鉴衍生数据沿用上游声明的 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.zh-hans)；请保留 WIKI 来源、上游仓库和本文件署名。游戏名称和数据版权归原权利方。本项目没有打包游戏图像或音频。
+图鉴衍生数据沿用上游声明的 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.zh-hans)，具体适用范围、署名和修改说明见 [data/LICENSE.md](data/LICENSE.md)。请保留 WIKI 来源、上游仓库和本文件署名。游戏名称和数据版权归原权利方。本项目没有打包游戏图像或音频。
 
 ## 生蛋规则
 

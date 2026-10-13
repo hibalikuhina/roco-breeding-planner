@@ -2,6 +2,8 @@
 
 这是一个离线 Windows 桌面工具。它保存多个账号各自的种公种母资料，按图鉴蛋组查找一至三代的生蛋路线。
 
+离线图鉴数据 `data/pokedex.json` 依 [CC BY-SA 4.0](data/LICENSE.md) 发布；来源、署名及修改说明见 [SOURCES.md](SOURCES.md)。程序源码尚未单独设置重用许可。
+
 ## 运行
 
 需要 Python 3.10 或更新版本，使用标准库，不需要安装依赖。
