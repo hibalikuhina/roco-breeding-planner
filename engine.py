@@ -155,9 +155,7 @@ def route_signature(candidate: Candidate) -> tuple:
     if candidate.mother is not None and candidate.father is not None:
         return ("offspring", display_identity(candidate.pet_id), candidate.sex,
                 route_signature(candidate.mother), route_signature(candidate.father))
-    if candidate.record_id is not None:
-        return ("record", candidate.record_id)
-    return ("unrecorded", display_identity(candidate.pet_id), candidate.sex)
+    return ("base", display_identity(candidate.pet_id), candidate.sex)
 
 
 def final_route_key(candidate: Candidate) -> tuple:
@@ -175,6 +173,23 @@ def record_natures(record: dict) -> dict[tuple[str, str] | None, float]:
         return {pair: 1.0}
     name = (record.get("nature_name") or "").strip()
     return {NATURES[name]: 1.0} if name in NATURES else {None: 1.0}
+
+
+def breeding_record_key(record: dict) -> tuple:
+    """Attributes that affect breeding; nicknames and notes do not distinguish parents."""
+    weight = _value(record.get("size_raw"))
+    voice = record.get("voice_label") or next(
+        (value for value in VOICE[:2] if value in (record.get("medals") or "")), "")
+    nature = next(iter(record_natures(record)))
+    return (record.get("pet_id"), record.get("sex"), weight, voice,
+            bool(record.get("shiny")), bool(record.get("colorful")), nature)
+
+
+def group_breeding_records(records: list[dict]) -> list[list[dict]]:
+    grouped: dict[tuple, list[dict]] = {}
+    for record in records:
+        grouped.setdefault(breeding_record_key(record), []).append(record)
+    return list(grouped.values())
 
 
 def nature_chance(candidate: Candidate, name: str = "", plus: str = "", minus: str = "") -> float | None:
@@ -373,7 +388,8 @@ def search(records: list[dict], target_pet: str | None, targets: list[str], gene
     if target_pet:
         target_pet = display_identity(target_pet)
     owned = []
-    for r in records:
+    for matching in group_breeding_records(records):
+        r = next((record for record in matching if record["id"] in (mother_id, father_id)), matching[0])
         if r["pet_id"] not in PETS or r["sex"] not in ("公", "母"):
             continue
         wp = size_position(r)
@@ -384,8 +400,10 @@ def search(records: list[dict], target_pet: str | None, targets: list[str], gene
                                (wp, 0.0) if wp is not None else None,
                                record_id=r["id"],
                                weight_medals=weight_medals(r, rules["size_edge"] * 100)))
+    owned_kinds = {(display_identity(candidate.pet_id), candidate.sex) for candidate in owned}
     virtual = ([_virtual_parent(p, sex) for p in CATALOG["pets"] if groups(p["id"])
-                for sex in ("母", "公") if sex_rate(p["id"], sex) != 0]
+                for sex in ("母", "公") if sex_rate(p["id"], sex) != 0
+                and (display_identity(p["id"]), sex) not in owned_kinds]
                if allow_unrecorded else [])
     mothers = [c for c in owned + virtual if c.sex == "母"]
     fathers = [c for c in owned + virtual if c.sex == "公"]

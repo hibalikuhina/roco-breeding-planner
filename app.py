@@ -11,7 +11,7 @@ from tkinter import messagebox, simpledialog, ttk
 
 from engine import (ATTRS, CATALOG, DEFAULT_RULES, NATURES, NATURE_BY_PAIR, PETS,
                     ROOT, RULE_INFO, TRAITS, display_identity, final_route_key,
-                    inferred_size, nature_chance, record_traits,
+                    group_breeding_records, inferred_size, nature_chance, record_traits,
                     retained_zero_route, search, target_chance)
 
 USER_DATA = ROOT / "user_data"
@@ -118,7 +118,7 @@ def parent_summary(candidate):
     if candidate.record_id is None:
         prefix = "[未录入] " if not candidate.route else ""
         return f"{prefix}{display_pet_name(candidate.pet_id)}（{candidate.sex}）"
-    return candidate.label
+    return f"[已录入] {display_pet_name(candidate.pet_id)}（{candidate.sex}）"
 
 
 class PetCombobox(ttk.Combobox):
@@ -274,6 +274,12 @@ class App(tk.Tk):
             self.listing.column(col, width=width, stretch=True)
         self.listing.pack(fill="both", expand=True, padx=(0, 12))
         self.listing.bind("<<TreeviewSelect>>", self.select_record)
+        ttk.Label(right, text="当前组的原始记录（属性相同的记录合并显示）").pack(anchor="w", pady=(0, 2))
+        self.record_variant = tk.StringVar()
+        self.record_variant_picker = ttk.Combobox(right, textvariable=self.record_variant,
+                                                  state="readonly")
+        self.record_variant_picker.pack(fill="x", padx=(0, 4))
+        self.record_variant_picker.bind("<<ComboboxSelected>>", self.select_record_variant)
         self.fields = {}
         self.field_widgets = {}
         def field(label, key, values=None):
@@ -464,6 +470,7 @@ class App(tk.Tk):
         self.target_pet.set(self.display_by_id.get(pet_id, ""))
         for variable, record_id in ((self.mother_target, options.get("mother_id")),
                                     (self.father_target, options.get("father_id"))):
+            record_id = self.record_representative.get(record_id, record_id)
             variable.set(next((label for label, value in self.parent_choices.items()
                                if value == record_id), ""))
         generations = options.get("generations", 1)
@@ -516,16 +523,16 @@ class App(tk.Tk):
         lines = [f"最终子代：{child_label(group)}  |  繁育 {len(candidate.route)} 轮",
                  f"未录入亲本：{len(candidate.virtual_keys)} 种", ""]
         if len(group["mothers"]) > 1:
-            lines.append("可用母本形态：" + "、".join(group["mothers"]))
+            lines.append("可用母本记录/形态：" + "、".join(group["mothers"]))
         if len(group["fathers"]) > 1:
-            lines.append("可用父本形态：" + "、".join(group["fathers"]))
+            lines.append("可用父本记录/形态：" + "、".join(group["fathers"]))
         if len(group["children"]) > 1:
             lines.append("子代形态：" + "、".join(group["children"]))
         for forms in group["forms"].values():
             if len(forms) > 1 and len(group["mothers"]) <= 1 and len(group["fathers"]) <= 1:
                 lines.append("路线中可替换的形态：" + "、".join(forms.values()))
         lines.append("")
-        lines.append("各形态及子代性别：")
+        lines.append("各亲本记录、形态及子代性别：")
         for variant in group["candidates"]:
             lines.append(f"父本 {variant.father.label}  ×  母本 {variant.mother.label}  →  {variant.label}："
                          f"目标特征条件概率 {percent(target_chance(variant, self.result_targets, self.result_nature))}"
@@ -631,8 +638,16 @@ class App(tk.Tk):
             return
         self.listing.delete(*self.listing.get_children())
         records = read_records(self.account_id())
-        self.parent_choices = {f"#{r['id']} · {r['name']}（{PETS.get(r['pet_id'], {}).get('name', '?')}）": r["id"] for r in records}
-        record_sexes = {r["id"]: r["sex"] for r in records}
+        groups = group_breeding_records(records)
+        self.record_groups = {group[0]["id"]: group for group in groups}
+        self.record_representative = {record["id"]: group[0]["id"]
+                                      for group in groups for record in group}
+        representatives = [group[0] for group in groups]
+        self.parent_choices = {
+            f"#{r['id']} · {r['name']}（{PETS.get(r['pet_id'], {}).get('name', '?')}）"
+            + (f" ×{len(self.record_groups[r['id']])}" if len(self.record_groups[r['id']]) > 1 else ""): r["id"]
+            for r in representatives}
+        record_sexes = {r["id"]: r["sex"] for r in representatives}
         for picker, variable, sex in ((self.mother_picker, self.mother_target, "母"),
                                       (self.father_picker, self.father_target, "公")):
             choices = ["", *(label for label, record_id in self.parent_choices.items()
@@ -641,7 +656,7 @@ class App(tk.Tk):
             if variable.get() not in choices:
                 variable.set("")
         edge = self.display_rules()["size_edge"] * 100
-        for r in records:
+        for r in representatives:
             features = [(t + "奖牌" if t in ("大块头", "小不点") else t)
                         for t, chance in record_traits(r, edge).items() if chance]
             nature = (r.get("nature_name") or "").strip()
@@ -650,7 +665,9 @@ class App(tk.Tk):
             size = inferred_size(r, edge)
             if size not in ("未录体重", "普通体型", "大块头", "小不点"):
                 features.append(size)
-            self.listing.insert("", "end", iid=str(r["id"]), values=(r["name"], PETS.get(r["pet_id"], {}).get("name", "?"), r["sex"], ", ".join(dict.fromkeys(features))))
+            count = len(self.record_groups[r["id"]])
+            name = r["name"] + (f" ×{count}" if count > 1 else "")
+            self.listing.insert("", "end", iid=str(r["id"]), values=(name, PETS.get(r["pet_id"], {}).get("name", "?"), r["sex"], ", ".join(dict.fromkeys(features))))
         self._update_query_hint()
         self.refresh_dex()
 
@@ -668,6 +685,8 @@ class App(tk.Tk):
 
     def clear_record(self):
         self.selected_id = None
+        self.record_variant.set("")
+        self.record_variant_picker.configure(values=[])
         self._nature_syncing = True
         for variable in self.fields.values():
             variable.set("")
@@ -681,7 +700,21 @@ class App(tk.Tk):
         selection = self.listing.selection()
         if not selection:
             return
-        record_id = int(selection[0])
+        representative_id = int(selection[0])
+        matching = self.record_groups.get(representative_id, [])
+        self.record_variant_choices = {f"#{record['id']} · {record['name']}": record["id"]
+                                       for record in matching}
+        self.record_variant_picker.configure(values=list(self.record_variant_choices))
+        if self.record_variant_choices:
+            self.record_variant.set(next(iter(self.record_variant_choices)))
+            self._load_record(self.record_variant_choices[self.record_variant.get()])
+
+    def select_record_variant(self, _event=None):
+        record_id = self.record_variant_choices.get(self.record_variant.get())
+        if record_id is not None:
+            self._load_record(record_id)
+
+    def _load_record(self, record_id):
         with db() as connection:
             row = connection.execute("SELECT * FROM specimens WHERE id=? AND account=?", (record_id, self.account_id())).fetchone()
         if not row:
@@ -834,7 +867,7 @@ class App(tk.Tk):
             self.query_status.configure(text=heading + "。没有找到满足目标的兼容路线；可调整亲本、目标或代数。")
         else:
             self.result_groups = sorted(group_final_routes(results), key=result_number_key)
-            self.query_status.configure(text=heading + f"。显示 {len(self.result_groups)} 条路线；同编号形态和子代性别已合并，双击查看各形态及概率。")
+            self.query_status.configure(text=heading + f"。显示 {len(self.result_groups)} 条路线；同种亲本、形态和子代性别已合并，双击查看各记录及概率。")
             for index, group in enumerate(self.result_groups):
                 candidate = next(iter(group["variants"].values()))
                 if retained_zero_route(candidate, targets, nature):
