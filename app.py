@@ -4,10 +4,17 @@ from __future__ import annotations
 import sqlite3
 import math
 import json
+import re
+import sys
 import tkinter as tk
 import uuid
 from contextlib import contextmanager
+from functools import lru_cache
 from tkinter import messagebox, simpledialog, ttk
+
+if sys.platform == "win32":
+    import ctypes
+    from ctypes import wintypes
 
 from engine import (ATTRS, CATALOG, DEFAULT_RULES, NATURES, NATURE_BY_PAIR, PETS,
                     ROOT, RULE_INFO, TRAITS, display_identity, final_route_key,
@@ -64,6 +71,50 @@ def percent(value: float | None) -> str:
     if 0 < value * 100 < 0.01:
         return "<0.01%"
     return f"{value * 100:.2f}%"
+
+
+@lru_cache(maxsize=None)
+def dex_text_key(value: str):
+    """Use Windows Chinese pinyin collation for names and other text."""
+    value = value.casefold()
+    if sys.platform != "win32":
+        return value
+    mapper = ctypes.windll.kernel32.LCMapStringEx
+    mapper.argtypes = (wintypes.LPCWSTR, wintypes.DWORD, wintypes.LPCWSTR,
+                       ctypes.c_int, ctypes.c_void_p, ctypes.c_int,
+                       ctypes.c_void_p, ctypes.c_void_p, ctypes.c_void_p)
+    mapper.restype = ctypes.c_int
+    size = mapper("zh-CN", 0x400, value, -1, None, 0, None, None, None)
+    if not size:
+        raise OSError("Cannot create Chinese text sort key")
+    buffer = ctypes.create_string_buffer(size)
+    if not mapper("zh-CN", 0x400, value, -1, buffer, size, None, None, None):
+        raise OSError("Cannot create Chinese text sort key")
+    return buffer.raw
+
+
+def dex_number_key(pet):
+    number = pet.get("number") or ""
+    return (int(number) if number.isdigit() else float("inf"), number)
+
+
+def dex_primary_value(pet, column):
+    if column == "number":
+        return dex_number_key(pet)
+    if column == "name":
+        return dex_text_key(pet["name"])
+    if column == "groups":
+        return dex_text_key("、".join(pet["egg_groups"]) or "未发现")
+    if column == "sex":
+        ratio = pet.get("gender_ratio")
+        if not ratio:
+            return None
+        total = ratio.get("male", 0) + ratio.get("female", 0)
+        return ratio.get("male", 0) / total if total else None
+    if column == "weight":
+        match = re.match(r"\s*(\d+(?:\.\d+)?)\s*~\s*(\d+(?:\.\d+)?)", pet.get("adult_weight_range") or "")
+        return (float(match[1]), float(match[2])) if match else None
+    raise ValueError(f"Unknown Pokédex sort column: {column}")
 
 
 def group_final_routes(candidates):
@@ -596,9 +647,26 @@ class App(tk.Tk):
         entry = ttk.Entry(top, textvariable=self.dex_search)
         entry.pack(side="left", fill="x", expand=True, padx=10)
         self.dex_search.trace_add("write", lambda *_: self.refresh_dex())
-        self.dex_list = ttk.Treeview(self.dex_tab, columns=("number", "name", "groups", "sex", "weight"), show="headings")
-        for col, label, width in (("number", "编号", 75), ("name", "精灵", 170), ("groups", "蛋组", 200), ("sex", "雌雄比例", 110), ("weight", "成年体重范围", 160)):
-            self.dex_list.heading(col, text=label)
+        filters = ttk.Frame(self.dex_tab)
+        filters.pack(fill="x", pady=(0, 8))
+        ttk.Label(filters, text="归属赛季").pack(side="left")
+        self.dex_season = tk.StringVar(value="全部")
+        seasons = sorted({pet["season"] for pet in CATALOG["pets"] if pet.get("season")},
+                         key=lambda season: int(season[1:]))
+        ttk.Combobox(filters, textvariable=self.dex_season,
+                     values=("全部", *seasons, "无赛季"), state="readonly", width=10).pack(side="left", padx=(8, 20))
+        self.dex_shiny = tk.BooleanVar(value=False)
+        ttk.Checkbutton(filters, text="仅显示有异色", variable=self.dex_shiny).pack(side="left")
+        self.dex_season.trace_add("write", lambda *_: self.refresh_dex())
+        self.dex_shiny.trace_add("write", lambda *_: self.refresh_dex())
+        self.dex_columns = (("number", "编号", 75), ("name", "精灵", 170),
+                            ("groups", "蛋组", 200), ("sex", "雌雄比例", 110),
+                            ("weight", "成年体重范围", 160))
+        self.dex_sort_column = "number"
+        self.dex_sort_desc = False
+        self.dex_list = ttk.Treeview(self.dex_tab, columns=tuple(col for col, _, _ in self.dex_columns), show="headings")
+        for col, label, width in self.dex_columns:
+            self.dex_list.heading(col, text=label, command=lambda selected=col: self.sort_dex_by(selected))
             self.dex_list.column(col, width=width)
         self.dex_list.pack(fill="both", expand=True)
         self.dex_list.bind("<<TreeviewSelect>>", self.show_dex_detail)
@@ -882,26 +950,55 @@ class App(tk.Tk):
                     len(candidate.route), father, mother, child_label(group),
                     len(candidate.virtual_keys), note))
 
+    def sort_dex_by(self, column):
+        if self.dex_sort_column == column:
+            self.dex_sort_desc = not self.dex_sort_desc
+        else:
+            self.dex_sort_column = column
+            self.dex_sort_desc = False
+        self.refresh_dex()
+
     def refresh_dex(self):
         if not hasattr(self, "dex_list"):
             return
         needle = self.dex_search.get().strip().lower()
-        self.dex_list.delete(*self.dex_list.get_children())
+        season_filter = self.dex_season.get()
+        shiny_only = self.dex_shiny.get()
+        pets = []
         for pet in CATALOG["pets"]:
-            hay = " ".join((pet["name"] or "", pet["number"] or "", *pet["egg_groups"])).lower()
-            if needle and needle not in hay:
+            if season_filter != "全部" and pet.get("season") != (None if season_filter == "无赛季" else season_filter):
                 continue
+            if shiny_only and not pet.get("has_shiny"):
+                continue
+            hay = " ".join((pet["name"] or "", pet["number"] or "", *pet["egg_groups"])).lower()
+            if not needle or needle in hay:
+                pets.append(pet)
+        pets.sort(key=lambda pet: (dex_number_key(pet), dex_text_key(pet["name"]), pet["id"]))
+        known = [pet for pet in pets if dex_primary_value(pet, self.dex_sort_column) is not None]
+        unknown = [pet for pet in pets if dex_primary_value(pet, self.dex_sort_column) is None]
+        known.sort(key=lambda pet: dex_primary_value(pet, self.dex_sort_column), reverse=self.dex_sort_desc)
+        for col, label, _ in self.dex_columns:
+            arrow = (" ↓" if self.dex_sort_desc else " ↑") if col == self.dex_sort_column else ""
+            self.dex_list.heading(col, text=label + arrow)
+        self.dex_list.delete(*self.dex_list.get_children())
+        self.dex_detail.configure(text="")
+        for pet in known + unknown:
             ratio = pet.get("gender_ratio") or {}
             sex = f"公 {ratio.get('male','?')} : 母 {ratio.get('female','?')}"
             weight = pet.get("adult_weight_range") or "未知"
-            self.dex_list.insert("", "end", iid=pet["id"], values=(pet["number"], pet["name"], ", ".join(pet["egg_groups"]) or "未发现", sex, weight))
+            self.dex_list.insert("", "end", iid=pet["id"], values=(
+                pet["number"], pet["name"], ", ".join(pet["egg_groups"]) or "未发现",
+                sex, weight))
 
     def show_dex_detail(self, _event=None):
         selection = self.dex_list.selection()
         if not selection:
             return
         pet = PETS[selection[0]]
-        text = f"{pet['name']}｜图鉴 {pet['number']}｜成年体重范围 {pet.get('adult_weight_range') or '未知'}｜成年身高范围 {pet.get('adult_height_range') or '未知'}"
+        text = (f"{pet['name']}｜图鉴 {pet['number']}｜归属赛季 {pet.get('season') or '无'}"
+                f"｜异色 {'有' if pet.get('has_shiny') else '无'}"
+                f"｜成年体重范围 {pet.get('adult_weight_range') or '未知'}"
+                f"｜成年身高范围 {pet.get('adult_height_range') or '未知'}")
         self.dex_detail.configure(text=text)
 
 
