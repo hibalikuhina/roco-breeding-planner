@@ -1,11 +1,12 @@
 # 数据来源与核对记录
 
-核对日期：2026-10-12。
+核对日期：2026-10-14。
 
 ## 离线图鉴
 
 - [洛克王国世界 WIKI 精灵图鉴](https://wiki.biligame.com/rocom/%E7%B2%BE%E7%81%B5%E5%9B%BE%E9%89%B4)：上游社区图鉴。
 - [JayeGT002/rocom-wiki-data](https://github.com/JayeGT002/rocom-wiki-data)：WIKI 数据镜像及结构化 JSON；本地快照取自该项目的 [pets.json](https://jayegt002.github.io/rocom-wiki-data/data/pets.json)，仓库提交 `6ab264cb98eec1dd2dde0d7c6dfa200733a98d63`。本项目只保留查询所需字段，去除描述、图片等字段。
+- [新版 WIKI 精灵列表](https://wiki.biligame.com/nrc/%E7%B2%BE%E7%81%B5%E5%88%97%E8%A1%A8)：`season` 字段的直接来源。刷新脚本按稳定的精灵 ID 对应每个形态，读取页面的「归属赛季」标记；页面标为无赛季的形态保留 `null`。这里的归属赛季包含当季新增异色及特殊形态，并非仅指当季首次推出的新精灵。例如，编号 021 的小灵菇在 WIKI 归属 S4，尽管它不在上游仓库单独维护的 23 条 S4 新精灵文件中。核对时 WIKI 的 625 条形态中，S1 52 条、S2 43 条、S3 58 条、S4 50 条，另有 422 条无赛季。
 - [WIKI 孵蛋组别查询](https://wiki.biligame.com/rocom/%E5%AD%B5%E8%9B%8B%E7%BB%84%E5%88%AB%E6%9F%A5%E8%AF%A2)：未发现组不参与配对。
 
 图鉴衍生数据沿用上游声明的 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.zh-hans)，具体适用范围、署名和修改说明见 [data/LICENSE.md](data/LICENSE.md)。请保留 WIKI 来源、上游仓库和本文件署名。游戏名称和数据版权归原权利方。本项目没有打包游戏图像或音频。
