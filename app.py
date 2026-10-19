@@ -172,6 +172,28 @@ def parent_summary(candidate):
     return f"[已录入] {display_pet_name(candidate.pet_id)}（{candidate.sex}）"
 
 
+def record_features(record, edge_percent):
+    features = [(trait + "奖牌" if trait in ("大块头", "小不点") else trait)
+                for trait, chance in record_traits(record, edge_percent).items() if chance]
+    nature = (record.get("nature_name") or "").strip()
+    if nature:
+        features.append(nature)
+    size = inferred_size(record, edge_percent)
+    if size not in ("未录体重", "普通体型", "大块头", "小不点"):
+        features.append(size)
+    return ", ".join(dict.fromkeys(features))
+
+
+def record_matches_filters(record, edge_percent, medal="全部", shiny="全部", colorful="全部"):
+    traits = record_traits(record, edge_percent)
+    if medal != "全部" and traits.get(medal) != 1.0:
+        return False
+    for choice, key in ((shiny, "shiny"), (colorful, "colorful")):
+        if choice != "全部" and bool(record.get(key)) != (choice == "有"):
+            return False
+    return True
+
+
 def first_generation_steps(candidate):
     if candidate.mother is None or candidate.father is None:
         return []
@@ -336,12 +358,31 @@ class App(tk.Tk):
         canvas.bind("<Configure>", lambda e: canvas.itemconfigure(form_window, width=e.width))
         pane.add(left, weight=3)
         pane.add(right_shell, weight=2)
+        filters = ttk.Frame(left)
+        filters.pack(fill="x", padx=(0, 12), pady=(0, 8))
+        self.record_medal_filter = tk.StringVar(value="全部")
+        self.record_shiny_filter = tk.StringVar(value="全部")
+        self.record_colorful_filter = tk.StringVar(value="全部")
+        for label, variable, choices, width in (
+            ("奖牌", self.record_medal_filter, ("全部", "大块头", "小不点", "婉转声", "粗嗓门"), 9),
+            ("异色", self.record_shiny_filter, ("全部", "有", "无"), 5),
+            ("炫彩", self.record_colorful_filter, ("全部", "有", "无"), 5),
+        ):
+            ttk.Label(filters, text=label).pack(side="left", padx=(0, 4))
+            ttk.Combobox(filters, textvariable=variable, values=choices,
+                         state="readonly", width=width).pack(side="left", padx=(0, 12))
+        self.record_columns = (("name", "昵称", 130), ("pet", "精灵", 140),
+                               ("sex", "性别", 55), ("features", "特征", 300))
+        self.record_sort_column = None
+        self.record_sort_desc = False
         self.listing = ttk.Treeview(left, columns=("name", "pet", "sex", "features"), show="headings", selectmode="browse")
-        for col, label, width in (("name", "昵称", 130), ("pet", "精灵", 140), ("sex", "性别", 55), ("features", "特征", 300)):
-            self.listing.heading(col, text=label)
+        for col, label, width in self.record_columns:
+            self.listing.heading(col, text=label, command=lambda selected=col: self.sort_records_by(selected))
             self.listing.column(col, width=width, stretch=True)
         self.listing.pack(fill="both", expand=True, padx=(0, 12))
         self.listing.bind("<<TreeviewSelect>>", self.select_record)
+        for variable in (self.record_medal_filter, self.record_shiny_filter, self.record_colorful_filter):
+            variable.trace_add("write", lambda *_: self.refresh_records())
         ttk.Label(right, text="当前组的原始记录（属性相同的记录合并显示）").pack(anchor="w", pady=(0, 2))
         self.record_variant = tk.StringVar()
         self.record_variant_picker = ttk.Combobox(right, textvariable=self.record_variant,
@@ -728,6 +769,21 @@ class App(tk.Tk):
     def refresh(self):
         if not hasattr(self, "listing"):
             return
+        self.refresh_records()
+        self._update_query_hint()
+        self.refresh_dex()
+
+    def sort_records_by(self, column):
+        if self.record_sort_column == column:
+            self.record_sort_desc = not self.record_sort_desc
+        else:
+            self.record_sort_column = column
+            self.record_sort_desc = False
+        self.refresh_records()
+
+    def refresh_records(self):
+        selected_id = self.selected_id
+        selected_iid = str(self.record_representative.get(selected_id, selected_id)) if selected_id is not None and hasattr(self, "record_representative") else None
         self.listing.delete(*self.listing.get_children())
         records = read_records(self.account_id())
         groups = group_breeding_records(records)
@@ -748,20 +804,42 @@ class App(tk.Tk):
             if variable.get() not in choices:
                 variable.set("")
         edge = self.display_rules()["size_edge"] * 100
+        visible = []
         for r in representatives:
-            features = [(t + "奖牌" if t in ("大块头", "小不点") else t)
-                        for t, chance in record_traits(r, edge).items() if chance]
-            nature = (r.get("nature_name") or "").strip()
-            if nature:
-                features.append(nature)
-            size = inferred_size(r, edge)
-            if size not in ("未录体重", "普通体型", "大块头", "小不点"):
-                features.append(size)
+            if not record_matches_filters(r, edge, self.record_medal_filter.get(),
+                                          self.record_shiny_filter.get(), self.record_colorful_filter.get()):
+                continue
             count = len(self.record_groups[r["id"]])
             name = r["name"] + (f" ×{count}" if count > 1 else "")
-            self.listing.insert("", "end", iid=str(r["id"]), values=(name, PETS.get(r["pet_id"], {}).get("name", "?"), r["sex"], ", ".join(dict.fromkeys(features))))
-        self._update_query_hint()
-        self.refresh_dex()
+            visible.append((r, (name, PETS.get(r["pet_id"], {}).get("name", "?"),
+                                r["sex"], record_features(r, edge))))
+        if self.record_sort_column is not None:
+            index = next(i for i, (column, _, _) in enumerate(self.record_columns)
+                         if column == self.record_sort_column)
+            visible.sort(key=lambda item: (dex_text_key(item[1][index]), item[0]["id"]),
+                         reverse=self.record_sort_desc)
+        for column, label, _ in self.record_columns:
+            arrow = (" ↓" if self.record_sort_desc else " ↑") if column == self.record_sort_column else ""
+            self.listing.heading(column, text=label + arrow)
+        for r, values in visible:
+            self.listing.insert("", "end", iid=str(r["id"]), values=values)
+        if selected_iid is not None:
+            if self.listing.exists(selected_iid):
+                self.listing.selection_set(selected_iid)
+                self.after_idle(lambda record_id=selected_id: self._restore_record_variant(record_id))
+            else:
+                self.clear_record()
+
+    def _restore_record_variant(self, record_id):
+        selection = self.listing.selection()
+        if not selection or not any(r["id"] == record_id for r in self.record_groups.get(int(selection[0]), [])):
+            return
+        self.select_record()
+        label = next((label for label, value in self.record_variant_choices.items()
+                      if value == record_id), None)
+        if label is not None:
+            self.record_variant.set(label)
+            self._load_record(record_id)
 
     def update_pet_preview(self):
         if not hasattr(self, "pet_info"):
