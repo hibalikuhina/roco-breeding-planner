@@ -185,13 +185,13 @@ def record_features(record, edge_percent):
 
 
 def record_matches_filters(record, edge_percent, size_medal="全部", voice_medal="全部",
-                           shiny="全部", colorful="全部"):
+                           shiny_only=False, colorful_only=False):
     traits = record_traits(record, edge_percent)
     for medal in (size_medal, voice_medal):
         if medal != "全部" and traits.get(medal) != 1.0:
             return False
-    for choice, key in ((shiny, "shiny"), (colorful, "colorful")):
-        if choice != "全部" and bool(record.get(key)) != (choice == "有"):
+    for checked, key in ((shiny_only, "shiny"), (colorful_only, "colorful")):
+        if checked and not record.get(key):
             return False
     return True
 
@@ -364,17 +364,17 @@ class App(tk.Tk):
         filters.pack(fill="x", padx=(0, 12), pady=(0, 8))
         self.record_size_medal_filter = tk.StringVar(value="全部")
         self.record_voice_medal_filter = tk.StringVar(value="全部")
-        self.record_shiny_filter = tk.StringVar(value="全部")
-        self.record_colorful_filter = tk.StringVar(value="全部")
+        self.record_shiny_filter = tk.BooleanVar(value=False)
+        self.record_colorful_filter = tk.BooleanVar(value=False)
         for label, variable, choices, width in (
             ("体型奖牌", self.record_size_medal_filter, ("全部", "大块头", "小不点"), 8),
             ("声音奖牌", self.record_voice_medal_filter, ("全部", "婉转声", "粗嗓门"), 8),
-            ("异色", self.record_shiny_filter, ("全部", "有", "无"), 5),
-            ("炫彩", self.record_colorful_filter, ("全部", "有", "无"), 5),
         ):
             ttk.Label(filters, text=label).pack(side="left", padx=(0, 4))
             ttk.Combobox(filters, textvariable=variable, values=choices,
                          state="readonly", width=width).pack(side="left", padx=(0, 12))
+        ttk.Checkbutton(filters, text="仅异色", variable=self.record_shiny_filter).pack(side="left", padx=(0, 12))
+        ttk.Checkbutton(filters, text="仅炫彩", variable=self.record_colorful_filter).pack(side="left")
         self.record_columns = (("name", "昵称", 130), ("pet", "精灵", 140),
                                ("sex", "性别", 55), ("features", "特征", 300))
         self.record_sort_column = None
