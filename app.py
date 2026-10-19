@@ -167,9 +167,23 @@ def result_number_key(group):
 
 def parent_summary(candidate):
     if candidate.record_id is None:
-        prefix = "[未录入] " if not candidate.route else ""
+        prefix = "[未录入] " if not candidate.route else "[需先孵出] "
         return f"{prefix}{display_pet_name(candidate.pet_id)}（{candidate.sex}）"
     return f"[已录入] {display_pet_name(candidate.pet_id)}（{candidate.sex}）"
+
+
+def grouped_parent_summary(group, role):
+    parents = [getattr(candidate, role) for candidate in group["candidates"]]
+    labels = {"已录入" if parent.record_id is not None else
+              "需先孵出" if parent.route else "未录入" for parent in parents}
+    if len(labels) == 1:
+        return parent_summary(parents[0])
+    statuses = [status for status in ("已录入", "未录入", "需先孵出") if status in labels]
+    return f"[{'/'.join(statuses)}] {display_pet_name(parents[0].pet_id)}（{parents[0].sex}）"
+
+
+def detail_parent_label(candidate):
+    return ("[需先孵出] " if candidate.record_id is None and candidate.route else "") + candidate.label
 
 
 class PetCombobox(ttk.Combobox):
@@ -571,8 +585,9 @@ class App(tk.Tk):
         body.configure(yscrollcommand=scrollbar.set)
         body.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
-        lines = [f"最终子代：{child_label(group)}  |  繁育 {len(candidate.route)} 轮",
-                 f"未录入亲本：{len(candidate.virtual_keys)} 种", ""]
+        lengths = sorted({len(variant.route) for variant in group["candidates"]})
+        lines = [f"最终子代：{child_label(group)}  |  繁育轮数：{'、'.join(map(str, lengths))}",
+                 "同一最终配对的不同取得方式已合并；下方分别列出路线。", ""]
         if len(group["mothers"]) > 1:
             lines.append("可用母本记录/形态：" + "、".join(group["mothers"]))
         if len(group["fathers"]) > 1:
@@ -585,27 +600,33 @@ class App(tk.Tk):
         lines.append("")
         lines.append("各亲本记录、形态及子代性别：")
         for variant in group["candidates"]:
-            lines.append(f"父本 {variant.father.label}  ×  母本 {variant.mother.label}  →  {variant.label}："
+            lines.append(f"父本 {detail_parent_label(variant.father)}  ×  母本 {detail_parent_label(variant.mother)}  →  {variant.label}："
                          f"目标特征条件概率 {percent(target_chance(variant, self.result_targets, self.result_nature))}"
                          f"  |  性别路径 {percent(variant.probability)}")
         lines.append("")
         if retained_zero_route(candidate, self.result_targets, self.result_nature):
             lines.append("模型估算为 0%；至少一方按录入体重与体型奖牌边缘参数判为目标奖牌，因此保留此路线。")
             lines.append("")
-        steps = []
-        def collect(current):
-            if current.mother is None or current.father is None:
-                return
-            collect(current.mother)
-            collect(current.father)
-            steps.append(current)
-        collect(candidate)
-        for index, step in enumerate(steps, 1):
-            offspring = child_label(group) if step is candidate else step.label
-            lines.append(f"第 {index} 轮：母本 {step.mother.label}  ×  父本 {step.father.label}  →  {offspring}")
-            lines.append("    特征估算：" + "  ".join(f"{t} {percent(step.traits[t])}" for t in TRAITS))
-            if step.conditional_medal_parents:
-                lines.append("    前提：" + "；".join(step.conditional_medal_parents))
+        seen_routes = set()
+        for variant in group["candidates"]:
+            if variant.route in seen_routes:
+                continue
+            seen_routes.add(variant.route)
+            lines.append(f"路线 {len(seen_routes)}：繁育 {len(variant.route)} 轮；未录入亲本 {len(variant.virtual_keys)} 种")
+            steps = []
+            def collect(current):
+                if current.mother is None or current.father is None:
+                    return
+                collect(current.mother)
+                collect(current.father)
+                steps.append(current)
+            collect(variant)
+            for index, step in enumerate(steps, 1):
+                offspring = child_label(group) if step is variant else step.label
+                lines.append(f"第 {index} 轮：母本 {detail_parent_label(step.mother)}  ×  父本 {detail_parent_label(step.father)}  →  {offspring}")
+                lines.append("    特征估算：" + "  ".join(f"{t} {percent(step.traits[t])}" for t in TRAITS))
+                if step.conditional_medal_parents:
+                    lines.append("    前提：" + "；".join(step.conditional_medal_parents))
             lines.append("")
         if any(self.result_nature):
             lines.append("性格目标：" + "/".join(x or "不限" for x in self.result_nature)
@@ -935,7 +956,7 @@ class App(tk.Tk):
             self.query_status.configure(text=heading + "。没有找到满足目标的兼容路线；可调整亲本、目标或代数。")
         else:
             self.result_groups = sorted(group_final_routes(results), key=result_number_key)
-            self.query_status.configure(text=heading + f"。显示 {len(self.result_groups)} 条路线；同种亲本、形态和子代性别已合并，双击查看各记录及概率。")
+            self.query_status.configure(text=heading + f"。显示 {len(self.result_groups)} 组最终配对；同种亲本、取得方式、形态和子代性别已合并，双击查看各路线及概率。")
             for index, group in enumerate(self.result_groups):
                 candidate = next(iter(group["variants"].values()))
                 if retained_zero_route(candidate, targets, nature):
@@ -944,11 +965,13 @@ class App(tk.Tk):
                     note = "须先孵出带牌亲本"
                 else:
                     note = "双击查看步骤"
-                father = parent_summary(candidate.father)
-                mother = parent_summary(candidate.mother)
+                father = grouped_parent_summary(group, "father")
+                mother = grouped_parent_summary(group, "mother")
+                generations = sorted({len(variant.route) for variant in group["candidates"]})
+                virtual_counts = sorted({len(variant.virtual_keys) for variant in group["candidates"]})
                 self.results.insert("", "end", iid=str(index), values=(
-                    len(candidate.route), father, mother, child_label(group),
-                    len(candidate.virtual_keys), note))
+                    "/".join(map(str, generations)), father, mother, child_label(group),
+                    "/".join(map(str, virtual_counts)), note))
 
     def sort_dex_by(self, column):
         if self.dex_sort_column == column:

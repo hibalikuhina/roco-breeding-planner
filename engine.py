@@ -151,15 +151,10 @@ def display_identity(pet_id: str) -> str:
     return PETS[base_id]["number"]
 
 
-def route_signature(candidate: Candidate) -> tuple:
-    if candidate.mother is not None and candidate.father is not None:
-        return ("offspring", display_identity(candidate.pet_id), candidate.sex,
-                route_signature(candidate.mother), route_signature(candidate.father))
-    return ("base", display_identity(candidate.pet_id), candidate.sex)
-
-
 def final_route_key(candidate: Candidate) -> tuple:
-    return (route_signature(candidate.mother), route_signature(candidate.father),
+    """Group routes by the final pairing, regardless of how a parent is obtained."""
+    return (display_identity(candidate.mother.pet_id), candidate.mother.sex,
+            display_identity(candidate.father.pet_id), candidate.father.sex,
             display_identity(candidate.pet_id))
 
 
