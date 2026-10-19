@@ -2,7 +2,7 @@
 
 import unittest
 
-from app import first_generation_summary, group_final_routes
+from app import child_label, first_generation_summary, group_final_routes
 from engine import (Candidate, DEFAULT_RULES, PETS, final_route_key,
                     first_generation_uses_record, groups, search)
 
@@ -20,6 +20,13 @@ class FinalPairGroupingTest(unittest.TestCase):
                    and "昆虫组" not in groups(candidate.pet_id)]
         self.assertTrue(bridged)
         self.assertTrue(all(candidate.conditional_medal_parents for candidate in bridged))
+        grouped = group_final_routes(results)
+        visible_rows = [(first_generation_summary(next(iter(group["variants"].values())), "father"),
+                         first_generation_summary(next(iter(group["variants"].values())), "mother"),
+                         child_label(group)) for group in grouped]
+        self.assertEqual(len(visible_rows), len(set(visible_rows)))
+        self.assertEqual(sum("小草虫" in mother and "小草虫" in child
+                             for _, mother, child in visible_rows), 1)
 
     def test_unrecorded_and_projected_parent_share_one_row(self):
         mother_id = next(p["id"] for p in PETS.values() if p["name"] == "小草虫")

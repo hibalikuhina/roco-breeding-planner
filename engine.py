@@ -152,10 +152,18 @@ def display_identity(pet_id: str) -> str:
 
 
 def final_route_key(candidate: Candidate) -> tuple:
-    """Group routes by the final pairing, regardless of how a parent is obtained."""
-    return (display_identity(candidate.mother.pet_id), candidate.mother.sex,
-            display_identity(candidate.father.pet_id), candidate.father.sex,
-            display_identity(candidate.pet_id))
+    """Group routes by the parents shown in the list and the final offspring."""
+    def parent_key(parent: Candidate) -> tuple:
+        return (display_identity(parent.pet_id), parent.sex, parent.record_id is not None)
+
+    def first_pairs(current: Candidate) -> tuple:
+        if current.mother is None or current.father is None:
+            return ()
+        if current.mother.mother is None and current.father.mother is None:
+            return ((parent_key(current.mother), parent_key(current.father)),)
+        return first_pairs(current.mother) + first_pairs(current.father)
+
+    return first_pairs(candidate), display_identity(candidate.pet_id)
 
 
 def first_generation_uses_record(candidate: Candidate, record_id: int) -> bool:

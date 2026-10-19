@@ -118,7 +118,7 @@ def dex_primary_value(pet, column):
 
 
 def group_final_routes(candidates):
-    """Merge sex variants and catalog forms of the same pet."""
+    """Merge routes that have the same visible first parents and final offspring."""
     grouped = {}
     def remember_forms(candidate, forms):
         if candidate.mother is not None and candidate.father is not None:
@@ -1047,7 +1047,7 @@ class App(tk.Tk):
         else:
             self.result_groups = sorted(group_final_routes(results), key=result_number_key)
             cap_hint = "；已达到 200 组显示上限，可能还有其他路线" if len(self.result_groups) >= 200 else ""
-            self.query_status.configure(text=heading + f"。显示 {len(self.result_groups)} 组最终配对{cap_hint}；列表显示代表路线的首代父母和最终子代，双击查看各条完整路线及概率。")
+            self.query_status.configure(text=heading + f"。显示 {len(self.result_groups)} 组首代父母与最终子代{cap_hint}；不同后续配对已合并，双击查看各条完整路线及概率。")
             for index, group in enumerate(self.result_groups):
                 candidate = next(iter(group["variants"].values()))
                 route_count = len({variant.route for variant in group["candidates"]})
