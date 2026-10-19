@@ -158,6 +158,16 @@ def final_route_key(candidate: Candidate) -> tuple:
             display_identity(candidate.pet_id))
 
 
+def first_generation_uses_record(candidate: Candidate, record_id: int) -> bool:
+    """Selected records belong to an initial pairing, not only a later pairing."""
+    if candidate.mother is None or candidate.father is None:
+        return False
+    if not candidate.mother.route and not candidate.father.route:
+        return record_id in (candidate.mother.record_id, candidate.father.record_id)
+    return (first_generation_uses_record(candidate.mother, record_id)
+            or first_generation_uses_record(candidate.father, record_id))
+
+
 def _combine(a: float | None, b: float | None) -> float | None:
     return None if a is None or b is None else a * b
 
@@ -416,16 +426,15 @@ def search(records: list[dict], target_pet: str | None, targets: list[str], gene
         relevant_groups.update(groups(selected_mother.pet_id))
     if selected_father:
         relevant_groups.update(groups(selected_father.pet_id))
-    if relevant_groups:
-        mothers = [m for m in mothers if m.record_id == mother_id or
-                   bool((groups(m.pet_id) | groups(PETS[m.pet_id]["family_base_id"]))
-                        & relevant_groups)]
+    initial_mothers = ([m for m in mothers if m.record_id == mother_id or
+                        bool((groups(m.pet_id) | groups(PETS[m.pet_id]["family_base_id"]))
+                             & relevant_groups)] if relevant_groups else mothers)
     fathers_by_group: dict[str, list[Candidate]] = {}
     for father in fathers:
         for group in groups(father.pet_id):
             fathers_by_group.setdefault(group, []).append(father)
     frontier = []
-    for m in mothers:
+    for m in initial_mothers:
         possible_fathers = {id(f): f for group in groups(m.pet_id)
                             for f in fathers_by_group.get(group, ())}.values()
         for f in possible_fathers:
@@ -463,8 +472,8 @@ def search(records: list[dict], target_pet: str | None, targets: list[str], gene
     first_generation: list[Candidate] = []
     for generation in range(1, min(3, max(1, generations)) + 1):
         results.extend(c for c in frontier if (target_pet is None or display_identity(c.pet_id) == target_pet)
-                       and (mother_id is None or c.mother_record_id == mother_id)
-                       and (father_id is None or c.father_record_id == father_id)
+                       and (mother_id is None or first_generation_uses_record(c, mother_id))
+                       and (father_id is None or first_generation_uses_record(c, father_id))
                        and (target_chance(c, targets, nature) != 0
                             or retained_zero_route(c, targets, nature)))
         if generation == generations:

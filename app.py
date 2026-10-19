@@ -160,8 +160,8 @@ def display_pet_name(pet_id):
 
 def result_number_key(group):
     return tuple(min(int(PETS[pet_id]["number"]) for pet_id in ids) for ids in (
-        [c.father.pet_id for c in group["candidates"]],
-        [c.mother.pet_id for c in group["candidates"]],
+        [step.father.pet_id for c in group["candidates"] for step in first_generation_steps(c)],
+        [step.mother.pet_id for c in group["candidates"] for step in first_generation_steps(c)],
         [c.pet_id for c in group["candidates"]]))
 
 
@@ -172,14 +172,17 @@ def parent_summary(candidate):
     return f"[已录入] {display_pet_name(candidate.pet_id)}（{candidate.sex}）"
 
 
-def grouped_parent_summary(group, role):
-    parents = [getattr(candidate, role) for candidate in group["candidates"]]
-    labels = {"已录入" if parent.record_id is not None else
-              "需先孵出" if parent.route else "未录入" for parent in parents}
-    if len(labels) == 1:
-        return parent_summary(parents[0])
-    statuses = [status for status in ("已录入", "未录入", "需先孵出") if status in labels]
-    return f"[{'/'.join(statuses)}] {display_pet_name(parents[0].pet_id)}（{parents[0].sex}）"
+def first_generation_steps(candidate):
+    if candidate.mother is None or candidate.father is None:
+        return []
+    if not candidate.mother.route and not candidate.father.route:
+        return [candidate]
+    return first_generation_steps(candidate.mother) + first_generation_steps(candidate.father)
+
+
+def first_generation_summary(candidate, role):
+    return " / ".join(dict.fromkeys(parent_summary(getattr(step, role))
+                                  for step in first_generation_steps(candidate)))
 
 
 def detail_parent_label(candidate):
@@ -428,7 +431,7 @@ class App(tk.Tk):
         ttk.Label(parents, text="指定父本（可选）").pack(side="left")
         self.father_picker = ttk.Combobox(parents, textvariable=self.father_target, state="readonly", width=34)
         self.father_picker.pack(side="left", padx=8)
-        ttk.Label(self.query_tab, text="目标精灵、母本、父本至少填一项；母本和父本选择当前账号已录入的记录。", foreground="#526875").pack(anchor="w", pady=(5, 0))
+        ttk.Label(self.query_tab, text="目标精灵、母本、父本至少填一项；指定亲本用于首代繁育，首代子代可在后续代作为公本或母本。", foreground="#526875").pack(anchor="w", pady=(5, 0))
         self.allow_unrecorded = tk.BooleanVar(value=False)
         ttk.Checkbutton(self.query_tab, text="允许未录入亲本（从图鉴补足兼容的父本或母本）",
                         variable=self.allow_unrecorded).pack(anchor="w", pady=(7, 0))
@@ -466,8 +469,8 @@ class App(tk.Tk):
         result_frame.pack(fill="both", expand=True)
         columns = ("generations", "father", "mother", "child", "virtuals", "note")
         self.results = ttk.Treeview(result_frame, columns=columns, show="headings", selectmode="browse")
-        for key, label, width in (("generations", "代数", 55), ("father", "父本", 205),
-                                  ("mother", "母本", 225), ("child", "子代", 160),
+        for key, label, width in (("generations", "代数", 55), ("father", "首代父本", 205),
+                                  ("mother", "首代母本", 225), ("child", "最终子代", 160),
                                   ("virtuals", "未录入亲本", 90), ("note", "说明", 230)):
             self.results.heading(key, text=label)
             self.results.column(key, width=width, minwidth=50, stretch=key in ("father", "mother", "note"))
@@ -956,17 +959,20 @@ class App(tk.Tk):
             self.query_status.configure(text=heading + "。没有找到满足目标的兼容路线；可调整亲本、目标或代数。")
         else:
             self.result_groups = sorted(group_final_routes(results), key=result_number_key)
-            self.query_status.configure(text=heading + f"。显示 {len(self.result_groups)} 组最终配对；同种亲本、取得方式、形态和子代性别已合并，双击查看各路线及概率。")
+            self.query_status.configure(text=heading + f"。显示 {len(self.result_groups)} 组最终配对；列表显示代表路线的首代父母和最终子代，双击查看各条完整路线及概率。")
             for index, group in enumerate(self.result_groups):
                 candidate = next(iter(group["variants"].values()))
-                if retained_zero_route(candidate, targets, nature):
+                route_count = len({variant.route for variant in group["candidates"]})
+                if route_count > 1:
+                    note = "多条完整路线；双击查看"
+                elif retained_zero_route(candidate, targets, nature):
                     note = "单亲有目标奖牌；详见概率"
                 elif candidate.conditional_medal_parents:
                     note = "须先孵出带牌亲本"
                 else:
                     note = "双击查看步骤"
-                father = grouped_parent_summary(group, "father")
-                mother = grouped_parent_summary(group, "mother")
+                father = first_generation_summary(candidate, "father")
+                mother = first_generation_summary(candidate, "mother")
                 generations = sorted({len(variant.route) for variant in group["candidates"]})
                 virtual_counts = sorted({len(variant.virtual_keys) for variant in group["candidates"]})
                 self.results.insert("", "end", iid=str(index), values=(
