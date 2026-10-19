@@ -184,10 +184,12 @@ def record_features(record, edge_percent):
     return ", ".join(dict.fromkeys(features))
 
 
-def record_matches_filters(record, edge_percent, medal="全部", shiny="全部", colorful="全部"):
+def record_matches_filters(record, edge_percent, size_medal="全部", voice_medal="全部",
+                           shiny="全部", colorful="全部"):
     traits = record_traits(record, edge_percent)
-    if medal != "全部" and traits.get(medal) != 1.0:
-        return False
+    for medal in (size_medal, voice_medal):
+        if medal != "全部" and traits.get(medal) != 1.0:
+            return False
     for choice, key in ((shiny, "shiny"), (colorful, "colorful")):
         if choice != "全部" and bool(record.get(key)) != (choice == "有"):
             return False
@@ -360,11 +362,13 @@ class App(tk.Tk):
         pane.add(right_shell, weight=2)
         filters = ttk.Frame(left)
         filters.pack(fill="x", padx=(0, 12), pady=(0, 8))
-        self.record_medal_filter = tk.StringVar(value="全部")
+        self.record_size_medal_filter = tk.StringVar(value="全部")
+        self.record_voice_medal_filter = tk.StringVar(value="全部")
         self.record_shiny_filter = tk.StringVar(value="全部")
         self.record_colorful_filter = tk.StringVar(value="全部")
         for label, variable, choices, width in (
-            ("奖牌", self.record_medal_filter, ("全部", "大块头", "小不点", "婉转声", "粗嗓门"), 9),
+            ("体型奖牌", self.record_size_medal_filter, ("全部", "大块头", "小不点"), 8),
+            ("声音奖牌", self.record_voice_medal_filter, ("全部", "婉转声", "粗嗓门"), 8),
             ("异色", self.record_shiny_filter, ("全部", "有", "无"), 5),
             ("炫彩", self.record_colorful_filter, ("全部", "有", "无"), 5),
         ):
@@ -381,7 +385,8 @@ class App(tk.Tk):
             self.listing.column(col, width=width, stretch=True)
         self.listing.pack(fill="both", expand=True, padx=(0, 12))
         self.listing.bind("<<TreeviewSelect>>", self.select_record)
-        for variable in (self.record_medal_filter, self.record_shiny_filter, self.record_colorful_filter):
+        for variable in (self.record_size_medal_filter, self.record_voice_medal_filter,
+                         self.record_shiny_filter, self.record_colorful_filter):
             variable.trace_add("write", lambda *_: self.refresh_records())
         ttk.Label(right, text="当前组的原始记录（属性相同的记录合并显示）").pack(anchor="w", pady=(0, 2))
         self.record_variant = tk.StringVar()
@@ -806,7 +811,8 @@ class App(tk.Tk):
         edge = self.display_rules()["size_edge"] * 100
         visible = []
         for r in representatives:
-            if not record_matches_filters(r, edge, self.record_medal_filter.get(),
+            if not record_matches_filters(r, edge, self.record_size_medal_filter.get(),
+                                          self.record_voice_medal_filter.get(),
                                           self.record_shiny_filter.get(), self.record_colorful_filter.get()):
                 continue
             count = len(self.record_groups[r["id"]])
