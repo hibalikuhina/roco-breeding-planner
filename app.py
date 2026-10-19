@@ -513,12 +513,15 @@ class App(tk.Tk):
         self.query_status.pack(anchor="w", pady=(0, 6))
         result_frame = ttk.Frame(self.query_tab)
         result_frame.pack(fill="both", expand=True)
-        columns = ("generations", "father", "mother", "child", "virtuals", "note")
-        self.results = ttk.Treeview(result_frame, columns=columns, show="headings", selectmode="browse")
-        for key, label, width in (("generations", "代数", 55), ("father", "首代父本", 205),
-                                  ("mother", "首代母本", 225), ("child", "最终子代", 160),
-                                  ("virtuals", "未录入亲本", 90), ("note", "说明", 230)):
-            self.results.heading(key, text=label)
+        self.result_columns = (("generations", "代数", 55), ("father", "首代父本", 205),
+                               ("mother", "首代母本", 225), ("child", "最终子代", 160),
+                               ("virtuals", "未录入亲本", 90), ("note", "说明", 230))
+        self.result_sort_column = None
+        self.result_sort_desc = False
+        self.results = ttk.Treeview(result_frame, columns=tuple(key for key, _, _ in self.result_columns),
+                                    show="headings", selectmode="browse")
+        for key, label, width in self.result_columns:
+            self.results.heading(key, text=label, command=lambda selected=key: self.sort_results_by(selected))
             self.results.column(key, width=width, minwidth=50, stretch=key in ("father", "mother", "note"))
         scrollbar = ttk.Scrollbar(result_frame, orient="vertical", command=self.results.yview)
         self.results.configure(yscrollcommand=scrollbar.set)
@@ -618,6 +621,31 @@ class App(tk.Tk):
         self.results.delete(*self.results.get_children())
         self.result_groups = []
         self.query_status.configure(text=value)
+
+    def sort_results_by(self, column):
+        if self.result_sort_column == column:
+            self.result_sort_desc = not self.result_sort_desc
+        else:
+            self.result_sort_column = column
+            self.result_sort_desc = False
+        self._apply_result_sort()
+
+    def _apply_result_sort(self):
+        column = self.result_sort_column
+        for key, label, _ in self.result_columns:
+            arrow = (" ↓" if self.result_sort_desc else " ↑") if key == column else ""
+            self.results.heading(key, text=label + arrow)
+        if column is None:
+            return
+        def sort_key(item):
+            value = self.results.set(item, column)
+            if column in ("generations", "virtuals"):
+                return tuple(int(part) for part in value.split("/") if part)
+            return dex_text_key(re.sub(r"\[[^]]+\]\s*", "", value))
+        sorted_items = sorted(self.results.get_children(), key=sort_key,
+                              reverse=self.result_sort_desc)
+        for index, item in enumerate(sorted_items):
+            self.results.move(item, "", index)
 
     def show_result_detail(self, _event=None):
         selection = self.results.selection()
@@ -1066,6 +1094,7 @@ class App(tk.Tk):
                 self.results.insert("", "end", iid=str(index), values=(
                     "/".join(map(str, generations)), father, mother, child_label(group),
                     "/".join(map(str, virtual_counts)), note))
+            self._apply_result_sort()
 
     def sort_dex_by(self, column):
         if self.dex_sort_column == column:
