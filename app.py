@@ -654,7 +654,10 @@ class App(tk.Tk):
                          f"  |  性别路径 {percent(variant.probability)}")
         lines.append("")
         if retained_zero_route(candidate, self.result_targets, self.result_nature):
-            lines.append("模型估算为 0%；至少一方按录入体重与体型奖牌边缘参数判为目标奖牌，因此保留此路线。")
+            if candidate.conditional_medal_parents:
+                lines.append("模型估算为 0%；此路线以先孵出带目标奖牌的中间亲本为前提，因此保留供规划参考。")
+            else:
+                lines.append("模型估算为 0%；至少一方按录入体重与体型奖牌边缘参数判为目标奖牌，因此保留此路线。")
             lines.append("")
         seen_routes = set()
         for variant in group["candidates"]:
@@ -1043,16 +1046,17 @@ class App(tk.Tk):
             self.query_status.configure(text=heading + "。没有找到满足目标的兼容路线；可调整亲本、目标或代数。")
         else:
             self.result_groups = sorted(group_final_routes(results), key=result_number_key)
-            self.query_status.configure(text=heading + f"。显示 {len(self.result_groups)} 组最终配对；列表显示代表路线的首代父母和最终子代，双击查看各条完整路线及概率。")
+            cap_hint = "；已达到 200 组显示上限，可能还有其他路线" if len(self.result_groups) >= 200 else ""
+            self.query_status.configure(text=heading + f"。显示 {len(self.result_groups)} 组最终配对{cap_hint}；列表显示代表路线的首代父母和最终子代，双击查看各条完整路线及概率。")
             for index, group in enumerate(self.result_groups):
                 candidate = next(iter(group["variants"].values()))
                 route_count = len({variant.route for variant in group["candidates"]})
-                if route_count > 1:
+                if candidate.conditional_medal_parents:
+                    note = "须先孵出带牌亲本；详见概率"
+                elif route_count > 1:
                     note = "多条完整路线；双击查看"
                 elif retained_zero_route(candidate, targets, nature):
                     note = "单亲有目标奖牌；详见概率"
-                elif candidate.conditional_medal_parents:
-                    note = "须先孵出带牌亲本"
                 else:
                     note = "双击查看步骤"
                 father = first_generation_summary(candidate, "father")

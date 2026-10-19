@@ -311,7 +311,8 @@ def breed(mother: Candidate, father: Candidate, rules: dict[str, float], sex: st
         for parent in (mother, father):
             if trait in parent.weight_medals:
                 retained.add(trait)
-            elif parent.route and (parent.traits[trait] or 0) > 0:
+            elif parent.route and ((parent.traits[trait] or 0) > 0
+                                   or trait in parent.retained_size_medals):
                 retained.add(trait)
                 conditional.append(f"{parent.label} 须先孵出{trait}奖牌")
     return Candidate(child_pet, sex, label, traits, route,
@@ -336,7 +337,7 @@ def target_chance(candidate: Candidate, targets: list[str], nature: tuple[str, s
 
 def retained_zero_route(candidate: Candidate, targets: list[str],
                         nature: tuple[str, str, str] = ("", "", "")) -> bool:
-    """Keep a zero estimate only when a direct parent has the requested size medal."""
+    """Keep a zero estimate when a parent has or may hatch with the size medal."""
     if target_chance(candidate, targets, nature) != 0 or nature_chance(candidate, *nature) == 0:
         return False
     size_targets = set(targets) & {"大块头", "小不点"}
@@ -507,5 +508,24 @@ def search(records: list[dict], target_pet: str | None, targets: list[str], gene
     zero_key_set = set(zero_keys)
     other_keys = [key for key in grouped if key not in zero_key_set]
     reserved = min(len(zero_keys), limit, max(20, limit - len(other_keys)))
-    selected_keys = other_keys[:limit - reserved] + zero_keys[:reserved]
+    def diverse_keys(keys: list[tuple], slots: int) -> list[tuple]:
+        if slots <= 0:
+            return []
+        chosen, seen_buckets = [], set()
+        for key in keys:
+            candidate = grouped[key][0]
+            intermediates = tuple(sorted(display_identity(parent.pet_id)
+                                         for parent in (candidate.mother, candidate.father)
+                                         if parent.route))
+            bucket = (intermediates, tuple(sorted(groups(candidate.pet_id))))
+            if bucket not in seen_buckets:
+                chosen.append(key)
+                seen_buckets.add(bucket)
+                if len(chosen) == slots:
+                    return chosen
+        chosen_set = set(chosen)
+        chosen.extend(key for key in keys if key not in chosen_set)
+        return chosen[:slots]
+
+    selected_keys = diverse_keys(other_keys, limit - reserved) + diverse_keys(zero_keys, reserved)
     return [candidate for key in selected_keys for candidate in grouped[key]]

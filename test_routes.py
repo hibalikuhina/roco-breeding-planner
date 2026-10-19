@@ -3,10 +3,24 @@
 import unittest
 
 from app import first_generation_summary, group_final_routes
-from engine import Candidate, PETS, final_route_key, first_generation_uses_record
+from engine import (Candidate, DEFAULT_RULES, PETS, final_route_key,
+                    first_generation_uses_record, groups, search)
 
 
 class FinalPairGroupingTest(unittest.TestCase):
+    def test_dual_group_offspring_reaches_second_group(self):
+        father = {"id": 17, "name": "星尘虫", "pet_id": "pet_000320", "sex": "公",
+                  "size_raw": "1.40", "voice_label": "婉转声", "shiny": 0, "colorful": 0}
+        rules = {key: value / 100 for key, value in DEFAULT_RULES.items()}
+        results = search([father], None, ["异色", "炫彩", "大块头", "婉转声"], 2,
+                         rules, father_id=17, allow_unrecorded=True)
+        bridged = [candidate for candidate in results
+                   if candidate.father.route and PETS[candidate.father.pet_id]["name"] == "小草虫"
+                   and "拟人组" in groups(candidate.pet_id)
+                   and "昆虫组" not in groups(candidate.pet_id)]
+        self.assertTrue(bridged)
+        self.assertTrue(all(candidate.conditional_medal_parents for candidate in bridged))
+
     def test_unrecorded_and_projected_parent_share_one_row(self):
         mother_id = next(p["id"] for p in PETS.values() if p["name"] == "小草虫")
         father_id = next(p["id"] for p in PETS.values() if p["name"] == "叮叮卯")
