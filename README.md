@@ -8,7 +8,7 @@
 
 ## 运行
 
-**分享给他人**：发送 `dist/RocoBreedingPlanner.exe` 这一个文件即可。对方无需安装 Python，双击即可运行，不会出现命令行窗口。打包方法见 [BUILD.md](BUILD.md)。
+**下载**：[下载最新版 RocoBreedingPlanner.exe](https://github.com/hibalikuhina/roco-breeding-planner/releases/latest/download/RocoBreedingPlanner.exe)（历次版本见 [Releases](https://github.com/hibalikuhina/roco-breeding-planner/releases)）。无需安装 Python，双击即可运行，不会出现命令行窗口。exe 未做代码签名，首次运行若出现「Windows 已保护你的电脑」，点「更多信息」→「仍要运行」。分享给他人时发这个链接即可。打包与发版方法见 [BUILD.md](BUILD.md)。
 
 **从源码运行**：需要 Python 3.10 或更新版本，只用标准库。双击 `launch.cmd`，它会用无控制台的 `pyw.exe` 启动程序后立即退出，不会留下命令行窗口；启动出错时程序会弹窗显示错误。也可以在项目目录运行 `python app.py`。
 

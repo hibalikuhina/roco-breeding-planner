@@ -35,7 +35,29 @@
    脚本会先清空 `build/` 和 `dist/`，再生成 `dist/RocoBreedingPlanner.exe`。这两个文件夹都不进 Git。
 
 4. 双击新 exe 检查：窗口能打开、没有命令行窗口、原有账号和记录都在。
-5. 把新 exe 发给使用者，让他们直接替换旧 exe。
+5. 发版（见下一节）。使用者下载新 exe 后直接替换旧 exe 即可。
+
+## 发版
+
+发版用 [GitHub CLI](https://cli.github.com/)，第一次使用前先运行 `gh auth login` 登录。
+
+1. 先提交全部改动并推送，确保 exe 和远程源码一致：
+
+   ```powershell
+   git push origin master
+   ```
+
+2. 按上一节重新打包，然后创建 release 并上传 exe。tag 按 `v主版本.次版本.修订号` 递增，查看已有版本用 `gh release list`：
+
+   ```powershell
+   gh release create v1.0.1 dist/RocoBreedingPlanner.exe --target master --title "v1.0.1" --notes "本版更新内容"
+   ```
+
+   更新说明较长时，可以写进文件，改用 `--notes-file 说明.md`。
+
+3. 打开 release 页面，确认附件 `RocoBreedingPlanner.exe` 能下载。
+
+README 里的下载链接指向 `releases/latest/download/RocoBreedingPlanner.exe`，会自动指到最新版。所以**附件名必须保持 `RocoBreedingPlanner.exe`**，否则这个链接会失效。附件传错时，用 `gh release upload v1.0.1 dist/RocoBreedingPlanner.exe --clobber` 覆盖。
 
 ## 用户数据注意事项
 
