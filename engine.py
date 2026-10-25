@@ -5,9 +5,11 @@ import json
 import math
 import re
 from dataclasses import dataclass
+import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+# PyInstaller 打包后，内置的只读文件解压在 sys._MEIPASS。
+ROOT = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent))
 CATALOG = json.loads((ROOT / "data" / "pokedex.json").read_text(encoding="utf-8"))
 PETS = {p["id"]: p for p in CATALOG["pets"]}
 TRAITS = ("异色", "炫彩", "大块头", "小不点", "婉转声", "粗嗓门")

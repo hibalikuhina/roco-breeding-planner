@@ -4,25 +4,88 @@ from __future__ import annotations
 import sqlite3
 import math
 import json
+import os
 import re
 import sys
 import tkinter as tk
+import traceback
 import uuid
 from contextlib import contextmanager
+from datetime import datetime
 from functools import lru_cache
-from tkinter import messagebox, simpledialog, ttk
+from pathlib import Path
+from tkinter import filedialog, messagebox, simpledialog, ttk
 
 if sys.platform == "win32":
     import ctypes
     from ctypes import wintypes
 
 from engine import (ATTRS, CATALOG, DEFAULT_RULES, NATURES, NATURE_BY_PAIR, PETS,
-                    ROOT, RULE_INFO, TRAITS, display_identity, final_route_key,
+                    RULE_INFO, TRAITS, display_identity, final_route_key,
                     group_breeding_records, inferred_size, nature_chance, record_traits,
                     retained_zero_route, search, target_chance)
 
-USER_DATA = ROOT / "user_data"
+APP_DIR_NAME = "RocoBreedingPlanner"
+SOURCE_DIR = Path(__file__).resolve().parent
+LEGACY_USER_DATA = SOURCE_DIR / "user_data"
+
+
+def user_data_dir() -> Path:
+    """定位个人数据目录。数据与程序分开存放，重新打包或移动 exe 都不会丢失。
+
+    打包后的 exe 同目录下有 ``user_data`` 文件夹时进入便携模式；
+    否则数据放在 %APPDATA%，exe 与源码运行共用。
+    """
+    if getattr(sys, "frozen", False):
+        portable = Path(sys.executable).resolve().parent / "user_data"
+        if portable.is_dir():
+            return portable
+    base = os.environ.get("APPDATA")
+    return (Path(base) if base else Path.home() / ".config") / APP_DIR_NAME
+
+
+USER_DATA = user_data_dir()
 DB_PATH = USER_DATA / "personal.sqlite3"
+
+
+def record_count(path: Path) -> int | None:
+    """返回数据库中的精灵记录数；不是本工具的数据库时返回 None。"""
+    try:
+        connection = sqlite3.connect(f"{path.resolve().as_uri()}?mode=ro", uri=True)
+        try:
+            return connection.execute("SELECT COUNT(*) FROM specimens").fetchone()[0]
+        finally:
+            connection.close()
+    except sqlite3.Error:
+        return None
+
+
+def replace_database(source_path: Path) -> Path | None:
+    """用 source_path 覆盖 DB_PATH，原数据库先改名为带时间戳的备份。"""
+    USER_DATA.mkdir(parents=True, exist_ok=True)
+    backup_path = None
+    if DB_PATH.exists():
+        backup_path = USER_DATA / f"personal.backup-{datetime.now():%Y%m%d-%H%M%S}.sqlite3"
+        DB_PATH.replace(backup_path)
+    source = sqlite3.connect(source_path)
+    target = sqlite3.connect(DB_PATH)
+    try:
+        source.backup(target)
+    finally:
+        target.close()
+        source.close()
+    return backup_path
+
+
+def migrate_legacy_data():
+    """当前数据库还没有任何记录时，迁移源码目录旧版 ./user_data 中的数据库。"""
+    legacy = LEGACY_USER_DATA / "personal.sqlite3"
+    if not legacy.is_file() or (DB_PATH.exists() and legacy.resolve() == DB_PATH.resolve()):
+        return
+    if DB_PATH.exists() and record_count(DB_PATH) != 0:
+        return
+    if record_count(legacy):
+        replace_database(legacy)
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS specimens (
  id INTEGER PRIMARY KEY, account TEXT NOT NULL, name TEXT NOT NULL, pet_id TEXT NOT NULL,
@@ -39,7 +102,7 @@ INSERT OR IGNORE INTO accounts(id,name) VALUES ('账号 1','账号1');
 
 @contextmanager
 def db():
-    USER_DATA.mkdir(exist_ok=True)
+    USER_DATA.mkdir(parents=True, exist_ok=True)
     connection = sqlite3.connect(DB_PATH)
     connection.row_factory = sqlite3.Row
     try:
@@ -232,6 +295,7 @@ class App(tk.Tk):
         self.geometry("1180x790")
         self.minsize(970, 650)
         self.configure(bg="#edf3f5")
+        self.restart = False
         self.accounts = {}
         self._load_accounts()
         self.account = tk.StringVar(value=self.accounts.get("账号 1", next(iter(self.accounts.values()))))
@@ -308,6 +372,38 @@ class App(tk.Tk):
         self.account_picker.configure(values=list(self.accounts.values()))
         self.account.set(name)
 
+    def open_data_dir(self):
+        USER_DATA.mkdir(parents=True, exist_ok=True)
+        if sys.platform == "win32":
+            os.startfile(USER_DATA)
+        else:
+            messagebox.showinfo("数据文件夹", str(USER_DATA), parent=self)
+
+    def import_data(self):
+        chosen = filedialog.askopenfilename(
+            parent=self, title="选择要导入的 personal.sqlite3",
+            filetypes=[("数据库", "*.sqlite3"), ("所有文件", "*.*")])
+        if not chosen:
+            return
+        source = Path(chosen)
+        if DB_PATH.exists() and source.resolve() == DB_PATH.resolve():
+            messagebox.showinfo("导入数据", "这就是当前正在使用的数据文件。", parent=self)
+            return
+        count = record_count(source)
+        if count is None:
+            messagebox.showerror("导入数据", "这个文件不是本工具的数据文件。", parent=self)
+            return
+        if not messagebox.askyesno(
+                "导入数据", f"将用所选文件（{count} 条精灵记录）替换当前全部数据。\n"
+                "当前数据会先备份到数据文件夹，可随时找回。继续吗？", parent=self):
+            return
+        self._flush_query_options()
+        backup_path = replace_database(source)
+        note = f"\n原数据已备份为：{backup_path.name}" if backup_path else ""
+        messagebox.showinfo("导入数据", f"导入完成，程序将重新载入。{note}", parent=self)
+        self.restart = True
+        self.destroy()
+
     def _style(self):
         style = ttk.Style(self)
         if "clam" in style.theme_names():
@@ -327,6 +423,8 @@ class App(tk.Tk):
         ttk.Button(top, text="新增", command=self.add_account).pack(side="left", padx=(6, 2))
         ttk.Button(top, text="重命名", command=self.rename_account).pack(side="left", padx=2)
         self.account.trace_add("write", self._account_changed)
+        ttk.Button(top, text="数据文件夹", command=self.open_data_dir).pack(side="right", padx=(2, 8))
+        ttk.Button(top, text="导入数据", command=self.import_data).pack(side="right", padx=2)
         ttk.Label(top, text="离线图鉴 625 条  ·  记录只存本机", foreground="#526875").pack(side="right", padx=8)
         book = ttk.Notebook(self)
         book.pack(fill="both", expand=True, padx=12, pady=(0, 12))
@@ -1148,5 +1246,28 @@ class App(tk.Tk):
         self.dex_detail.configure(text=text)
 
 
+def main():
+    # 没有控制台窗口时，启动错误会悄无声息地消失，因此弹窗并写日志。
+    try:
+        migrate_legacy_data()
+        while True:
+            app = App()
+            app.mainloop()
+            if not app.restart:
+                break
+    except Exception:
+        detail = traceback.format_exc()
+        try:
+            USER_DATA.mkdir(parents=True, exist_ok=True)
+            (USER_DATA / "error.log").write_text(detail, encoding="utf-8")
+        except OSError:
+            pass
+        root = tk.Tk()
+        root.withdraw()
+        messagebox.showerror("无法启动", f"{detail}\n数据位置：{USER_DATA}")
+        root.destroy()
+        sys.exit(1)
+
+
 if __name__ == "__main__":
-    App().mainloop()
+    main()
